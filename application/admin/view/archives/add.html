@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加文章</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/admin/js/lay-module/wangEditor/wangEditor.min.css">
+    <style>
+        .layui-form-label {
+            width: 12em;
+        }
+        .layui-input-block {
+            margin-left: 15em;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="archives-add-form">
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">文章标题：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">简略标题：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="shorttitle" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">自定义属性：</label>
+                                <div class="layui-input-block">
+                                    <?php foreach(config('dictionary.web.archives.flag') as $k=>$v): ?>
+                                    <input type="checkbox" name="flags[]" value="{$k}" title="{$v}">
+                                    <?php endforeach ?>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">TAG标签：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="tags" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">权重(越小越靠前)：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="weight" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 文章来源：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="source" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 作者：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="writer" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6 thumbnail">
+                                <label class="layui-form-label">缩略图：</label>
+                                <div class="layui-input-block" style="display:flex;justify-content: center;align-items:center;">
+                                    <input type="hidden" name="litpic">
+                                    <input type="file" class="litPicFile layui-input">
+                                    <img src="" alt="" class="layui-status-img" style="width:auto; height:38px;margin-left:10px; cursor:pointer; ">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 文章主栏目：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="typeid" lay-verify="required" placeholder="请点击选择" autocomplete="off" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 文章副栏目：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="typeid2" placeholder="请点击选择" autocomplete="off" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 关键字：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="keywords" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 内容摘要：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="description" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 浏览次数：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="click" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"> 发布时间：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="pubdate" id="pubdate" lay-verify="datetime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg12">
+                                <label class="layui-form-label">内容：</label>
+                                <div class="layui-input-block">
+                                    <div id="body"></div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="archives-add-form">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type='hidden' name="tem_typeid">
+<input type='hidden' name="tem_type_name">
+<script src="/static/layui/layui.js"></script>
+<script src="/static/common/js/jquery.min.js"></script>
+<script src="/static/admin/js/lay-module/wangEditor/wangEditor.min.js"></script>
+<script>
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).use(['form', 'jquery', 'layedit', 'laydate', 'upload'], function (){
+        let $ = layui.jquery, form = layui.form, layedit = layui.layedit, laydate = layui.laydate;
+        let column;
+        $('input[name=typeid],input[name=typeid2]').on('click', function (){
+            column = $(this);
+            $('input[name=tem_typeid]').val(column.data('typeid'));
+            $('input[name=tem_type_name]').val(column.val());
+            layer.open({
+                type: 2,
+                title: '栏目选择',
+                area: ['50%', '80%'],
+                content: "/admin/archives/columnTree/site_id/{$siteId}",
+                btn: ['确定', '取消'],
+                yes: function (index, layero){
+                    column.data('typeid', $('input[name=tem_typeid]').val());
+                    column.val($('input[name=tem_type_name]').val());
+                    layer.close(index);
+                },
+                btn2: function (index, layero){
+                    layer.close(index);
+                },
+                success: function (layero, index){
+                    let iframe = layero.find("iframe")[0].contentWindow;
+                }
+            })
+        });
+        const E = window.wangEditor;
+        let editor = new E('#body');
+        editor.create();
+        editor.config.uploadImgShowBase64 = true;
+        editor.config.showLinkImg = false;
+        $('.litPicFile').on('change', function (){
+            let image = this.files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = function (ev){
+                let dataURL = ev.target.result;
+                $('input[name=litpic]').val(dataURL);
+                $('.layui-status-img').attr('src', dataURL);
+            }
+        });
+        layer.photos({
+            photos: '.thumbnail',
+        });
+        laydate.render({ elem: '#pubdate', type: 'datetime', format: 'yyyy-MM-dd HH:mm' });
+        form.on('submit(archives-add-form)', function (data){
+            delete data.field.file;
+            data.field.body = editor.txt.html();
+            data.field.typeid = $('input[name=typeid]').data('typeid');
+            data.field.typeid2 = $('input[name=typeid2]').data('typeid');
+            data.field.site_id = '{$siteId}';
+            $.post("{:url('archives/create')}", data.field, function (res){
+                if ( 0 == res.code ) {
+                    layer.msg(res.msg);
+                    setTimeout(function (){
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        window.parent.tables.tableObj.reload();
+                    }, 200);
+                } else {
+                    layer.alert(res.msg, {
+                        'title': '添加错误',
+                        'icon': 2
+                    });
+                }
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

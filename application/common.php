@@ -29,7 +29,7 @@ function makePassword($password) {
  * @return bool
  */
 function checkPassword($inPassword, $dbPassword) {
-	
+
     return (makePassword($inPassword) == $dbPassword);
 }
 
@@ -151,4 +151,22 @@ function buttonAuth($input)
 {
     $authModel = Auth::instance();
     return  $authModel->authCheck($input, session('admin_role_id'));
+}
+
+/**
+ * 将以`,`分隔的内容转换为文字
+ *
+ * @param string $string
+ * @param array  $arg
+ * @param string $separator
+ * @param string
+ */
+function changeString( string $string, array $arg, string $separator = ' ' ): string
+{
+    if ( ($string === '') || empty($arg) ) return '';
+    $data    = explode(',', $string);
+    $newData = [];
+    foreach ( $data as $v ) $newData[] = $arg[$v];
+
+    return implode($separator, $newData);
 }

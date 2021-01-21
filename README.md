@@ -3,7 +3,7 @@
 PHP版本：7.2
 mysql: 5.7
 
-## 安装
+## 安装public/static/admin/lib/layui-v2.5.4/lay/modules/layedit.js
 
 php composer install
 

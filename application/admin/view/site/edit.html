@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑管理员</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .layui-form-label {
+            width: 12em;
+        }
+        .layui-input-block {
+            margin-left: 15em;
+        }
+        .layui-unselect + .select2, .select2 + .layui-unselect {
+            display: none;
+        }
+        .select2 {
+            height: 38px;
+            line-height: 1.3;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #FFF;
+            background-color: #FFF;
+            border-radius: 2px;
+            display: block;
+            width: 100%;
+        }
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #E6E6E6;
+        }
+        .select2-container .select2-selection--single {
+            height: 38px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 38px;
+        }
+        .select2 .select2-selection__rendered {
+            border: none;
+        }
+        .select2-dropdown {
+            border: 1px solid #E6E6E6;
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: 1px solid #E6E6E6;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="component-form-element">
+                        <input type="hidden" name="site_id" value="{$data['site_id']}" />
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">站点名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" lay-verify="required" placeholder="请输入站点名称" autocomplete="off" class="layui-input" value="{$data['name'] ?? '' }">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">模版名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="temp_name" lay-verify="required" placeholder="请选择模版名称" autocomplete="off" class="layui-input" readonly value="{$data['temp_name']}">
+                                    <input type="hidden" name="temp_id" value="{$data['temp_id'] ?? 0}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">站点PC域名：</label>
+                                <div class="layui-input-block">
+                                    <select name="web_domain" id="" lay-verify="required" autocomplete="off" class="layui-input">
+                                        <?php if(!empty($data['web_domain'])): ?>
+                                        <option value="{$data['web_domain']}" selected>{$data['web_domain']}</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">移动端域名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="m_domain" lay-verify="required" placeholder="m.33cy.cn" autocomplete="off" class="layui-input" value="{$data['m_domain'] ?? '' }">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">是否伪静态：</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="is_rewrite" value="1" title="是" lay-filter="is_rewrite"
+                                    <?php echo $data['is_rewrite'] == 1 ? 'checked' : ''?> />
+                                    <input type="radio" name="is_rewrite" value="0" title="否" lay-filter="is_rewrite"
+                                    <?php echo $data['is_rewrite'] == 0 ? 'checked' : ''?> />
+                                </div>
+                            </div>
+                            <?php if($data['is_rewrite'] == 1) : ?>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">伪静态规则：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="rewrite_rule" placeholder="" autocomplete="off" class="layui-input" value="{$data['rewrite_rule'] ?? ''}">
+                                </div>
+                            </div>
+                            <?php endif ?>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言用的项目名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="xiangmu" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$data['xiangmu'] ?? ''}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言来源：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="laiyuan" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$data['laiyuan'] ?? ''}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言电话：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="dianhua" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$data['dianhua'] ?? ''}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">汇聚通PC端站点ID：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="hj_site_id" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$data['hj_site_id'] ?? ''}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">汇聚通移动端站点ID：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="hj_m_site_id" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$data['hj_m_site_id'] ?? ''}">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">百度统计代码：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="tongji" autocomplete="off" class="layui-textarea">{$data['tongji'] ?? ''}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">&lt;head&gt;标签代码：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="head_code" autocomplete="off" class="layui-textarea">{$data['head_code'] ?? ''}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">&lt;body&gt;标签前面的代码：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="footer_code" autocomplete="off" class="layui-textarea">{$data['footer_code'] ?? ''}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">是否启用：</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="status" value="1" title="启用"
+                                    <?php echo $data['status'] == 1 ? 'checked' : '' ?>>
+                                    <input type="radio" name="status" value="0" title="禁用"
+                                    <?php echo $data['status'] == 0 ? 'checked' : '' ?>>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="component-form-element">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type='hidden' name="tem_temp_id">
+<input type='hidden' name="tem_temp_name">
+<input type="hidden" name="tem_temp_ish5">
+<input type="hidden" name="tem_cat_id">
+<script src="/static/layui/layui.js"></script>
+<script src="/static/common/js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/i18n/zh-CN.js"></script>
+<script>
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).use(['form'], function (){
+        let $ = layui.$, form = layui.form;
+        $('input[name="temp_name"]').on('click', function (){
+            $('input[name=tem_temp_id]').val($('input[name=temp_id]').val());
+            $('input[name=tem_temp_name]').val($('input[name=temp_name]').val());
+            layer.open({
+                type: 2,
+                title: '标题',
+                area: ['80%', '80%'],
+                content: "/admin/site/theme",
+                btn: ['确定', '取消'],
+                yes: function (index, layero){
+                    $('input[name=temp_id]').val($('input[name=tem_temp_id]').val());
+                    $('input[name=temp_name]').val($('input[name=tem_temp_name]').val());
+                    let domain = $('input[name=m_domain]').parent().parent();
+                    domain.hide();
+                    if ( $('input[name=tem_temp_ish5]').val() === '否' ) {
+                        domain.show();
+                    }
+                    layer.close(index);
+                },
+                btn2: function (index, layero){
+                    layer.close(index);
+                },
+                success: function (layero, index){
+                    console.log(index);
+                }
+            })
+        });
+        $('select[name=web_domain]').select2({
+            placeholder: '请选择',//默认文字提示
+            minimumInputLength: 3,//最少输入多少个字符后开始查询
+            language: 'zh-CN',
+            ajax: {
+                dataType: 'json',
+                delay: 250,
+                url: '/admin/site/domain',
+                data: function (params){
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function (data){
+                    let tmp = [];
+                    data = data.data;
+                    for ( let i in data ) {
+                        let tmp2 = [];
+                        tmp2['id'] = i
+                        tmp2['text'] = data[i];
+                        tmp.push(tmp2);
+                    }
+                    return {
+                        results: tmp,
+                    };
+                },
+                transport: function (params, success, failure){
+                    let $request = $.ajax(params);
+                    $request.then(success);
+                    $request.fail(failure);
+                    return $request;
+                }
+            }
+        }).on('change', function (){
+            let domain = $(this).val().split('.');
+            if ( domain.length > 3 ) {
+                domain[0] = 'm';
+            } else {
+                domain.unshift('m');
+            }
+            $('input[name=m_domain]').val(domain.join('.'));
+        });
+        form.on('radio(is_rewrite)', function (data){
+            let rewrite_rule_elem = $('input[name=rewrite_rule]').parent().parent();
+            rewrite_rule_elem.hide();
+            if ( data.value == 1 ) rewrite_rule_elem.show();
+        });
+        form.on('submit(component-form-element)', function (data){
+            $.post("{:url('site/edit')}", data.field, function (res){
+                if ( 0 == res.code ) {
+                    layer.msg(res.msg);
+                    setTimeout(function (){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        window.parent.renderTable();
+                    }, 200);
+                } else {
+                    layer.alert(res.msg, {
+                        'title': '修改错误',
+                        'icon': 2
+                    });
+                }
+            }, 'json');
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

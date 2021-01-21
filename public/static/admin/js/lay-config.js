@@ -3,12 +3,10 @@
  * author:Mr.Chung
  * description:此处放layui自定义扩展
  */
-
-window.rootPath = (function (src) {
+window.rootPath = (function (src){
     src = document.scripts[document.scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
 })();
-
 layui.config({
     base: rootPath + "lay-module/",
     version: true
@@ -21,4 +19,5 @@ layui.config({
     echarts: 'echarts/echarts', // echarts图表扩展
     echartsTheme: 'echarts/echartsTheme', // echarts图表主题扩展
     wangEditor: 'wangEditor/wangEditor', // wangEditor富文本扩展
+    jstree: 'jstree/jstree'
 });

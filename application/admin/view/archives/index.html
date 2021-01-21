@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文章列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                {if (buttonAuth('archives/create'))}
+                <div style="padding-bottom: 10px;">
+                    <button class="layui-btn layuiadmin-btn-admin" data-type="add"><i class="layui-icon">&#xe654;</i> 添加</button>
+                </div>
+                {/if}
+                <table id="archives-table" lay-filter="archives-table"></table>
+                <script type="text/html" id="toolbar">
+                    {if (buttonAuth('archives/edit'))}
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    {/if}
+                    {if (buttonAuth('archives/delete'))}
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    {/if}
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/layui/layui.js"></script>
+<script src="/static/common/js/layTool.js"></script>
+<script src="/static/common/js/jquery.min.js"></script>
+<script>
+    var tables = { tableObj: null };
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).use(['form', 'element', 'table'], function (){
+        let element = layui.element, table = layui.table, $ = layui.$;
+        tables.tableObj = table.render({
+            elem: '#archives-table',
+            url: "/admin/archives/index",
+            title: '文章内容',
+            where: { typeid: "{$_GET['typeid'] ?? ''}", 'site_id': "{$siteId}" },
+            page: true,
+            cols: [[
+                { type: 'radio', },
+                { field: "id", title: "id", align: 'right', width: 80, },
+                { field: "title", title: "标题", width: 100 },
+                { field: "shorttitle", title: "简标题", width: 100 },
+                { field: "typeid", title: "文章主栏目", width: 100 },
+                { field: "typeid2", title: "文章副栏目", width: 100 },
+                { field: "flag", title: "自定义属性", width: 100 },
+                { field: "click", title: "浏览次数", width: 130 },
+                { field: "source", title: "文章来源", width: 100 },
+                { field: "litpic", title: "缩略图", width: 100 },
+                { field: "pubdate", title: "发布时间", width: 100 },
+                { field: "senddate", title: "更新时间", width: 100 },
+                { field: "writer", title: "作者", width: 100 },
+                { field: "keywords", title: "关键字", width: 100 },
+                { field: "weight", title: "权重", width: 100 },
+                { fixed: 'right', title: '操作', width: 250, align: 'center', toolbar: '#toolbar' }
+            ]],
+            done: function (res, curr, count){
+                table.on('row(theme-table)', function (obj){
+                    console.log(obj);
+                });
+            }
+        });
+        $('.layuiadmin-btn-admin').on('click', function (){
+            layTool.open('{:url("archives/create/site_id/{$siteId}")}', '添加文章', '100%', '100%');
+        });
+        //监听行工具事件
+        table.on('tool(archives-table)', function (obj){
+            let data = obj.data, layEvent = obj.event; //获得 lay-event 对应的值
+            if ( layEvent === 'del' ) {
+                layer.confirm('真的删除行么', function (index){
+                    $.getJSON('{:url("archives/delete")}', { id: data.id, site_id: '{$siteId}' }, function (res){
+                        if ( 0 == res.code ) {
+                            layer.msg(res.msg);
+                            tables.tableObj.reload();
+                            layer.close(index);
+                        } else {
+                            layer.alert(res.msg);
+                        }
+                    });
+                });
+            } else if ( layEvent === 'edit' ) {
+                layTool.open("/admin/archives/edit/site_id/{$siteId}/archives_id/" + data.id, "编辑文章", '100%', '100%');
+            }
+        });
+    });
+</script>
+</body>
+</html>
