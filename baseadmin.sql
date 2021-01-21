@@ -1,4 +1,19 @@
-SET FOREIGN_KEY_CHECKS = 0;
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50553
+Source Host           : localhost:3306
+Source Database       : baseadmin
+
+Target Server Type    : MYSQL
+Target Server Version : 50553
+File Encoding         : 65001
+
+Date: 2019-10-11 16:04:22
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for bsa_admin

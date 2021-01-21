@@ -1,5 +1,4 @@
 <?php
-
 namespace app\admin\model;
 
 use think\Model;
@@ -13,12 +12,12 @@ class Theme extends Model
         try {
 
             $res = $this->alias('t')
-                    ->join('bsa_site s', 't.theme_id=s.temp_id', 'LEFT')
-                    ->field(['t.*,count(s.temp_id) as num'])
-                    ->group('t.theme_id')
-                    ->where($where)
-                    ->order('t.theme_id', 'desc')
-                    ->paginate($limit);
+                ->join('bsa_site s','t.theme_id=s.temp_id','LEFT')
+                ->field(['t.*,count(s.temp_id) as num'])
+                ->group('t.theme_id')
+                ->where($where)
+                ->order('t.theme_id', 'desc')
+                ->paginate($limit);
 
         } catch ( \Exception $e ) {
 
@@ -52,6 +51,7 @@ class Theme extends Model
 
             $has = $this->where('temp_name', $param['temp_name'])->find();
             if ( !empty($has) ) {
+
                 return modelReMsg(-2, '', '主题名称已经存在');
             }
 
@@ -64,6 +64,7 @@ class Theme extends Model
         return modelReMsg(0, '', '添加主题成功');
     }
 
+
     public function editTheme( $param )
     {
         try {
@@ -72,10 +73,12 @@ class Theme extends Model
                     ->where('theme_id', '<>', $param['theme_id'])
                     ->findOrEmpty()->toArray();
             if ( !empty($has) ) {
+
                 return modelReMsg(-2, '', '主题名称已经存在');
             }
 
             $this->save($param, ['theme_id' => $param['theme_id']]);
+
         } catch ( \Exception $e ) {
 
             return modelReMsg(-1, '', $e->getMessage());

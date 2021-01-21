@@ -143,4 +143,5 @@ return [
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
+    'upload_root_path'      => '/upload/',
 ];

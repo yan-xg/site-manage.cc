@@ -153,6 +153,7 @@ function buttonAuth($input)
     return  $authModel->authCheck($input, session('admin_role_id'));
 }
 
+
 /**
  * 将以`,`分隔的内容转换为文字
  *
