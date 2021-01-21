@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da44bdfe5a1b135b484edc3781495733",
+    "content-hash": "63abbb3ce2d57d8ff8ba7012a60949c9",
     "packages": [
         {
             "name": "qsnh/think-log-viewer",
@@ -152,23 +152,24 @@
         },
         {
             "name": "topthink/think-installer",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-installer.git",
-                "reference": "52f4b717a46fd00bccd47c5a9f10a5c56d29fcf9"
+                "reference": "cf7fb570071b7c27b1b4d490b520ab28c3a5181f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-installer/zipball/52f4b717a46fd00bccd47c5a9f10a5c56d29fcf9",
-                "reference": "52f4b717a46fd00bccd47c5a9f10a5c56d29fcf9",
+                "url": "https://api.github.com/repos/top-think/think-installer/zipball/cf7fb570071b7c27b1b4d490b520ab28c3a5181f",
+                "reference": "cf7fb570071b7c27b1b4d490b520ab28c3a5181f",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0||^2.0"
             },
             "require-dev": {
-                "composer/composer": "^1.0||^2.0"
+                "composer/composer": "^1.0||^2.0",
+                "react/promise": "^1.2 || ^2.7"
             },
             "type": "composer-plugin",
             "extra": {
@@ -191,9 +192,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-installer/issues",
-                "source": "https://github.com/top-think/think-installer/tree/v2.0.1"
+                "source": "https://github.com/top-think/think-installer/tree/v2.0.2"
             },
-            "time": "2020-10-27T05:43:17+00:00"
+            "time": "2021-01-13T11:31:32+00:00"
         },
         {
             "name": "zoujingli/ip2region",
@@ -248,7 +249,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0"
+        "php": ">=5.6.0",
+        "ext-mysqli": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>站点信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
+    <style>
+        .layui-table > tbody > tr {
+
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <table class="layui-table">
+                    <tbody>
+                    <tr>
+                        <td>站点ID</td>
+                        <td>{$site_id}</td>
+                    </tr>
+                    <tr>
+                        <td>站点名称</td>
+                        <td>{$name}</td>
+                    </tr>
+                    <tr>
+                        <td>域名</td>
+                        <td>{$web_domain}</td>
+                    </tr>
+                    <tr>
+                        <td>移动端域名</td>
+                        <td>{$m_domain}</td>
+                    </tr>
+                    <tr>
+                        <td>模版名称</td>
+                        <td>{$theme}</td>
+                    </tr>
+                    <tr>
+                        <td>是否伪静态</td>
+                        <td>{$rewrite}</td>
+                    </tr>
+                    <?php if($is_rewrite === 1): ?>
+                    <tr>
+                        <td>伪静态规则</td>
+                        <td>{$rewrite_rule}</td>
+                    </tr>
+                    <?php endif;?>
+                    <tr>
+                        <td>留言用的项目名</td>
+                        <td>{$xiangmu}</td>
+                    </tr>
+                    <tr>
+                        <td>留言来源</td>
+                        <td>{$laiyuan}</td>
+                    </tr>
+                    <tr>
+                        <td>留言电话</td>
+                        <td>{$dianhua}</td>
+                    </tr>
+                    <tr>
+                        <td>百度统计代码</td>
+                        <td>{$tongji}</td>
+                    </tr>
+                    <tr>
+                        <td>&lt;head&gt;标签代码</td>
+                        <td>{$head_code}</td>
+                    </tr>
+                    <tr>
+                        <td>&lt;body&gt;标签结束前</td>
+                        <td>{$footer_code}</td>
+                    </tr>
+                    <tr>
+                        <td>站点pv数</td>
+                        <td>{$page_views}</td>
+                    </tr>
+                    <tr>
+                        <td>页面数量</td>
+                        <td>{$page_count}</td>
+                    </tr>
+                    <tr>
+                        <td>收录量</td>
+                        <td>{$shoulu}</td>
+                    </tr>
+                    <tr>
+                        <td>关键词情况</td>
+                        <td>{$guanjianci}</td>
+                    </tr>
+                    <tr>
+                        <td>PC端汇聚通站点id</td>
+                        <td>{$hj_site_id}</td>
+                    </tr>
+                    <tr>
+                        <td>移动端汇聚通站点id</td>
+                        <td>{$hj_m_site_id}</td>
+                    </tr>
+                    <tr>
+                        <td>状态</td>
+                        <td><?php echo $status ?></td>
+                    </tr>
+                    <tr>
+                        <td>添加时间</td>
+                        <td>{$add_time}</td>
+                    </tr>
+                    <tr>
+                        <td>修改时间</td>
+                        <td>{$edit_time}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/layui/layui.js"></script>
+<script src="/static/common/js/layTool.js"></script>
+<script>
+    layui.config({
+        base: '/static/admin/' //静态资源所在路径
+    }).use(['form', 'element', 'table'], function (){
+    });
+</script>
+</body>
+</html>
