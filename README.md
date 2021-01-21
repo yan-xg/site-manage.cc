@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # snake
 thinkphp5.1 + layui 实现的带rbac的基础管理后台，方便快速开发法使用
 
@@ -44,3 +45,16 @@ https://www.kancloud.cn/nickbai/whisper-v2/988777
 ![支付宝](https://images.gitee.com/uploads/images/2019/1012/215507_3f9aebe2_552304.png)  
 微信
 ![微信](https://images.gitee.com/uploads/images/2019/1012/215507_3e868b0e_552304.png) 
+=======
+# 网站管理
+
+PHP版本：7.2
+mysql: 5.7
+
+## 安装
+
+php composer install
+
+# snake
+thinkphp5.1 + layui 实现的带rbac的基础管理后台，方便快速开发法使用
+>>>>>>> 5c6bfd5fe24c7928967323f2594afef231a272e4

@@ -17,6 +17,11 @@ Route::get('hello/:name', 'index/hello');
 
 Route::get('/admin/log/system', 'Qsnh\Think\Log\Controllers\LogViewerController@index');
 
+
+//Route::group('/admin/site', function () {
+//    Route::get('/', 'site@index');
+//}, ['app\admin\controller']);
+
 return [
 
 ];

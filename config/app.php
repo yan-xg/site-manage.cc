@@ -144,5 +144,4 @@ return [
     'exception_handle'       => '',
 
     'upload_root_path'      => '/upload/',
-
 ];
