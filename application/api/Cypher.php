@@ -9,11 +9,11 @@ namespace app\api;
  * $php_encrypted      = $cypher->encrypt('test');
  * $php_decrypted      = $cypher->decrypt($php_encrypted);
  */
-class MyCypher
+class Cypher
 {
 
-    private $key       = 'my-key-for-testing';
-    private $iv        = 'testing-iv';
+    private $key       = 'KDBUILDWEBSITE11';
+    private $iv        = '0122035405060748';
     private $method    = "AES-256-CFB";
     private $blocksize = 32;
     private $padwith   = '`';
@@ -76,5 +76,21 @@ class MyCypher
         } catch ( \Exception $e ) {
             die('Error : ' . $e->getMessage());
         }
+    }
+
+    /**
+     * 验证
+     *
+     * @param string $encrypt
+     * @param string $decrypt
+     * @return bool
+     */
+    public function validate( string $encrypt, string $decrypt ): bool
+    {
+        if ( $this->encrypt($encrypt) === $decrypt ) {
+            return true;
+        }
+
+        return false;
     }
 }

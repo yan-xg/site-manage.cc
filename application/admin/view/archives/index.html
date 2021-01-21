@@ -73,14 +73,14 @@
             }
         });
         $('.layuiadmin-btn-admin').on('click', function (){
-            layTool.open('{:url("archives/create/site_id/{$siteId}")}', '添加文章', '100%', '100%');
+            layTool.open('{:url("/admin/archives/create/site_id/")}{$siteId}', '添加文章', '100%', '100%');
         });
         //监听行工具事件
         table.on('tool(archives-table)', function (obj){
             let data = obj.data, layEvent = obj.event; //获得 lay-event 对应的值
             if ( layEvent === 'del' ) {
                 layer.confirm('真的删除行么', function (index){
-                    $.getJSON('{:url("archives/delete")}', { id: data.id, site_id: '{$siteId}' }, function (res){
+                    $.getJSON('{:url("/admin/archives/delete")}', { id: data.id, site_id: '{$siteId}' }, function (res){
                         if ( 0 == res.code ) {
                             layer.msg(res.msg);
                             tables.tableObj.reload();

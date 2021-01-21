@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\api\facade\Column;
 use app\api\site\Archives as ArchivesAPI;
 use app\api\site\Column as ColumnAPI;
 use app\admin\model\site as SiteModel;
@@ -61,8 +62,14 @@ class Archives extends Base
         $page   = input('param.page');
         $typeid = input('param.typeid');
         $siteId = input('param.site_id');
-
-        $res = $this->archivesAPI->site($siteId)->getArchivesList(['typeId' => $typeid], $page, $limit);
+        $img    = '<img src="%s" style="height:50px;" />';
+        $res    = $this->archivesAPI->site($siteId)->getArchivesList(['typeId' => $typeid], $page, $limit);
+        $host   = $this->archivesAPI->site($siteId)->getHost();
+        foreach ( $res['rows'] as &$v ) {
+            $v['pubdate']  = date("Y-m-d H:i", $v['pubdate']);
+            $v['senddate'] = date("Y-m-d H:i", $v['senddate']);
+            $v['litpic']   = sprintf($img, $host . $v['litpic']);
+        }
 
         return json(['code' => 0, 'msg' => 'ok', 'count' => $res['total'], 'data' => $res['rows']]);
     }
@@ -99,23 +106,15 @@ class Archives extends Base
      */
     private function convertPicture( $body )
     {
-        $reg  = "/(<img src=[\"|'])(.*?)([\"|'].*?>)/";
-        $body = preg_replace($reg, '$1\$#!#\$$2\$#!#\$$3', $body);
-        preg_match_all('/(\$\#\!\#\$)(.*?)(\$\#\!\#\$)/', $body, $matches);
+        $reg = "/(<img src=[\"|'])(.*?)([\"|'].*?>)/";
+
+        preg_match_all($reg, $body, $matches);
+
         foreach ( $matches[2] as $k => $v ) {
-            if ( strlen($v) < 300 ) {
-                $body = str_replace(sprintf('%s%s%s', $matches[1][$k], $matches[2][$k], $matches[3][$k]), $matches[2][$k], $body);
-            } else {
-                $body = str_replace(
-                        sprintf(
-                                '%s%s%s',
-                                $matches[1][$k],
-                                str_replace([PHP_EOL, '\r'], '', $matches[2][$k]),
-                                $matches[3][$k]
-                        ),
-                        $matches[2][$k],
-                        $body
-                );
+            if ( strlen($v) > 300 ) {
+                $search  = $matches[1][$k] . $matches[2][$k] . $matches[3][$k];
+                $replace = sprintf('%s%s%s%s%s', $matches[1][$k], '$#!#$', str_replace([PHP_EOL, '\r'], '', $matches[2][$k]), '$#!#$', $matches[3][$k]);
+                $body    = str_replace($search, $replace, $body);
             }
         }
 
@@ -144,9 +143,13 @@ class Archives extends Base
         $siteId = input('site_id');
         $this->validateSite($siteId);
         $this->assign('siteId', $siteId);
-        $data               = $this->archivesAPI->site($siteId)->getArchivesOne($id);
+        $data = $this->archivesAPI->site($siteId)->getArchivesOne($id);
+        if ( empty($data) ) exit('获取结果失败');
+        $host               = $this->archivesAPI->site($siteId)->getHost();
+        $column             = \app\api\facade\Column::site($siteId)->getColumnOne($data['typeid']);
+        $data['typeName']   = $column['typename'];
         $data['pubdate']    = date('Y-m-d H:i', $data['pubdate']);
-        $data['litpicfull'] = 'http://192.168.9.10:9102/' . $data['litpic'];
+        $data['litpicfull'] = $host . '/' . $data['litpic'];
         $data['flag']       = explode(',', $data['flag']);
         $this->assign(['data' => $data]);
 

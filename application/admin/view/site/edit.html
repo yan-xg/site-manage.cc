@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>编辑管理员</title>
+    <title>编辑站点</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -72,6 +72,14 @@
                                     <input type="text" name="name" lay-verify="required" placeholder="请输入站点名称" autocomplete="off" class="layui-input" value="{$data['name'] ?? '' }">
                                 </div>
                             </div>
+<!--                            <div class="layui-col-lg6 thumbnail">-->
+<!--                                <label class="layui-form-label">LOGO：</label>-->
+<!--                                <div class="layui-input-block" style="display:flex;justify-content: center;align-items:center;">-->
+<!--                                    <input type="hidden" name="logo" value="{$data['logo'] ?? ''}">-->
+<!--                                    <input type="file" class="logoFile layui-input">-->
+<!--                                    <img src="" alt="" class="layui-status-img" style="width:auto; height:38px;margin-left:10px; cursor:pointer; ">-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">模版名称：</label>
                                 <div class="layui-input-block">
@@ -195,6 +203,19 @@
         base: '/static/admin/' //静态资源所在路径
     }).use(['form'], function (){
         let $ = layui.$, form = layui.form;
+        $('.logoFile').on('change', function (){
+            let image = this.files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = function (ev){
+                let dataURL = ev.target.result;
+                $('input[name=logo]').val(dataURL);
+                $('.layui-status-img').attr('src', dataURL);
+            }
+        });
+        layer.photos({
+            photos: '.thumbnail',
+        });
         $('input[name="temp_name"]').on('click', function (){
             $('input[name=tem_temp_id]').val($('input[name=temp_id]').val());
             $('input[name=tem_temp_name]').val($('input[name=temp_name]').val());

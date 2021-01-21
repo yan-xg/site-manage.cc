@@ -16,7 +16,7 @@ class Column extends APIBase
 
     protected $port = '9102';
 
-    protected $path = 'apitest/register.php';
+    protected $path = 'api/register.php';
 
     /**
      * 获取栏目列表

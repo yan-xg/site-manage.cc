@@ -24,6 +24,13 @@ class APIBase
         $this->siteModel = $siteModel;
     }
 
+    public function header()
+    {
+        $this->path = 'api/register.php';
+        $url        = $this->getUrl('getSignature');
+        $res        = Http::curl($url, [], ['vision:1.0.0', 'token:XKyhVA3RsaWIRnAz'], 'HEAD');
+    }
+
     /**
      * 获取请求地址
      *
@@ -33,6 +40,16 @@ class APIBase
     protected function getUrl( string $match ): string
     {
         return sprintf('%s://%s:%s/%s/%s', $this->scheme, $this->host, $this->port, $this->path, $match);
+    }
+
+    /**
+     * 获取主机地址
+     *
+     * @return string
+     */
+    public function getHost()
+    {
+        return sprintf('%s://%s:%s', $this->scheme, $this->host, $this->port);
     }
 
     /**

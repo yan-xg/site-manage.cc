@@ -33,7 +33,7 @@
                                     <input type="text" name="title" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['title'] ?? ''}">
                                 </div>
                             </div>
-                            <div class="layui-col-lg6">
+                            <!--<div class="layui-col-lg6">
                                 <label class="layui-form-label">简略标题：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="shorttitle" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['shorttitle'] ?? ''}">
@@ -73,6 +73,7 @@
                                     <input type="text" name="writer" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['writer'] ?? ''}">
                                 </div>
                             </div>
+                            -->
                             <div class="layui-col-lg6 thumbnail">
                                 <label class="layui-form-label">缩略图：</label>
                                 <div class="layui-input-block" style="display:flex;justify-content: center;align-items:center;">
@@ -87,36 +88,37 @@
                                     <input type="text" name="typeid" lay-verify="required" placeholder="请点击选择" autocomplete="off" class="layui-input" value="{$data['typeName'] ?? ''}" data-typeid="{$data['typeid'] ?? ''}" readonly>
                                 </div>
                             </div>
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label"> 文章副栏目：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="typeid2" placeholder="请点击选择" autocomplete="off" class="layui-input" value="{$data['type2Name'] ?? ''}" data-typeid="{$data['typeid'] ?? ''}" readonly>
+                            <!--
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label"> 文章副栏目：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="typeid2" placeholder="请点击选择" autocomplete="off" class="layui-input" value="{$data['type2Name'] ?? ''}" data-typeid="{$data['typeid2'] ?? ''}" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label"> 关键字：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="keywords" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['keywords'] ?? ''}">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label"> 关键字：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="keywords" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['keywords'] ?? ''}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label"> 内容摘要：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="description" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['description'] ?? ''}">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label"> 内容摘要：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="description" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['description'] ?? ''}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label"> 浏览次数：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="click" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['click'] ?? ''}">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label"> 浏览次数：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="click" placeholder="请输入" autocomplete="off" class="layui-input" value="{$data['click'] ?? ''}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label"> 发布时间：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="pubdate" id="pubdate" lay-verify="datetime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" value="{$data['pubdate'] ?? ''}">
-                                </div>
-                            </div>
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label"> 发布时间：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="pubdate" id="pubdate" lay-verify="datetime" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" value="{$data['pubdate'] ?? ''}">
+                                    </div>
+                                </div>-->
                             <div class="layui-col-lg12">
                                 <label class="layui-form-label">内容：</label>
                                 <div class="layui-input-block">
@@ -194,6 +196,8 @@
             delete data.field.file;
             data.field.body = editor.txt.html();
             data.field.site_id = '{$siteId}';
+            data.field.typeid = $('input[name=typeid]').data('typeid');
+            data.field.typeid2 = $('input[name=typeid2]').data('typeid');
             $.post("{:url('archives/edit')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);

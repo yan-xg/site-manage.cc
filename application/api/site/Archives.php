@@ -8,7 +8,7 @@ use tool\Log;
 /**
  * 文章内容
  *
- * @package app\api\column
+ * @package app\api\archives
  */
 class Archives extends APIBase
 {
@@ -16,7 +16,7 @@ class Archives extends APIBase
 
     protected $port = '9102';
 
-    protected $path = 'apitest/register.php';
+    protected $path = 'api/register.php';
 
     /**
      * 文章列表
@@ -104,7 +104,7 @@ class Archives extends APIBase
         $url = $this->getUrl('archivesModify');
         $res = Http::curl($url, $param, 0, 'POST', true);
         if ( $res['status'] === 200 ) {
-//            Log::write(sprintf('编辑文章：%s(%s)', $param['typename'], $param['id']));
+            Log::write(sprintf('编辑文章：%s(%s)', $param['title'], $param['id']));
 
             return modelReMsg(0, '', '修改成功');
         }
@@ -121,7 +121,7 @@ class Archives extends APIBase
      */
     public function archivesDel( int $id ): array
     {
-        $url    = $this->getUrl('columnDel');
+        $url    = $this->getUrl('archivesDel');
         $option = ['ids' => $id];
         $res    = Http::curl($url, $option, 0, 'POST', true);
         if ( $res['status'] === 200 ) {

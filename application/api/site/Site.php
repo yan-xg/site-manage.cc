@@ -55,12 +55,12 @@ class Site extends APIBase
 
     /**
      *
-     * @param string $ip     IP地址
+     * @param string $id     IP地址
      * @param int    $status 状态码
      * @param array  $res    结果串
      * @return bool
      */
-    public function createRes( $ip, $status, $res )
+    public function createRes( $siteId, $status, $res )
     {
 
         return true;
