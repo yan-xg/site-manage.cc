@@ -54,7 +54,7 @@
             elem: '#column-table',
             url: "/admin/column/index",
             title: '栏目内容',
-            where: { typeid: "{$_GET['typeid'] ?? 0}" },
+            where: { typeid: "{$_GET['typeid'] ?? 0}", site_id: '{$siteId}' },
             page: true,
             cols: [[
                 { type: 'radio', },
@@ -78,18 +78,18 @@
             }
         });
         $('.layuiadmin-btn-admin').on('click', function (){
-            layTool.open('{:url("column/create")}', '添加栏目', '100%', '100%');
+            layTool.open('{:url("/admin/column/create/site_id/")}{$siteId}', '添加栏目', '100%', '100%');
         });
         //监听行工具事件
         table.on('tool(column-table)', function (obj){
             let data = obj.data, layEvent = obj.event; //获得 lay-event 对应的值
             if ( layEvent === 'seeArchives' ) {
-                layTool.open("{:url('archives/index')}?typeid=" + data.id, "文章信息", '100%', '100%');
+                layTool.open("{:url('/admin/archives/index/site_id/')}{$siteId}?typeid=" + data.id, "文章信息", '100%', '100%');
             } else if ( layEvent === 'detail' ) {
-                layTool.open("{:url('column/index')}?typeid=" + data.id, "子集信息", '100%', '100%');
+                layTool.open("{:url('/admin/column/index/site_id/')}{$siteId}?typeid=" + data.id, "子集信息", '100%', '100%');
             } else if ( layEvent === 'del' ) {
                 layer.confirm('真的删除行么', function (index){
-                    $.getJSON('{:url("column/delete")}', { id: data.id }, function (res){
+                    $.getJSON('{:url("column/delete")}', { id: data.id, site_id: '{$siteId}' }, function (res){
                         if ( 0 == res.code ) {
                             layer.msg(res.msg);
                             tables.tableObj.reload();
@@ -100,7 +100,7 @@
                     });
                 });
             } else if ( layEvent === 'edit' ) {
-                layTool.open("/admin/column/edit/column_id/" + data.id, "编辑栏目", '100%', '100%');
+                layTool.open("/admin/column/edit/site_id/{$siteId}/column_id/" + data.id, "编辑栏目", '100%', '100%');
             }
         });
     });

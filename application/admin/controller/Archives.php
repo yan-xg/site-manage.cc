@@ -155,6 +155,11 @@ class Archives extends Base
 
     /**
      * 删除文章
+     *
+     * @param $id
+     * @param $site_id
+     * @return array|\think\response\Json
+     * @throws \app\api\HttpError
      */
     public function delete( $id, $site_id )
     {

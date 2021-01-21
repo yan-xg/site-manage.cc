@@ -85,6 +85,7 @@ class Column extends Base
         }
         $siteId = input('site_id');
         $this->validateSite($siteId);
+        $this->assign('siteId', $siteId);
 
         return view('add');
     }
@@ -118,14 +119,21 @@ class Column extends Base
 
     /**
      * 删除栏目
+     *
+     * @param $id
+     * @param $site_id
+     * @return array|\think\response\Json
+     * @throws \app\api\HttpError
      */
-    public function delete( $id )
+    public function delete( $id, $site_id )
     {
         if ( request()->isAjax() ) {
             if ( empty($id) )
                 return ['code' => -1, 'data' => '', 'msg' => $this->columnValidate->getError()];
+            $siteId = $site_id;
+            $this->validateSite($siteId);
 
-            $res = $this->columnAPI->site(1)->columnDel($id);
+            $res = $this->columnAPI->site($siteId)->columnDel($id);
 
             return json($res);
         }

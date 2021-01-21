@@ -90,6 +90,7 @@
     }).use(['form', 'jquery'], function (){
         let $ = layui.jquery, form = layui.form;
         form.on('submit(column-add-form)', function (data){
+            data.field.site_id = '{$siteId}';
             $.post("{:url('column/edit')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);
