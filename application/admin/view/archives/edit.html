@@ -177,7 +177,7 @@
         editor.create();
         editor.config.uploadImgShowBase64 = true;
         editor.config.showLinkImg = false;
-        editor.txt.html("{$data['body'] ?? ''}");
+        editor.txt.html('<?php echo $data["body"] ?? "" ?>');
         $('.litPicFile').on('change', function (){
             let image = this.files[0];
             let reader = new FileReader();

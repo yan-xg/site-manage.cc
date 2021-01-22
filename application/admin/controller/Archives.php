@@ -99,6 +99,26 @@ class Archives extends Base
     }
 
     /**
+     * 将内容中加入host信息
+     *
+     * @param string $body
+     * @param string $host
+     * @return string
+     */
+    private function hostPicture( $body, $host )
+    {
+        $reg = "/(<img src=[\"|'])(.*?)([\"|'].*?>)/";
+        preg_match_all($reg, $body, $matches);
+        foreach ( $matches[2] as $k => $v ) {
+            $search  = $matches[1][$k] . $matches[2][$k] . $matches[3][$k];
+            $replace = sprintf('%s%s%s%s', $matches[1][$k], $host, $matches[2][$k], $matches[3][$k]);
+            $body    = str_replace($search, $replace, $body);
+        }
+
+        return $body;
+    }
+
+    /**
      * 将内容中的图片base64增加
      *
      * @param string $body
@@ -113,7 +133,7 @@ class Archives extends Base
         foreach ( $matches[2] as $k => $v ) {
             if ( strlen($v) > 300 ) {
                 $search  = $matches[1][$k] . $matches[2][$k] . $matches[3][$k];
-                $replace = sprintf('%s%s%s%s%s', $matches[1][$k], '$#!#$', str_replace([PHP_EOL, '\r'], '', $matches[2][$k]), '$#!#$', $matches[3][$k]);
+                $replace = sprintf('%s%s%s%s%s', $matches[1][$k], '$#!#$', str_replace(['\r\n'], '', $matches[2][$k]), '$#!#$', $matches[3][$k]);
                 $body    = str_replace($search, $replace, $body);
             }
         }
@@ -151,6 +171,7 @@ class Archives extends Base
         $data['pubdate']    = date('Y-m-d H:i', $data['pubdate']);
         $data['litpicfull'] = $host . '/' . $data['litpic'];
         $data['flag']       = explode(',', $data['flag']);
+        $data['body']       = $this->hostPicture($data['body'], $host);
         $this->assign(['data' => $data]);
 
         return view('edit');

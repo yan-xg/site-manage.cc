@@ -42,8 +42,9 @@ class Site extends Model
         try {
             $data['add_time'] = date('Y-m-d H:i:s');
             $this->insert($data);
-            \app\api\facade\Site::site(1)->create();
-            Log::write(sprintf("添加站点：%s(%s)", $data['name'], $this->getLastInsID()));
+            $lastId = $this->getLastInsID();
+            \app\api\facade\Site::site($lastId)->create();
+            Log::write(sprintf("添加站点：%s(%s)", $data['name'], $lastId));
         } catch ( \Exception $e ) {
 
             return modelReMsg(-1, '', $e->getMessage());

@@ -6,11 +6,11 @@ use app\api\Http;
 use tool\Log;
 
 /**
- * 栏目内容
+ * 友情链接
  *
- * @package app\api\column
+ * @package app\api\Flink
  */
-class Column extends APIBase
+class Flink extends APIBase
 {
     protected $host = '192.168.9.10';
 
@@ -19,7 +19,7 @@ class Column extends APIBase
     protected $path = 'api/register.php';
 
     /**
-     * 获取栏目列表
+     * 友情链接列表
      *
      * @param array $where  where 条件
      * @param int   $offset 页数
@@ -28,14 +28,15 @@ class Column extends APIBase
      * @return array
      * @throws \app\api\HttpError
      */
-    public function getColumnList( array $where, int $offset, int $limit, array $order = [] ): array
+    public function getFlinkList( array $where, int $offset, int $limit, array $order = [] ): array
     {
-        $url           = $this->getUrl('getColumnList');
-        $data          = [];
-        $data['page']  = $offset;
-        $data['count'] = $limit;
+        $url  = $this->getUrl('getFlinkList');
+        $data = [
+                'page'  => $offset,
+                'count' => $limit
+        ];
         if ( !empty($order) ) {
-            $data['isSort'] = true;
+            $data['isSort'] = false;
             $data['field']  = key($order);
             $data['order']  = current($order);
         }
@@ -53,14 +54,14 @@ class Column extends APIBase
     }
 
     /**
-     * 栏目单条查询
+     * 友情链接单条查询
      *
      * @param int $id
      * @return array
      */
-    public function getColumnOne( int $id ): array
+    public function getFlinkOne( int $id ): array
     {
-        $url    = $this->getUrl('getColumnOne');
+        $url    = $this->getUrl('getFlinkOne');
         $option = ['id' => $id];
         $res    = Http::curl($url, $option, $this->header(), 'GET');
 
@@ -70,21 +71,21 @@ class Column extends APIBase
     }
 
     /**
-     * 栏目单条新增、批量新增
+     * 友情链接单条新增、批量新增
      *
      * @param array $param
      * @return array
      */
-    public function columnAdd( array $param ): array
+    public function flinkAdd( array $param ): array
     {
-        $url = $this->getUrl('columnAdd');
+        $url = $this->getUrl('flinkAdd');
         $res = Http::curl($url, $param, $this->header(), 'POST', true);
-
         if ( $res['status'] === 200 ) {
-            $lastId = $res['data']['lastId'];
-            Log::write(sprintf('增加栏目：%s(%s)', $param['typename'], $lastId));
+//            $lastId = $res['data']['lastId'];
 
-            return modelReMsg(0, ['id' => $lastId], '创建成功');
+            Log::write(sprintf('增加友情链接：%s(%s)', $param['webname'], 0));
+
+            return modelReMsg(0, ['id' => 0], '创建成功');
         }
 
         return modelReMsg(-1, '', '添加失败,请重新尝试！');
@@ -97,12 +98,12 @@ class Column extends APIBase
      * @return array
      * @throws \app\api\HttpError
      */
-    public function columnModify( array $param ): array
+    public function flinkModify( array $param ): array
     {
-        $url = $this->getUrl('columnModify');
+        $url = $this->getUrl('flinkModify');
         $res = Http::curl($url, $param, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
-            Log::write(sprintf('编辑栏目：%s(%s)', $param['typename'], $param['id']));
+            Log::write(sprintf('编辑友情链接：%s(%s)', $param['webname'], $param['id']));
 
             return modelReMsg(0, '', '修改成功');
         }
@@ -117,13 +118,13 @@ class Column extends APIBase
      * @return array
      * @throws \app\api\HttpError
      */
-    public function columnDel( int $id ): array
+    public function flinkDel( int $id ): array
     {
-        $url    = $this->getUrl('columnDel');
+        $url    = $this->getUrl('flinkDel');
         $option = ['ids' => $id];
         $res    = Http::curl($url, $option, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
-            Log::write(sprintf('编辑栏目：%s', $id));
+            Log::write(sprintf('删除友情链接：%s', $id));
 
             return modelReMsg(0, '', '删除成功');
         }

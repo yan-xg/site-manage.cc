@@ -44,7 +44,7 @@ class Archives extends APIBase
             foreach ( $where as $k => $v ) $data[$k] = $v;
         }
 
-        $res = Http::curl($url, $data, 0, 'POST', true);
+        $res = Http::curl($url, $data, $this->header(), 'POST', true);
 
         if ( $res['status'] === 200 ) {
             return ['total' => $res['data']['total'], 'rows' => $res['data']['data']];
@@ -54,7 +54,7 @@ class Archives extends APIBase
     }
 
     /**
-     * 栏目单条查询
+     * 文章单条查询
      *
      * @param int $id
      * @return array
@@ -63,7 +63,7 @@ class Archives extends APIBase
     {
         $url    = $this->getUrl('getArchivesOne');
         $option = ['id' => $id];
-        $res    = Http::curl($url, $option, 0, 'GET');
+        $res    = Http::curl($url, $option, $this->header(), 'GET');
 
         if ( $res['status'] === 200 ) return current($res['data']);
 
@@ -71,7 +71,7 @@ class Archives extends APIBase
     }
 
     /**
-     * 栏目单条新增、批量新增
+     * 文章单条新增、批量新增
      *
      * @param array $param
      * @return array
@@ -79,7 +79,7 @@ class Archives extends APIBase
     public function archivesAdd( array $param ): array
     {
         $url = $this->getUrl('archivesAdd');
-        $res = Http::curl($url, $param, 0, 'POST', true);
+        $res = Http::curl($url, $param, $this->header(), 'POST', true);
 
         if ( $res['status'] === 200 ) {
             $lastId = $res['data']['lastId'];
@@ -102,7 +102,7 @@ class Archives extends APIBase
     public function archivesModify( array $param ): array
     {
         $url = $this->getUrl('archivesModify');
-        $res = Http::curl($url, $param, 0, 'POST', true);
+        $res = Http::curl($url, $param, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
             Log::write(sprintf('编辑文章：%s(%s)', $param['title'], $param['id']));
 
@@ -123,7 +123,7 @@ class Archives extends APIBase
     {
         $url    = $this->getUrl('archivesDel');
         $option = ['ids' => $id];
-        $res    = Http::curl($url, $option, 0, 'POST', true);
+        $res    = Http::curl($url, $option, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
             Log::write(sprintf('删除文章：%s', $id));
 

@@ -24,11 +24,27 @@ class APIBase
         $this->siteModel = $siteModel;
     }
 
-    public function header()
+    /**
+     * 获取接口验证签名
+     *
+     * @return array
+     */
+    public function header(): array
     {
-        $this->path = 'api/register.php';
-        $url        = $this->getUrl('getSignature');
-        $res        = Http::curl($url, [], ['vision:1.0.0', 'token:XKyhVA3RsaWIRnAz'], 'HEAD');
+        return []; // 暂时关闭header
+
+        $url = $this->getUrl('getSignature');
+        $ch  = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['vision:1.0.0', 'token:XKyhVA3RsaWIRnAz']);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $result = json_decode($result, true);
+        if ( $result['status'] == 200 ) {
+            return ['vision:1.0.0', 'token:XKyhVA3RsaWIRnAz', 'sign:' . $result['data']['signature']];
+        };
+
+        return [];
     }
 
     /**

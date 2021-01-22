@@ -4,6 +4,7 @@ namespace app\api\site;
 
 use app\admin\model\Site as SiteModel;
 use app\admin\model\Theme;
+use app\api\facade\Cypher;
 use app\api\Http;
 
 class Site extends APIBase
@@ -44,7 +45,7 @@ class Site extends APIBase
     {
         $url  = $this->getUrl('domain/get_ip_v1');
         $user = session('admin_user_name');
-        $user = 'yangwei';
+        $user = 'wangxuan';
         $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
             return $res['data'];
@@ -54,16 +55,22 @@ class Site extends APIBase
     }
 
     /**
+     * 站点创建回调结果
      *
-     * @param string $id     IP地址
-     * @param int    $status 状态码
-     * @param array  $res    结果串
-     * @return bool
+     * @param int    $id     站点ID
+     * @param int    $status 创建状态 2 创建成功 3 创建失败
+     * @param string $res    json 结果
+     * @return array
      */
-    public function createRes( $siteId, $status, $res )
+    public function createRes( $id, $status, $res )
     {
+        $siteModelObj = SiteModel::where('site_id', $id)->find();
+        if ( empty($siteModelObj) ) return modelReMsg(-1, '', '站点ID不正确');
+        $siteModelObj->create_status = $status;
+        $siteModelObj->create_result = $res;
+        $siteModelObj->save();
 
-        return true;
+        return modelReMsg(0, '', '接收成功');
     }
 
     /**
@@ -78,20 +85,25 @@ class Site extends APIBase
         if ( empty($site) ) return modelReMsg(-1, [], '站点未找到');
         $theme = Theme::where('theme_id', $site->temp_id)->find();
         if ( empty($theme) ) return modelReMsg(-1, [], '模版未找到');
-
         $url                     = $this->getUrl('websiteManage/build_v1/creat/');
         $argument                = config('dictionary.site.create');
         $param                   = [];
         $param['user']           = session('admin_user_name');
-        $param['tocken']         = md5('uio234...');
-        $param['domain']         = $site->domain;
+        $param['tocken']         = Cypher::encrypt($site->web_domain . '|' . time());
+        $param['domain']         = $site->web_domain;
         $param['ip_detail']      = $site->ip;
         $param['w_template_url'] = $theme->temp_src;
+        $param['siteId']         = $site->site_id;
         if ( $theme->is_h5 == 0 ) {
             $param['adaptive_domain'] = $site->m_domain;
             $param['m_template_url']  = $theme->m_temp_src;
         }
         $param += $argument;
+//        测试用
+        $site->create_status = 1;
+        $site->save();
+
+        return modelReMsg(0, [], '创建中...');
 
         $res = Http::curl($url, $param);
         if ( $res['code'] == '200' ) {

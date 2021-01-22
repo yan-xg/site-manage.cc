@@ -23,6 +23,7 @@ return [
                         'php_switch'    => 1, // PHP是否开启，默认开启。
                         'php_type'      => 'php56',
                         'code_url'      => 'http://xxx.xxx.com/test.zip',
+//                        'domain_exist_check' => 1,// 如果有该参数，会将已经存在的网站给覆盖。
                 ]
         ],
         'web'         => [
