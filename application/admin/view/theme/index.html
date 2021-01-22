@@ -65,6 +65,13 @@
                     <div><img src="{{ d.thumb }}" width="20%" height="20%" onclick="show_img(this)"></a></div>
                 {{#  } }}
             </script>
+            <script type="text/html" id="is_h5">
+                {{#  if(d.is_h5 ==1 ){ }}
+                    是
+                {{#  } else { }}
+                    否
+                {{#  } }}
+            </script>
             <script type="text/html" id="theme-status">
                 {{#  if(d.status == 1){ }}
                     <button type="button" class="layui-btn layui-btn-xs">启用</button>
@@ -122,34 +129,20 @@
     renderTable();// 渲染表格
     function renderTable() {
 
-        layTool.table("#LAY-user-table", "/admin/theme/index", [
-            [{
-                field: "theme_id",
-                title: "主题ID"
-            }, {
-                field: "temp_name",
-                title: "主题名称",
-            }, {
-                field: "cat_id",
-                title: "主题属性",
-                templet: "#theme-cat",
-            }, {
-                field: "thumb",
-                title: "缩略图",
-                templet:'#thumb'
-            }, {
-                field: "num",
-                title: "使用情况",
-            }, {
-                field: "status",
-                title: "主题状态",
-                templet: "#theme-status",
-            }, {
-                title: "操作",
-                align: "center",
-                fixed: "right",
-                templet: "#theme-btn",
-            }]
+        layTool.table("#LAY-user-table", "/admin/theme/index", [[
+            {field: "theme_id",title: "主题ID",width:100},
+            {field: "temp_name",title: "主题名称"},
+            {field: "thumb",title: "缩略图",templet:'#thumb',width:150},
+            {field: "cat_id",title: "主题属性",templet: "#theme-cat",width:100},
+            {field: "color", title: "颜色", align:"left", width: 100 ,templet:function(d){
+                    return '<div style="text-align:left">'+d.color+'</div>'}},
+            {field: "is_h5",title: "响应式",templet:'#is_h5',width:100},
+            {field: "num",title: "使用情况",width:100},
+            {field: "add_time",title: "创建时间",width:200},
+            {field: "edit_time",title: "修改时间",width:200},
+            {field: "status",title: "主题状态",templet: "#theme-status",width:100},
+            {title: "操作",align: "center",fixed: "right",templet: "#theme-btn"}
+            ]
         ]);
 
         layui.use(['table', 'layer'], function () {
