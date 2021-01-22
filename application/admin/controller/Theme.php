@@ -34,8 +34,15 @@ class Theme extends Base{
             $list = $themeModel->getThemesList($limit,$where);
 
             if(0 == $list['code']) {
+                $data = $list['data']->all();
 
-                return json(['code' => 0, 'msg' => 'ok', 'count' => $list['data']->total(), 'data' => $list['data']->all()]);
+                $themeColor = config('dictionary.theme_color');
+                $themeColor = array_column($themeColor, 'value', 'id');
+                foreach ( $data as &$v ) {
+                    $v['color'] = changeString($v['color'], $themeColor);
+                }
+
+                return json(['code' => 0, 'msg' => 'ok', 'count' => $list['data']->total(), 'data' => $data]);
             }
 
             return json(['code' => 0, 'msg' => 'ok', 'count' => 0, 'data' => []]);
