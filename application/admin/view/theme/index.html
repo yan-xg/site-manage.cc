@@ -72,6 +72,13 @@
                     否
                 {{#  } }}
             </script>
+            <script type="text/html" id="is_h5">
+                {{#  if(d.is_h5 ==1 ){ }}
+                    是
+                {{#  } else { }}
+                    否
+                {{#  } }}
+            </script>
             <script type="text/html" id="theme-status">
                 {{#  if(d.status == 1){ }}
                     <button type="button" class="layui-btn layui-btn-xs">启用</button>

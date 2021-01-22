@@ -34,4 +34,21 @@ class Common extends APIBase
 
         return modelReMsg(-1, '', '提交失败');
     }
+
+    /**
+     * 公共js获取
+     *
+     * @return array
+     * @throws \app\api\HttpError
+     */
+    public function getCommonJs()
+    {
+        $url = $this->getUrl('getCommonJs');
+        $res = Http::curl($url, '', $this->header(), 'GET');
+        if ( $res['status'] == 200 ) {
+            return $res['data'];
+        }
+
+        return ['cfg_bdtjjs' => '', 'cfg_bottomjs' => '', 'cfg_topjs' => ''];
+    }
 }
