@@ -27,7 +27,7 @@ class SiteValidate extends Validate
                             'unique' => [Site::class,]
                     ],
                     'temp_id'      => 'require',
-                    'is_rewrite'   => 'number|require',
+                    'is_rewrite'   => 'number',
                     'hj_site_id'   => 'number',
                     'hj_m_site_id' => 'number',
                     'ip'           => 'require'
@@ -47,7 +47,6 @@ class SiteValidate extends Validate
                     'web_domain.unique'   => '站点域名已存在',
                     'temp_id.require'     => '域名地址不能为空',
                     'is_rewrite.number'   => '是否伪静态字段为数字',
-                    'is_rewrite.require'  => '是否伪静态不能为空',
                     'hj_site_id.number'   => '汇聚通PC端站点ID必须是数字',
                     'hj_m_site_id.number' => '汇聚通移动端端站点ID必须是数字',
                     'ip.require'          => 'IP地址不能为空',

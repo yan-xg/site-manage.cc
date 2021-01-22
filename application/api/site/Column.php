@@ -28,12 +28,13 @@ class Column extends APIBase
      * @return array
      * @throws \app\api\HttpError
      */
-    public function getColumnList( array $where, int $offset, int $limit, array $order = [] ): array
+    public function getColumnList( array $where, int $offset, int $limit = 0, array $order = [] ): array
     {
-        $url           = $this->getUrl('getColumnList');
-        $data          = [];
-        $data['page']  = $offset;
-        $data['count'] = $limit;
+        $url          = $this->getUrl('getColumnList');
+        $data         = [];
+        $data['page'] = $offset;
+        if ( !empty($limit) )
+            $data['count'] = $limit;
         if ( !empty($order) ) {
             $data['isSort'] = true;
             $data['field']  = key($order);

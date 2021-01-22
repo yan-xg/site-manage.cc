@@ -31,8 +31,9 @@ class APIBase
      */
     public function header(): array
     {
-        return []; // 暂时关闭header
-
+        if ( config('dictionary.web.header', false) === false ) {
+            return [];
+        }
         $url = $this->getUrl('getSignature');
         $ch  = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出

@@ -54,6 +54,34 @@ class Site extends Model
     }
 
     /**
+     * 创建结果
+     *
+     * @param $id
+     * @return array
+     */
+    public function createRes( $id )
+    {
+        try {
+            $res = $this->where('site_id', $id)->find();
+            switch ( $res->create_status ) {
+                case 0:
+                    return modelReMsg(0, '', '未创建');
+                case 1:
+                    return modelReMsg(0, '', '创建中...');
+                case 2:
+                    return modelReMsg(0, '', '创建成功!');
+                case 3:
+                    return modelReMsg(0, '', '创建失败!');
+            }
+        } catch ( \Exception $e ) {
+
+            return modelReMsg(-1, '', $e->getMessage());
+        }
+
+        return modelReMsg(0, '', '添加站点成功');
+    }
+
+    /**
      * 修改数据
      *
      * @param array $data

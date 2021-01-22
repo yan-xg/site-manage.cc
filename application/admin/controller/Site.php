@@ -137,6 +137,20 @@ class Site extends Base
     }
 
     /**
+     * 查询创建结果
+     */
+    public function createRes()
+    {
+        if ( request()->isAjax() ) {
+
+            $id  = input('post.id');
+            $res = $this->siteModel->createRes($id);
+
+            return json($res);
+        }
+    }
+
+    /**
      * 显示指定的资源
      *
      * @return \think\Response
@@ -175,7 +189,7 @@ class Site extends Base
                             'unique' => [SiteModel::class, 'web_domain', $param['site_id']]
                     ],
                     'temp_id'      => 'require',
-                    'is_rewrite'   => 'number|require',
+                    'is_rewrite'   => 'number',
                     'hj_site_id'   => 'number',
                     'hj_m_site_id' => 'number'
             ];

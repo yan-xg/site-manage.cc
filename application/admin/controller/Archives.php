@@ -216,7 +216,7 @@ class Archives extends Base
         $siteId = input('site_id');
         $i      = input('get.id');
         ( $i == '#' ) && $i = 0;
-        $res  = \app\api\facade\Column::site($siteId)->getColumnList(['typeId' => $i], 1, 1000);
+        $res  = \app\api\facade\Column::site($siteId)->getColumnList(['typeId' => $i], 1);
         $rows = $res['rows'];
         $data = [];
         foreach ( $rows as $v ) {
