@@ -27,6 +27,37 @@
                     <form class="layui-form" action="" lay-filter="component-form-element">
                         <input type="hidden" name="site_id" value="{$siteId}" />
                         <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言用的项目名：</label>
+                                <div class="layui-input-block">
+
+                                    <input type="text" name="xiangmu" placeholder="" value="{$data['xiangmu'] ?? ''}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言来源：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="laiyuan" placeholder="" value="{$data['laiyuan'] ?? ''}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">留言电话：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="dianhua" placeholder="" value="{$data['dianhua'] ?? ''}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">汇聚通PC端站点ID：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="hj_site_id" placeholder="" autocomplete="off" value="{$data['hj_site_id'] ?? ''}" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">汇聚通移动端站点ID：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="hj_m_site_id" placeholder="" value="{$data['hj_m_site_id'] ?? ''}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
                             <div class="layui-col-lg12">
                                 <label class="layui-form-label">百度统计代码：</label>
                                 <div class="layui-input-block">
@@ -70,7 +101,7 @@
     }).use(['form'], function (){
         let $ = layui.$, form = layui.form;
         form.on('submit(component-form-element)', function (data){
-            $.post("{:url('commonjs/index')}", data.field, function (res){
+            $.post("{:url('common/index')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);
                     setTimeout(function (){

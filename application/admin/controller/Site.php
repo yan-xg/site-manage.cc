@@ -9,6 +9,7 @@ use app\admin\model\Theme as ThemeModel;
 use app\api\facade\Site as SiteAPI;
 use app\api\site\Common;
 use think\Db;
+use think\Request;
 
 class Site extends Base
 {
@@ -284,28 +285,150 @@ class Site extends Base
     /**
      * 更新页面
      **/
-    public function updateWeb(){
-        if ( request()->isAjax() ) {
+    public function updateWeb()
+    {
+        if (request()->isAjax()) {
             $type = input('param.type');
             $data = input('param.data');
-            if(empty($data))
+            if (empty($data))
                 return json(['code' => -1, 'msg' => '站点为空，请选择站点！']);
 
-            switch ($type){
+            switch ($type) {
                 case 'updateIndex':
-                    $up = $this->common->updateIndex( $data );
+                    $up = $this->common->updateIndex($data);
                     break;
                 case 'updateColumn':
-                    $up = $this->common->updateColumn( $data );
+                    $up = $this->common->updateColumn($data);
                     break;
                 case 'updateArticle':
-                    $up = $this->common->updateArticle( $data );
+                    $up = $this->common->updateArticle($data);
                     break;
                 default:
-                    $up = json_encode(['code' => -1, 'msg' => '没有该操作'],true);
+                    $up = json_encode(['code' => -1, 'msg' => '没有该操作'], true);
                     break;
             }
-            return json_decode($up,true);
+            return json_decode($up, true);
         }
+    }
+    /**
+     * 批量上传
+     *
+     * @return \think\response\Json|\think\response\View
+     */
+    public function batchCreate()
+    {
+        if ( !empty($_FILES) ) {
+            $file = request()->file('file');
+            $path = config('dictionary.site.batch_upload_path');
+            $info = $file->move($path);
+            if ( $info ) {
+
+                $res = $this->batchValidate($path . '/' . $info->getSaveName());
+
+                return json(['code' => $res['code'], 'message' => $res['message'], 'data' => ['data' => $res['data'], 'filename' => $info->getSaveName()]]);
+            } else {
+                // 上传失败获取错误信息
+                return json(['code' => -1, 'message' => $file->getError()]);
+            }
+        }
+
+        return view('batchCreate');
+    }
+
+    /**
+     * 执行批量新增动作
+     */
+    public function batchexec()
+    {
+        $filename = input('post.filename');
+        $path     = config('dictionary.site.batch_upload_path');
+        $res      = $this->batchValidate($path . '/' . $filename);
+        if ( $res['code'] != 0 ) {
+            return json(['code' => $res['code'], 'message' => $res['message'], 'data' => ['data' => $res['data'], 'filename' => $filename]]);
+        }
+        $data = $res['data'];
+
+        $error = [];
+        foreach ( $data as $v ) {
+            $res = $this->siteModel->add(['name' => $v[0], 'temp_id' => $v[1], 'web_domain' => $v[2], 'm_domain' => $v[3], 'ip' => $v[4]]);
+            if ( $res['code'] != 0 ) {
+                $error[] = ['name' => $v[0], 'error' => $res['msg']];
+            }
+        }
+
+        if ( empty($error) ) {
+            return json(['code' => 0, 'data' => '', 'message' => '执行成功']);
+        }
+
+        return json(['code' => -1, 'data' => $error, 'message' => '执行失败']);
+    }
+
+
+    /**
+     * 下载批量生成模版文件
+     *
+     * @return \think\response\Download
+     */
+    public function download()
+    {
+        $path     = config('dictionary.site.batch_upload_path');
+        $download = new \think\response\Download($path . '/site.csv');
+
+        return $download->name('site.csv');
+    }
+
+    /**
+     * @param $filePath
+     */
+    private function batchValidate( $filePath )
+    {
+        $handle = fopen($filePath, "rb");
+        $data   = [];
+        $row    = fgetcsv($handle); // 去除标题
+        while ( $row = fgetcsv($handle) ) {
+            $data[] = $row;
+        }
+        fclose($handle);
+        // 验证数据本身是否有重复
+        // 验证域名是否重复
+
+        // 站点名称验证
+        $webName = $this->siteModel->where('name', 'in', array_column($data, 0))->field(['name'])->select()->toArray();
+        if ( !empty($webName) ) {
+
+            $webNameArr = array_column($webName, 'name');
+
+            return ['code' => -1, 'message' => '名称在数据库中有存在', 'data' => $webNameArr];
+        }
+
+        // 验证域名是否重复
+        $webDomain = $this->siteModel->where('web_domain', 'in', array_column($data, 2))->field(['web_domain'])->select()->toArray();
+        if ( !empty($webDomain) ) {
+
+            $webDomainArr = array_column($webDomain, 'web_domain');
+
+            return ['code' => -2, 'message' => '站点域名在数据中存在', 'data' => $webDomainArr];
+        }
+
+        // 站点模版ID存在。
+        $themeId  = array_column($data, 1);
+        $webTheme = $this->themeModel->where('theme_id', 'in', $themeId)->field(['theme_id'])->select()->toArray();
+        $themeId2 = array_column($webTheme, 'theme_id');
+        $result   = array_diff($themeId, $themeId2);
+        if ( !empty($result) ) {
+            return ['code' => -3, 'message' => '模版ID在数据库中不存在', 'data' => $result];
+        }
+
+        // 站点移动端重复
+        $mDomain = $this->siteModel->where('m_domain', 'in', array_column($data, 3))->field(['m_domain'])->select()->toArray();
+        if ( !empty($mDomain) ) {
+
+            $mDomainArr = array_column($mDomain, 'm_domain');
+
+            return ['code' => -4, 'message' => '移动站点域名在数据中存在', 'data' => $mDomainArr];
+        }
+
+
+        return ['code' => 0, 'message' => '验证成功', 'data' => $data];
     }
 }
