@@ -331,6 +331,20 @@ class Site extends Base
         return json(['code' => -1, 'data' => $error, 'message' => '执行失败']);
     }
 
+
+    /**
+     * 下载批量生成模版文件
+     *
+     * @return \think\response\Download
+     */
+    public function download()
+    {
+        $path     = config('dictionary.site.batch_upload_path');
+        $download = new \think\response\Download($path . '/site.csv');
+
+        return $download->name('site.csv');
+    }
+
     /**
      * @param $filePath
      */
@@ -343,13 +357,8 @@ class Site extends Base
             $data[] = $row;
         }
         fclose($handle);
-//        $nameArray = array_count_values(array_column($data, 0));
-//        $name      = '';
-//        foreach ( $nameArray as $k => $v ) {
-//            if ( $v > 1 ) $name = 123123;
-//        }
         // 验证数据本身是否有重复
-
+        // 验证域名是否重复
 
         // 站点名称验证
         $webName = $this->siteModel->where('name', 'in', array_column($data, 0))->field(['name'])->select()->toArray();
@@ -370,13 +379,13 @@ class Site extends Base
         }
 
         // 站点模版ID存在。
-//        $webTheme = $this->themeModel->where('theme_id', 'in', array_column($data, 1))->field(['theme_id'])->select()->toArray();
-//        if ( empty($webTheme) ) {
-//
-//            $webThemeArr = array_column($webTheme, 'theme_id');
-//
-//            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $webThemeArr];
-//        }
+        $themeId  = array_column($data, 1);
+        $webTheme = $this->themeModel->where('theme_id', 'in', $themeId)->field(['theme_id'])->select()->toArray();
+        $themeId2 = array_column($webTheme, 'theme_id');
+        $result   = array_diff($themeId, $themeId2);
+        if ( !empty($result) ) {
+            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $result];
+        }
 
         // 站点移动端重复
         $mDomain = $this->siteModel->where('m_domain', 'in', array_column($data, 3))->field(['m_domain'])->select()->toArray();
@@ -388,6 +397,6 @@ class Site extends Base
         }
 
 
-        return ['code' => 0, 'message' => '验证成功', 'data' => []];
+        return ['code' => 0, 'message' => '验证成功', 'data' => $data];
     }
 }
