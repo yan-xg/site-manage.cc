@@ -41,20 +41,19 @@
 <script src="/static/common/js/jquery.min.js"></script>
 <script>
     layui.config({
-        base: '/static/admin/' //静态资源所在路径
+        base: '/static/admin/'
     }).use(['upload'], function (){
         let upload = layui.upload;
         //执行实例
         let uploadInst = upload.render({
             elem: '#upload', //绑定元素
-            url: '/admin/site/batchcreate/', //上传接口
+            url: '/admin/site/batchcreate/',
             accept: 'file',
             done: function (m){
-                //上传完毕回调
                 switch ( m.code ) {
                     case 0:
                         layer.confirm('验证成功,', {
-                            btn: ['确定执行', '取消'], //可以无限个按钮
+                            btn: ['确定执行', '取消'],
                         }, function (index, layero){
                             $.ajax({
                                 url: '/admin/site/batchexec',

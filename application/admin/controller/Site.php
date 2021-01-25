@@ -344,15 +344,11 @@ class Site extends Base
             $data[] = $row;
         }
         fclose($handle);
-        var_dump($data);
-        exit;
-
-        return ['code' => 0, 'message' => '验证成功', 'data' => $data];
-        $nameArray = array_count_values(array_column($data, 0));
-        $name      = '';
-        foreach ( $nameArray as $k => $v ) {
-            if ( $v > 1 ) $name = 123123;
-        }
+//        $nameArray = array_count_values(array_column($data, 0));
+//        $name      = '';
+//        foreach ( $nameArray as $k => $v ) {
+//            if ( $v > 1 ) $name = 123123;
+//        }
         // 验证数据本身是否有重复
 
 
@@ -375,14 +371,21 @@ class Site extends Base
         }
 
         // 站点模版ID存在。
+        $webTheme = $this->themeModel->where('theme_id', 'in', array_column($data, 1))->field(['theme_id'])->select()->toArray();
+        if ( !empty($webTheme) ) {
+
+            $webThemeArr = array_column($webTheme, 'theme_id');
+
+            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $webThemeArr];
+        }
 
         // 站点移动端重复
-        $webDomain = $this->siteModel->where('web_domain', 'in', array_column($data, 2))->field(['web_domain'])->select()->toArray();
-        if ( !empty($webDomain) ) {
+        $mDomain = $this->siteModel->where('m_domain', 'in', array_column($data, 3))->field(['m_domain'])->select()->toArray();
+        if ( !empty($mDomain) ) {
 
-            $webDomainArr = array_column($webDomain, 'web_domain');
+            $mDomainArr = array_column($webDomain, 'm_domain');
 
-            return ['code' => -2, 'message' => '站点域名在数据中存在', 'data' => $webDomainArr];
+            return ['code' => -2, 'message' => '移动站点域名在数据中存在', 'data' => $mDomainArr];
         }
 
 

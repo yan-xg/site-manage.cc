@@ -13,6 +13,7 @@ class Site extends APIBase
     {
         parent::__construct($siteModel);
         $this->host = config('dictionary.site.host');
+        $this->port = config('dictionary.site.port');
     }
 
     /**
@@ -81,11 +82,11 @@ class Site extends APIBase
     public function create()
     {
         $site = $this->siteModelObj;
-
         if ( empty($site) ) return modelReMsg(-1, [], '站点未找到');
         $theme = Theme::where('theme_id', $site->temp_id)->find();
         if ( empty($theme) ) return modelReMsg(-1, [], '模版未找到');
         $this->host              = config('dictionary.site.host');
+        $this->port              = config('dictionary.site.port');
         $url                     = $this->getUrl('websiteManage/build_v1/creat/');
         $argument                = config('dictionary.site.create');
         $param                   = [];
