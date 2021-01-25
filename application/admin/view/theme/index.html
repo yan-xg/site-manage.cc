@@ -62,7 +62,14 @@
             </script>
             <script type="text/html" id="thumb">
                 {{#  if(d.thumb != ''){ }}
-                    <div><img src="{{ d.thumb }}" width="20%" height="20%" onclick="show_img(this)"></a></div>
+                    <div><img src="{{ d.thumb }}" width="40%" height="40%" onclick="show_img(this)"></a></div>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="is_h5">
+                {{#  if(d.is_h5 ==1 ){ }}
+                    是
+                {{#  } else { }}
+                    否
                 {{#  } }}
             </script>
             <script type="text/html" id="is_h5">
