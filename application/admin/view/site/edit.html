@@ -103,6 +103,16 @@
                                     <input type="text" name="m_domain" lay-verify="required" placeholder="m.33cy.cn" autocomplete="off" class="layui-input" value="{$data['m_domain'] ?? '' }">
                                 </div>
                             </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">站点IP：</label>
+                                <div class="layui-input-block">
+                                    <select name="ip" lay-verify="required" autocomplete="off" class="layui-input">
+                                        <?php if(!empty($data['ip'])): ?>
+                                        <option value="{$data['ip']}" selected>{$data['ip']}</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
                             <!--
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">是否伪静态：</label>
@@ -247,7 +257,7 @@
         });
         $('select[name=web_domain]').select2({
             placeholder: '请选择',//默认文字提示
-            minimumInputLength: 3,//最少输入多少个字符后开始查询
+            minimumInputLength: 0,//最少输入多少个字符后开始查询
             language: 'zh-CN',
             ajax: {
                 dataType: 'json',
@@ -286,6 +296,40 @@
                 domain.unshift('m');
             }
             $('input[name=m_domain]').val(domain.join('.'));
+        });
+        $('select[name=ip]').select2({
+            placeholder: '请输入',//默认文字提示
+            minimumInputLength: 0,//最少输入多少个字符后开始查询
+            language: 'zh-CN',
+            ajax: {
+                dataType: 'json',
+                delay: 250,
+                url: '/admin/site/ip',
+                data: function (params){
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function (data){
+                    let tmp = [];
+                    data = data.data;
+                    for ( let i in data ) {
+                        let tmp2 = [];
+                        tmp2['id'] = i
+                        tmp2['text'] = data[i];
+                        tmp.push(tmp2);
+                    }
+                    return {
+                        results: tmp,
+                    };
+                },
+                transport: function (params, success, failure){
+                    let $request = $.ajax(params);
+                    $request.then(success);
+                    $request.fail(failure);
+                    return $request;
+                }
+            }
         });
         form.on('radio(is_rewrite)', function (data){
             let rewrite_rule_elem = $('input[name=rewrite_rule]').parent().parent();

@@ -25,12 +25,16 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <form class="layui-form" action="" lay-filter="component-form-element">
+                        {if (buttonAuth('site/batchexec'))}
                         <button type="button" class="layui-btn" id="upload">
                             <i class="layui-icon">&#xe67c;</i> 上传文件
                         </button>
+                        {/if}
+                        {if (buttonAuth('site/download'))}
                         <button type="button" class="layui-btn" id="download">
                             <i class="layui-icon">&#xe67c;</i> 下载文件
                         </button>
+                        {/if}
                     </form>
                 </div>
             </div>
