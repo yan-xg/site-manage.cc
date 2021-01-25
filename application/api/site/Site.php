@@ -76,9 +76,11 @@ class Site extends APIBase
     /**
      * 创建站点
      *
+     * @param int $domain_exist_check
      * @return array
+     * @throws \app\api\HttpError
      */
-    public function create()
+    public function create( $domain_exist_check = 0 )
     {
         $site = $this->siteModelObj;
         if ( empty($site) ) return modelReMsg(-1, [], '站点未找到');
@@ -101,6 +103,9 @@ class Site extends APIBase
             $param['adaptive_domain'] = $site->m_domain;
             $param['m_template_url']  = $host . '/' . $theme->m_temp_src;
         }
+        if ( $domain_exist_check ) {
+            $param['domain_exist_check'] = 1;
+        }
         $param += $argument;
 
         $res = Http::curl($url, $param);
@@ -113,7 +118,7 @@ class Site extends APIBase
         $site->create_status = 3;
         $site->save();
 
-        return modelReMsg(-1, [], '创建失败');
+        return modelReMsg(-1, [], $res['msg']);
     }
 
     /**

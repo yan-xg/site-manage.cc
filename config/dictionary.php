@@ -27,6 +27,7 @@ return [
                         'domain_exist_check' => 1,// 如果有该参数，会将已经存在的网站给覆盖。
                 ],
                 'batch_upload_path' => '../uploads/site/',
+                'create_status'     => ['未创建', '创建中', '创建成功', '创建失败'],
         ],
         'web'         => [
                 'archives' => [
