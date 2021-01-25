@@ -51,6 +51,7 @@ class Admin extends Model
             if(!empty($has)) {
                 return modelReMsg(-2, '', '管理员名已经存在');
             }
+            $admin['add_time'] = date('Y-m-d H:i:s');
 
             $this->insert($admin);
         }catch (\Exception $e) {
