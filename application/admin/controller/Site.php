@@ -310,8 +310,7 @@ class Site extends Base
     {
         $filename = input('post.filename');
         $path     = config('dictionary.site.batch_upload_path');
-        var_dump($path . '/' . $filename);
-        $res = $this->batchValidate($path . '/' . $filename);
+        $res      = $this->batchValidate($path . '/' . $filename);
         if ( $res['code'] != 0 ) {
             return json(['code' => $res['code'], 'message' => $res['message'], 'data' => ['data' => $res['data'], 'filename' => $filename]]);
         }
@@ -371,13 +370,13 @@ class Site extends Base
         }
 
         // 站点模版ID存在。
-        $webTheme = $this->themeModel->where('theme_id', 'in', array_column($data, 1))->field(['theme_id'])->select()->toArray();
-        if ( !empty($webTheme) ) {
-
-            $webThemeArr = array_column($webTheme, 'theme_id');
-
-            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $webThemeArr];
-        }
+//        $webTheme = $this->themeModel->where('theme_id', 'in', array_column($data, 1))->field(['theme_id'])->select()->toArray();
+//        if ( empty($webTheme) ) {
+//
+//            $webThemeArr = array_column($webTheme, 'theme_id');
+//
+//            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $webThemeArr];
+//        }
 
         // 站点移动端重复
         $mDomain = $this->siteModel->where('m_domain', 'in', array_column($data, 3))->field(['m_domain'])->select()->toArray();

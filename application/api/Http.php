@@ -33,7 +33,7 @@ class Http
                     $url .= '?' . http_build_query($option);
                     break;
                 case 'POST':
-                    $options = ( $is_serialize ) ? ['data' => serialize($option)] : json_encode($option);
+                    $options = ( $is_serialize ) ? ['data' => serialize($option)] : ( $option );
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $options); // Post提交的数据包
                     break;
             }

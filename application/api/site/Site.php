@@ -24,11 +24,15 @@ class Site extends APIBase
      */
     public function domain( string $search = '' ): array
     {
-        $url  = $this->getUrl('domain/get_domain_v1');
-        $user = session('admin_user_name');
-        $user = 'yangwei';
-        $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
+        $this->host = '192.168.8.211';
+        $this->port = '80';
+        $url        = $this->getUrl('domain/get_domain_v1');
+        $user       = session('admin_user_name');
+        $user       = 'zhengyaoyu';
+        $res        = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
+            $res['data'][] = 'h7c.cn';
+
             return $res['data'];
         }
 
@@ -44,11 +48,15 @@ class Site extends APIBase
      */
     public function ip( string $search )
     {
-        $url  = $this->getUrl('domain/get_ip_v1');
-        $user = session('admin_user_name');
-        $user = 'wangxuan';
-        $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
+        $this->host = '192.168.8.211';
+        $this->port = '80';
+        $url        = $this->getUrl('domain/get_ip_v1');
+        $user       = session('admin_user_name');
+        $user       = 'zhangyaoyu';
+        $res        = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
+            $res['data'][] = '39.104.104.172';
+
             return $res['data'];
         }
 
@@ -87,10 +95,12 @@ class Site extends APIBase
         if ( empty($theme) ) return modelReMsg(-1, [], '模版未找到');
         $this->host              = config('dictionary.site.host');
         $this->port              = config('dictionary.site.port');
-        $url                     = $this->getUrl('websiteManage/build_v1/creat/');
+        $this->path              = 'websiteManage';
+        $url                     = $this->getUrl('build_v1/creat/');
         $argument                = config('dictionary.site.create');
         $param                   = [];
         $param['user']           = session('admin_user_name');
+        $param['user']           = 'zhengyaoyu';
         $param['tocken']         = Cypher::encrypt($site->web_domain . '|' . time());
         $param['domain']         = $site->web_domain;
         $param['ip_detail']      = $site->ip;
