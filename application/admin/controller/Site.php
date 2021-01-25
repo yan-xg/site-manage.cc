@@ -384,16 +384,16 @@ class Site extends Base
         $themeId2 = array_column($webTheme, 'theme_id');
         $result   = array_diff($themeId, $themeId2);
         if ( !empty($result) ) {
-            return ['code' => -2, 'message' => '模版ID在数据库中不存在', 'data' => $result];
+            return ['code' => -3, 'message' => '模版ID在数据库中不存在', 'data' => $result];
         }
 
         // 站点移动端重复
         $mDomain = $this->siteModel->where('m_domain', 'in', array_column($data, 3))->field(['m_domain'])->select()->toArray();
         if ( !empty($mDomain) ) {
 
-            $mDomainArr = array_column($webDomain, 'm_domain');
+            $mDomainArr = array_column($mDomain, 'm_domain');
 
-            return ['code' => -2, 'message' => '移动站点域名在数据中存在', 'data' => $mDomainArr];
+            return ['code' => -4, 'message' => '移动站点域名在数据中存在', 'data' => $mDomainArr];
         }
 
 

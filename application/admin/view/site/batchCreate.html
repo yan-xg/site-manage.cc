@@ -47,7 +47,7 @@
     layui.config({
         base: '/static/admin/'
     }).use(['upload'], function (){
-        let upload = layui.upload;
+        let upload = layui.upload, layer = layui.layer;
         //执行实例
         let uploadInst = upload.render({
             elem: '#upload', //绑定元素
@@ -80,8 +80,31 @@
                             }, 200);
                         });
                         break;
+                    case -1: // 名称在数据库中有存在
+                        layer.open({
+                            title: '错误',
+                            content: '上传文件中有站点名称在数据库中存在，<br>分别是' + m.data.data.join(','),
+                        });
+                        break;
+                    case -2: // 站点域名在数据中存在
+                        layer.open({
+                            title: '错误',
+                            content: '上传文件中有站点域名在数据中存在，<br>分别是' + m.data.data.join(','),
+                        });
+                        break;
+                    case -3: // 模版ID在数据库中不存在
+                        layer.open({
+                            title: '错误',
+                            content: '上传文件中有数据库中不存在的模版ID，<br>分别是' + m.data.data.join(','),
+                        });
+                        break;
+                    case -4: // 移动站点域名在数据中存在
+                        layer.open({
+                            title: '错误',
+                            content: '上传文件中有移动站点域名在数据中存在，<br>分别是' + m.data.data.join(','),
+                        });
+                        break;
                     default:
-                        layer.alert(m.message);
                 }
             },
             error: function (){
