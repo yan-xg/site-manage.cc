@@ -12,10 +12,6 @@ use tool\Log;
  */
 class Column extends APIBase
 {
-    protected $host = '192.168.9.10';
-
-    protected $port = '9102';
-
     protected $path = 'api/register.php';
 
     /**
