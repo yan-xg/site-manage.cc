@@ -62,7 +62,14 @@
             </script>
             <script type="text/html" id="thumb">
                 {{#  if(d.thumb != ''){ }}
-                    <div><img src="{{ d.thumb }}" width="20%" height="20%" onclick="show_img(this)"></a></div>
+                    <div><img src="{{ d.thumb }}" width="40%" height="40%" onclick="show_img(this)"></a></div>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="is_h5">
+                {{#  if(d.is_h5 ==1 ){ }}
+                    是
+                {{#  } else { }}
+                    否
                 {{#  } }}
             </script>
             <script type="text/html" id="is_h5">
@@ -141,7 +148,7 @@
             {field: "add_time",title: "创建时间",width:200},
             {field: "edit_time",title: "修改时间",width:200},
             {field: "status",title: "主题状态",templet: "#theme-status",width:100},
-            {title: "操作",align: "center",fixed: "right",templet: "#theme-btn"}
+            {title: "操作",align: "center",fixed: "right",width:210,templet: "#theme-btn"}
             ]
         ]);
 
