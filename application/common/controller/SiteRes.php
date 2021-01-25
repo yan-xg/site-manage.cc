@@ -18,13 +18,18 @@ class SiteRes extends Controller
     public function index()
     {
         $id     = input('post.siteId');
-        $status = input('post.status');
         $res    = input('post.result');
         $token  = input('post.tocken');
+        $result = json_decode($res, true);
+        $status = 3;
+        if ( $result['data']['online_build_code'] = 1 && $result['data']['local_build_code'] = 1 ) {
+            $status = 2;
+        }
+
         $result = Site::createRes($id, $status, $res);
         if ( !Cypher::validate('6830b3f8b3f7f02e64d4239003bb18fe', $token) )
             return json(['code' => -1, 'msg' => '验证失败']);
-        
+
         if ( $result['code'] == 0 )
             return json(['code' => 200, 'msg' => '接收成功']);
 

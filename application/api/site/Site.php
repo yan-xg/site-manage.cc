@@ -108,7 +108,7 @@ class Site extends APIBase
 
             return modelReMsg(0, [], '创建中...');
         }
-        $site->create_status = 2;
+        $site->create_status = 3;
         $site->save();
 
         return modelReMsg(-1, [], '创建失败');
