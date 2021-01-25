@@ -133,9 +133,8 @@
         table.on('toolbar(LAY-user-table)', function (obj){
             var checkStatus = table.checkStatus(obj.config.id);
             var data = checkStatus.data;
-            if ( data.length > 0 && data[0].create_status === 1 ) {
-                if ( obj.event == 'editcommon' || obj.event == 'updateIndex' || obj.event == 'updateColumn' || obj.event == 'updateArticle' )
-                    layer.msg('创建中...');
+            if ( data.length > 0 && data[0].create_status === 1 && -1 != $.inArray(obj.event, ['editcommon', 'updateIndex', 'updateColumn', 'updateArticle']) ) {
+                layer.msg('创建中...');
             } else {
                 switch ( obj.event ) {
                     case 'editcommon':
