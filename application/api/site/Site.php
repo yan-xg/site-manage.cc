@@ -85,6 +85,7 @@ class Site extends APIBase
         if ( empty($site) ) return modelReMsg(-1, [], '站点未找到');
         $theme = Theme::where('theme_id', $site->temp_id)->find();
         if ( empty($theme) ) return modelReMsg(-1, [], '模版未找到');
+        $this->host              = config('dictionary.site.host');
         $url                     = $this->getUrl('websiteManage/build_v1/creat/');
         $argument                = config('dictionary.site.create');
         $param                   = [];
@@ -99,11 +100,6 @@ class Site extends APIBase
             $param['m_template_url']  = $theme->m_temp_src;
         }
         $param += $argument;
-//        测试用
-        $site->create_status = 1;
-        $site->save();
-
-        return modelReMsg(0, [], '创建中...');
 
         $res = Http::curl($url, $param);
         if ( $res['code'] == '200' ) {

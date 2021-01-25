@@ -8,6 +8,7 @@ use app\admin\model\Site as SiteModel;
 use app\admin\model\Theme as ThemeModel;
 use app\api\facade\Site as SiteAPI;
 use think\Db;
+use think\Request;
 
 class Site extends Base
 {
@@ -275,5 +276,116 @@ class Site extends Base
         }
 
         return $this->fetch();
+    }
+
+    /**
+     * 批量上传
+     *
+     * @return \think\response\Json|\think\response\View
+     */
+    public function batchCreate()
+    {
+        if ( !empty($_FILES) ) {
+            $file = request()->file('file');
+            $path = config('dictionary.site.batch_upload_path');
+            $info = $file->move($path);
+            if ( $info ) {
+
+                $res = $this->batchValidate($path . '/' . $info->getSaveName());
+
+                return json(['code' => $res['code'], 'message' => $res['message'], 'data' => ['data' => $res['data'], 'filename' => $info->getSaveName()]]);
+            } else {
+                // 上传失败获取错误信息
+                return json(['code' => -1, 'message' => $file->getError()]);
+            }
+        }
+
+        return view('batchCreate');
+    }
+
+    /**
+     * 执行批量新增动作
+     */
+    public function batchexec()
+    {
+        $filename = input('post.filename');
+        $path     = config('dictionary.site.batch_upload_path');
+        var_dump($path . '/' . $filename);
+        $res = $this->batchValidate($path . '/' . $filename);
+        if ( $res['code'] != 0 ) {
+            return json(['code' => $res['code'], 'message' => $res['message'], 'data' => ['data' => $res['data'], 'filename' => $filename]]);
+        }
+        $data = $res['data'];
+
+        $error = [];
+        foreach ( $data as $v ) {
+            $res = $this->siteModel->add(['name' => $v[0], 'temp_id' => $v[1], 'web_domain' => $v[2], 'm_domain' => $v[3], 'ip' => $v[4]]);
+            if ( $res['code'] != 0 ) {
+                $error[] = ['name' => $v[0], 'error' => $res['msg']];
+            }
+        }
+
+        if ( empty($error) ) {
+            return json(['code' => 0, 'data' => '', 'message' => '执行成功']);
+        }
+
+        return json(['code' => -1, 'data' => $error, 'message' => '执行失败']);
+    }
+
+    /**
+     * @param $filePath
+     */
+    private function batchValidate( $filePath )
+    {
+        $handle = fopen($filePath, "rb");
+        $data   = [];
+        $row    = fgetcsv($handle); // 去除标题
+        while ( $row = fgetcsv($handle) ) {
+            $data[] = $row;
+        }
+        fclose($handle);
+        var_dump($data);
+        exit;
+
+        return ['code' => 0, 'message' => '验证成功', 'data' => $data];
+        $nameArray = array_count_values(array_column($data, 0));
+        $name      = '';
+        foreach ( $nameArray as $k => $v ) {
+            if ( $v > 1 ) $name = 123123;
+        }
+        // 验证数据本身是否有重复
+
+
+        // 站点名称验证
+        $webName = $this->siteModel->where('name', 'in', array_column($data, 0))->field(['name'])->select()->toArray();
+        if ( !empty($webName) ) {
+
+            $webNameArr = array_column($webName, 'name');
+
+            return ['code' => -1, 'message' => '名称在数据库中有存在', 'data' => $webNameArr];
+        }
+
+        // 验证域名是否重复
+        $webDomain = $this->siteModel->where('web_domain', 'in', array_column($data, 2))->field(['web_domain'])->select()->toArray();
+        if ( !empty($webDomain) ) {
+
+            $webDomainArr = array_column($webDomain, 'web_domain');
+
+            return ['code' => -2, 'message' => '站点域名在数据中存在', 'data' => $webDomainArr];
+        }
+
+        // 站点模版ID存在。
+
+        // 站点移动端重复
+        $webDomain = $this->siteModel->where('web_domain', 'in', array_column($data, 2))->field(['web_domain'])->select()->toArray();
+        if ( !empty($webDomain) ) {
+
+            $webDomainArr = array_column($webDomain, 'web_domain');
+
+            return ['code' => -2, 'message' => '站点域名在数据中存在', 'data' => $webDomainArr];
+        }
+
+
+        return ['code' => 0, 'message' => '验证成功', 'data' => []];
     }
 }

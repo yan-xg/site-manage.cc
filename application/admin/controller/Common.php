@@ -2,20 +2,20 @@
 
 namespace app\admin\controller;
 
-use app\api\site\Common;
+use app\api\site\Common as CommonAPI;
 use app\admin\model\Site as SiteModel;
 use think\App;
 
-class CommonJs extends Base
+class Common extends Base
 {
-    protected $common;
+    protected $commonAPI;
 
     protected $siteModel;
 
-    public function __construct( App $app = null, Common $common, SiteModel $siteModel )
+    public function __construct( App $app = null, CommonAPI $commonAPI, SiteModel $siteModel )
     {
         parent::__construct($app);
-        $this->common    = $common;
+        $this->commonAPI = $commonAPI;
         $this->siteModel = $siteModel;
     }
 
@@ -43,21 +43,36 @@ class CommonJs extends Base
             $data['cfg_bdtjjs']   = $param['tongji'];
             $data['cfg_bottomjs'] = $param['head_code'];
             $data['cfg_topjs']    = $param['footer_code'];
+            $data['cfg_dianhua']  = $param['dianhua'];
+            $data['cfg_laiyuan']  = $param['laiyuan'];
+            $data['cfg_msiteid']  = $param['hj_m_site_id'];
+            $data['cfg_siteid']   = $param['hj_site_id'];
+            $data['cfg_xiangmu']  = $param['xiangmu'];
             $site->tongji         = $param['tongji'];
             $site->head_code      = $param['head_code'];
             $site->footer_code    = $param['footer_code'];
+            $site->dianhua        = $param['dianhua'];
+            $site->laiyuan        = $param['laiyuan'];
+            $site->hj_m_site_id   = $param['hj_m_site_id'];
+            $site->hj_site_id     = $param['hj_site_id'];
+            $site->xiangmu        = $param['xiangmu'];
             $site->save();
-            $res = $this->common->site($siteId)->commonJsModify($data);
+            $res = $this->commonAPI->site($siteId)->commonJsModify($data);
 
             return json($res);
         }
         $id = input('param.site_id');
         $this->validateSite($id);
-        $res  = $this->common->site($id)->getCommonJs();
+        $res  = $this->commonAPI->site($id)->getCommonJs();
         $data = [
-                'tongji'      => $res['cfg_bdtjjs'],
-                'head_code'   => $res['cfg_bottomjs'],
-                'footer_code' => $res['cfg_topjs'],
+                'tongji'       => $res['cfg_bdtjjs'],
+                'head_code'    => $res['cfg_bottomjs'],
+                'footer_code'  => $res['cfg_topjs'],
+                'dianhua'      => $res['cfg_dianhua'],
+                'laiyuan'      => $res['cfg_laiyuan'],
+                'hj_m_site_id' => $res['cfg_msiteid'],
+                'hj_site_id'   => $res['cfg_siteid'],
+                'xiangmu'      => $res['cfg_xiangmu'],
         ];
         $this->assign(['data' => $data, 'siteId' => $id]);
 

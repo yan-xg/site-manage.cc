@@ -15,8 +15,8 @@ return [
     // 站点类型
         'category'    => [1 => '品牌站', '综合站'],
         'site'        => [
-                'host'   => '192.168.8.211',
-                'create' => [
+                'host'              => '192.168.8.211',
+                'create'            => [
                         'web_directory' => '', // 网站目录，为空情况下会自动创建新目录
                         'mysql_switch'  => 1, // 1 开启 0 为关闭
                         'mysql_detail'  => config('database.charset'),
@@ -24,7 +24,8 @@ return [
                         'php_type'      => 'php56',
                         'code_url'      => 'http://xxx.xxx.com/test.zip',
 //                        'domain_exist_check' => 1,// 如果有该参数，会将已经存在的网站给覆盖。
-                ]
+                ],
+                'batch_upload_path' => '../uploads/site/',
         ],
         'web'         => [
                 'archives' => [
