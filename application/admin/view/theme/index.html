@@ -14,6 +14,16 @@
             height: auto;
             white-space: normal;
         }
+
+        .layui-table-cell, .layui-table-tool-panel li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .layui-table-cell{
+            height:50px;
+            line-height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -62,7 +72,7 @@
             </script>
             <script type="text/html" id="thumb">
                 {{#  if(d.thumb != ''){ }}
-                    <div><img src="{{ d.thumb }}" width="40%" height="40%" onclick="show_img(this)"></a></div>
+                    <div><img src="{{ d.thumb }}" width="50px" height="50px" onclick="show_img(this)"></a></div>
                 {{#  } }}
             </script>
             <script type="text/html" id="is_h5">
@@ -148,7 +158,7 @@
             {field: "add_time",title: "创建时间",width:200},
             {field: "edit_time",title: "修改时间",width:200},
             {field: "status",title: "主题状态",templet: "#theme-status",width:100},
-            {title: "操作",align: "center",fixed: "right",width:210,templet: "#theme-btn"}
+            {title: "操作",align: "center",fixed: "right",width:220,templet: "#theme-btn"}
             ]
         ]);
 
