@@ -49,6 +49,6 @@ class Common extends APIBase
             return $res['data'];
         }
 
-        return ['cfg_bdtjjs' => '', 'cfg_bottomjs' => '', 'cfg_topjs' => ''];
+        return ['cfg_bdtjjs' => '', 'cfg_bottomjs' => '', 'cfg_topjs' => '', 'cfg_dianhua' => '', 'cfg_laiyuan' => '', 'cfg_msiteid' => '', 'cfg_siteid' => '', 'cfg_xiangmu' => ''];
     }
 }
