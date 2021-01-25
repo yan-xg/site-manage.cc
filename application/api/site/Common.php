@@ -12,10 +12,6 @@ use tool\Log;
  */
 class Common extends APIBase
 {
-    protected $host = '192.168.9.10';
-
-    protected $port = '9102';
-
     protected $path = 'api/register.php';
 
     /**
@@ -49,7 +45,7 @@ class Common extends APIBase
             return $res['data'];
         }
 
-        return ['cfg_bdtjjs' => '', 'cfg_bottomjs' => '', 'cfg_topjs' => ''];
+        return ['cfg_bdtjjs' => '', 'cfg_bottomjs' => '', 'cfg_topjs' => '', 'cfg_dianhua' => '', 'cfg_laiyuan' => '', 'cfg_msiteid' => '', 'cfg_siteid' => '', 'cfg_xiangmu' => ''];
     }
 
     /**

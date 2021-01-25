@@ -14,6 +14,16 @@
             height: auto;
             white-space: normal;
         }
+
+        .layui-table-cell, .layui-table-tool-panel li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .layui-table-cell{
+            height:50px;
+            line-height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +149,7 @@
         layTool.table("#LAY-user-table", "/admin/theme/index", [[
             {field: "theme_id",title: "主题ID",width:100},
             {field: "temp_name",title: "主题名称"},
-            {field: "thumb",title: "缩略图",templet:'#thumb',width:150},
+            {field: "thumb",title: "缩略图",templet:'#thumb',width:80},
             {field: "cat_id",title: "主题属性",templet: "#theme-cat",width:100},
             {field: "color", title: "颜色", align:"left", width: 100 ,templet:function(d){
                     return '<div style="text-align:left">'+d.color+'</div>'}},
@@ -148,7 +158,7 @@
             {field: "add_time",title: "创建时间",width:200},
             {field: "edit_time",title: "修改时间",width:200},
             {field: "status",title: "主题状态",templet: "#theme-status",width:100},
-            {title: "操作",align: "center",fixed: "right",templet: "#theme-btn"}
+            {title: "操作",align: "center",fixed: "right",width:220,templet: "#theme-btn"}
             ]
         ]);
 
