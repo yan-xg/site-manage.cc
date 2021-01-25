@@ -6,6 +6,7 @@ use app\admin\model\Site as SiteModel;
 use app\admin\model\Theme;
 use app\api\facade\Cypher;
 use app\api\Http;
+use think\facade\Request;
 
 class Site extends APIBase
 {
@@ -26,11 +27,8 @@ class Site extends APIBase
     {
         $url  = $this->getUrl('domain/get_domain_v1');
         $user = session('admin_user_name');
-        $user = 'zhengyaoyu';
         $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
-            $res['data'][] = 'h7c.cn';
-
             return $res['data'];
         }
 
@@ -48,11 +46,8 @@ class Site extends APIBase
     {
         $url  = $this->getUrl('domain/get_ip_v1');
         $user = session('admin_user_name');
-        $user = 'zhangyaoyu';
         $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
-            $res['data'][] = '39.104.104.172';
-
             return $res['data'];
         }
 
@@ -95,16 +90,16 @@ class Site extends APIBase
         $url                     = $this->getUrl('build_v1/creat/');
         $argument                = config('dictionary.site.create');
         $param                   = [];
+        $host                    = Request::domain();
         $param['user']           = session('admin_user_name');
-        $param['user']           = 'zhengyaoyu';
         $param['tocken']         = Cypher::encrypt($site->web_domain . '|' . time());
         $param['domain']         = $site->web_domain;
         $param['ip_detail']      = $site->ip;
-        $param['w_template_url'] = $theme->temp_src;
+        $param['w_template_url'] = $host . '/' . $theme->temp_src;
         $param['siteId']         = $site->site_id;
         if ( $theme->is_h5 == 0 ) {
             $param['adaptive_domain'] = $site->m_domain;
-            $param['m_template_url']  = $theme->m_temp_src;
+            $param['m_template_url']  = $host . '/' . $theme->m_temp_src;
         }
         $param += $argument;
 

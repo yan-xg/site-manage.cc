@@ -3,6 +3,7 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\facade\Request;
 
 class Index extends Controller
 {
