@@ -136,26 +136,30 @@
                         type:'post',
                         data:{type:'updateIndex',data:data[0]},
                         beforeSend:function () {
-                            layer.msg('首页生成中...')
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero) {
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
+                                }
+                            });
+
                         },
                         success:function(d){
-                            console.log(d);
                             if(d.status == 200) {
-                                layer.alert('生成成功', {
-                                    skin: 'layui-layer-molv',
-                                    closeBtn: 0,
-                                    icon: 6,
-                                    anim: 4
-                                })
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg('首页生成成功');
+                            }else{
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
                         },
                         error: function(){
-                            layer.alert('生成失败',{
-                                skin: 'layui-layer-molv',
-                                closeBtn: 0,
-                                icon: 5,
-                                anim: 4
-                            })
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
                         }
                     },'json')
                     break;
@@ -165,26 +169,29 @@
                         type:'post',
                         data:{type:'updateColumn',data:data[0]},
                         beforeSend:function () {
-                            layer.msg('栏目生成中...')
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero) {
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
+                                }
+                            });
                         },
                         success:function(d){
-                            console.log(d);
                             if(d.status == 200) {
-                                layer.alert('生成成功', {
-                                    skin: 'layui-layer-molv',
-                                    closeBtn: 0,
-                                    icon: 6,
-                                    anim: 4
-                                })
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg('栏目生成成功');
+                            }else{
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
                         },
                         error: function(){
-                            layer.alert('生成失败',{
-                                skin: 'layui-layer-molv',
-                                closeBtn: 0,
-                                icon: 5,
-                                anim: 4
-                            })
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
                         }
                     },'json')
                     break;
@@ -194,26 +201,29 @@
                         type:'post',
                         data:{type:'updateArticle',data:data[0]},
                         beforeSend:function () {
-                            layer.msg('内容生成中...')
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero) {
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
+                                }
+                            });
                         },
                         success:function(d){
-                            console.log(d);
                             if(d.status == 200) {
-                                layer.alert('生成成功', {
-                                    skin: 'layui-layer-molv',
-                                    closeBtn: 0,
-                                    icon: 6,
-                                    anim: 4
-                                })
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg('内容生成成功');
+                            }else{
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
                         },
                         error: function(){
-                            layer.alert('生成失败',{
-                                skin: 'layui-layer-molv',
-                                closeBtn: 0,
-                                icon: 5,
-                                anim: 4
-                            })
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
                         }
                     },'json')
                     break;

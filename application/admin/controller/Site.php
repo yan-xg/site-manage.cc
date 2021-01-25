@@ -289,7 +289,7 @@ class Site extends Base
             $type = input('param.type');
             $data = input('param.data');
             if(empty($data))
-                return json(['code' => -1, 'msg' => '']);
+                return json(['code' => -1, 'msg' => '站点为空，请选择站点！']);
 
             switch ($type){
                 case 'updateIndex':
@@ -302,10 +302,10 @@ class Site extends Base
                     $up = $this->common->updateArticle( $data );
                     break;
                 default:
-                    $up = json(['code' => -1, 'msg' => '没有该操作']);
+                    $up = json_encode(['code' => -1, 'msg' => '没有该操作'],true);
                     break;
             }
-            return $up;
+            return json_decode($up,true);
         }
     }
 }

@@ -72,7 +72,6 @@ class Common extends APIBase
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $content = curl_exec($ch);          //执行并存储结果
-        var_dump($content);
 
         curl_close($ch);
 
@@ -91,16 +90,14 @@ class Common extends APIBase
     **/
     public function updateIndex( $data ){
         $sign = $this->getSign();
-        return $sign;
 
-        $url = 'http://192.168.9.10:9102/api/register.php/updateIndex';
-//        $url = $data['web_domain'].'/register.php/updateIndex';
+//        $url = 'http://192.168.9.10:9102/api/register.php/updateIndex';
+        $url = $data['web_domain'].'/register.php/updateIndex';
         $headers = [
             'vision:1.0.0',
             'token:XKyhVA3RsaWIRnAz',
             'sign:'.$sign
         ];
-        return $headers;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -117,20 +114,20 @@ class Common extends APIBase
      * @return json
      **/
     public function updateColumn( $data ){
-//        $sign = $this->getSign();
+        $sign = $this->getSign();
 
-        $url = 'http://192.168.9.10:9102/api/register.php/updateColumn';
-//        $url = $data['web_domain'].'/register.php/updateIndex';
-//        $headers = [
-//            'vision:1.0.0',
-//            'token:XKyhVA3RsaWIRnAz',
-//            'sign:'.$sign
-//        ];
+//        $url = 'http://192.168.9.10:9102/api/register.php/updateColumn';
+        $url = $data['web_domain'].'/register.php/updateColumn';
+        $headers = [
+            'vision:1.0.0',
+            'token:XKyhVA3RsaWIRnAz',
+            'sign:'.$sign
+        ];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $content = curl_exec($ch);          //执行并存储结果
         curl_close($ch);
         return $content;
@@ -143,21 +140,20 @@ class Common extends APIBase
      * @return json
      **/
     public function updateArticle( $data ){
-//        $sign = $this->getSign();
+        $sign = $this->getSign();
 
-        $url = 'http://192.168.9.10:9102/api/register.php/updateArchives';
-//        $url = $data['web_domain'].'/register.php/updateIndex';
-//        $headers = [
-//            'vision:1.0.0',
-//            'token:XKyhVA3RsaWIRnAz',
-//            'sign:'.$sign
-//        ];
+//        $url = 'http://192.168.9.10:9102/api/register.php/updateArchives';
+        $url = $data['web_domain'].'/register.php/updateArchives';
+        $headers = [
+            'vision:1.0.0',
+            'token:XKyhVA3RsaWIRnAz',
+            'sign:'.$sign
+        ];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $content = curl_exec($ch);          //执行并存储结果
         curl_close($ch);
         return $content;
