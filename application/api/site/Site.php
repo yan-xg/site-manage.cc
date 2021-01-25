@@ -24,12 +24,10 @@ class Site extends APIBase
      */
     public function domain( string $search = '' ): array
     {
-        $this->host = '192.168.8.211';
-        $this->port = '80';
-        $url        = $this->getUrl('domain/get_domain_v1');
-        $user       = session('admin_user_name');
-        $user       = 'zhengyaoyu';
-        $res        = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
+        $url  = $this->getUrl('domain/get_domain_v1');
+        $user = session('admin_user_name');
+        $user = 'zhengyaoyu';
+        $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
             $res['data'][] = 'h7c.cn';
 
@@ -48,12 +46,10 @@ class Site extends APIBase
      */
     public function ip( string $search )
     {
-        $this->host = '192.168.8.211';
-        $this->port = '80';
-        $url        = $this->getUrl('domain/get_ip_v1');
-        $user       = session('admin_user_name');
-        $user       = 'zhangyaoyu';
-        $res        = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
+        $url  = $this->getUrl('domain/get_ip_v1');
+        $user = session('admin_user_name');
+        $user = 'zhangyaoyu';
+        $res  = Http::curl($url, ['user' => $user, 'kw' => $search], 0, 'GET');
         if ( $res['code'] === 200 ) {
             $res['data'][] = '39.104.104.172';
 
