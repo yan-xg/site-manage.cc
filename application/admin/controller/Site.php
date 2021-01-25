@@ -7,6 +7,7 @@ use think\App;
 use app\admin\model\Site as SiteModel;
 use app\admin\model\Theme as ThemeModel;
 use app\api\facade\Site as SiteAPI;
+use app\api\site\Common;
 use think\Db;
 
 class Site extends Base
@@ -22,6 +23,7 @@ class Site extends Base
                     '<button class="layui-btn layui-btn-danger layui-btn-xs">禁用</button>',
                     '<button class="layui-btn layui-btn-success layui-btn-xs">启用</button>'
             ];
+    protected $common;
 
     /**
      * Site constructor.
@@ -35,13 +37,15 @@ class Site extends Base
             App $app = null,
             SiteModel $siteModel,
             SiteValidate $siteValidate,
-            ThemeModel $themeModel
+            ThemeModel $themeModel,
+            Common $common
     )
     {
         parent::__construct($app);
         $this->siteModel    = $siteModel;
         $this->siteValidate = $siteValidate;
         $this->themeModel   = $themeModel;
+        $this->common    = $common;
     }
 
     /**
@@ -275,5 +279,33 @@ class Site extends Base
         }
 
         return $this->fetch();
+    }
+
+    /**
+     * 更新页面
+     **/
+    public function updateWeb(){
+        if ( request()->isAjax() ) {
+            $type = input('param.type');
+            $data = input('param.data');
+            if(empty($data))
+                return json(['code' => -1, 'msg' => '']);
+
+            switch ($type){
+                case 'updateIndex':
+                    $up = $this->common->updateIndex( $data );
+                    break;
+                case 'updateColumn':
+                    $up = $this->common->updateColumn( $data );
+                    break;
+                case 'updateArticle':
+                    $up = $this->common->updateArticle( $data );
+                    break;
+                default:
+                    $up = json(['code' => -1, 'msg' => '没有该操作']);
+                    break;
+            }
+            return $up;
+        }
     }
 }
