@@ -24,9 +24,9 @@ class SiteRes extends Controller
         if ( !Cypher::validate('6830b3f8b3f7f02e64d4239003bb18fe', $token) )
             return json(['code' => -1, 'msg' => '验证失败']);
         $result = json_decode($res, true);
-        $status = 3;
-        if ( $result['data']['online_build_code'] = 1 && $result['data']['local_build_code'] = 1 ) {
-            $status = 2;
+        $status = 2;
+        if ( $result['data']['local_build_code'] == 0 || $result['data']['online_build_code'] == 0 ) {
+            $status = 3;
         }
         $result = Site::createRes($id, $status, $res);
         if ( $result['code'] == 0 )

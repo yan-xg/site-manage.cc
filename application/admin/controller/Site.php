@@ -46,7 +46,7 @@ class Site extends Base
         $this->siteModel    = $siteModel;
         $this->siteValidate = $siteValidate;
         $this->themeModel   = $themeModel;
-        $this->common    = $common;
+        $this->common       = $common;
     }
 
     /**
@@ -66,15 +66,17 @@ class Site extends Base
             $list = $this->siteModel->lists($limit, $where);
 
             if ( 0 == $list['code'] ) {
-                $data      = $list['data']->toArray();
-                $total     = $data['total'];
-                $rows      = $data['data'];
-                $isRewrite = $this->isRewrite;
-                $themeId   = array_column($rows, 'temp_id');
-                $themeName = $this->themeModel->getKeyName($themeId);
+                $data          = $list['data']->toArray();
+                $total         = $data['total'];
+                $rows          = $data['data'];
+                $isRewrite     = $this->isRewrite;
+                $themeId       = array_column($rows, 'temp_id');
+                $themeName     = $this->themeModel->getKeyName($themeId);
+                $create_status = config('dictionary.site.create_status');
                 foreach ( $rows as &$v ) {
                     $v['rewrite']   = $isRewrite[$v['is_rewrite']];
                     $v['temp_name'] = $themeName[$v['temp_id']];
+                    $v['creRes']    = $create_status[$v['create_status']];
                 }
                 unset($v);
 
@@ -169,6 +171,8 @@ class Site extends Base
         $data['rewrite']   = $this->isRewrite[$data['is_rewrite']];
         $data['theme']     = $this->themeModel->getKeyName($data['temp_id']);
         $data['status']    = $this->status[$data['status']];
+        $create_status     = config('dictionary.site.create_status');
+        $data['creRes']    = $create_status[$data['create_status']];
         $this->assign($data);
 
         return view('read');
@@ -201,6 +205,8 @@ class Site extends Base
             if ( !$this->siteValidate->check($param, $rule) ) {
                 return ['code' => -1, 'data' => '', 'msg' => $this->siteValidate->getError()];
             }
+            $off_on                      = ['off' => 0, 'on' => 1];
+            $param['domain_exist_check'] = $off_on[( $param['domain_exist_check'] ?? 'off' )];
 
             $res = $this->siteModel->edit($param);
 
@@ -287,13 +293,13 @@ class Site extends Base
      **/
     public function updateWeb()
     {
-        if (request()->isAjax()) {
+        if ( request()->isAjax() ) {
             $type = input('param.type');
             $data = input('param.data');
-            if (empty($data))
+            if ( empty($data) )
                 return json(['code' => -1, 'msg' => '站点为空，请选择站点！']);
 
-            switch ($type) {
+            switch ( $type ) {
                 case 'updateIndex':
                     $up = $this->common->updateIndex($data);
                     break;
@@ -307,9 +313,11 @@ class Site extends Base
                     $up = json_encode(['code' => -1, 'msg' => '没有该操作'], true);
                     break;
             }
+
             return json_decode($up, true);
         }
     }
+
     /**
      * 批量上传
      *
@@ -371,10 +379,11 @@ class Site extends Base
      */
     public function download()
     {
-        $path     = config('dictionary.site.batch_upload_path');
-        $download = new \think\response\Download($path . '/site.csv');
+        header('location:' . \think\facade\Request::domain() . '/site.csv');
+//        $path     = config('dictionary.site.batch_upload_path');
+//        $download = new \think\response\Download($path . '/site.csv');
 
-        return $download->name('site.csv');
+//        return $download->name('site.csv');
     }
 
     /**

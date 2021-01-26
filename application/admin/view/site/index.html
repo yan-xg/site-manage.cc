@@ -29,18 +29,23 @@
             </div>
         </div>
         <div class="layui-card-body">
-            {if (buttonAuth('site/create'))}
-            <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-admin" data-type="add"><i class="layui-icon">&#xe654;</i> 添加</button>
-            </div>
-            {/if}
             <table id="LAY-user-table" lay-filter="LAY-user-table"></table>
-
             <script type="text/html" id="toolbarDemo">
                 <div class="layui-btn-container">
+                    {if (buttonAuth('site/create'))}
+                    <button class="layui-btn layui-btn-sm" lay-event="create">添加</button>
+                    {/if}
+                    {if (buttonAuth('site/batchcreate'))}
+                    <button class="layui-btn layui-btn-sm" lay-event="batchCreate">批量建站</button>
+                    {/if}
+                    {if (buttonAuth('common/index'))}
+                    <button class="layui-btn layui-btn-sm" lay-event="editcommon">修改公共内容</button>
+                    {/if}
+                    {if (buttonAuth('site/updateWeb'))}
                     <button class="layui-btn layui-btn-sm" lay-event="updateIndex">更新首页</button>
                     <button class="layui-btn layui-btn-sm" lay-event="updateColumn">更新栏目</button>
                     <button class="layui-btn layui-btn-sm" lay-event="updateArticle">更新内容</button>
+                    {/if}
                 </div>
             </script>
 
@@ -52,6 +57,7 @@
                 {{#  } }}
             </script>
             <script type="text/html" id="table-seller-admin">
+                {{#  if(d.create_status != 1){ }}
                 {if (buttonAuth('flink/index'))}
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="flink">
                     <i class="layui-icon layui-icon-read"></i>友情链接</a>
@@ -68,14 +74,20 @@
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="read">
                     <i class="layui-icon layui-icon-read"></i>站点信息</a>
                 {/if}
+                {{#  if(d.create_status == 3 || d.create_status == 0){ }}
                 {if (buttonAuth('site/edit'))}
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
                     <i class="layui-icon layui-icon-edit"></i>编辑</a>
                 {/if}
+                {{#  } }}
                 {if (buttonAuth('site/delete'))}
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
                     <i class="layui-icon layui-icon-delete"></i>删除</a>
                 {/if}
+                {{#  } else { }}
+                创建中...
+                {{#  } }}
+
             </script>
         </div>
     </div>
@@ -86,22 +98,18 @@
 <script src="/static/common/js/jquery.min.js"></script>
 
 <script>
+    var table = { tableObj: null };
     layui.config({
         base: '/static/admin/'
     }).use(['table'], function (){
         let $ = layui.$, form = layui.form, table = layui.table;
-
-        table.render({
+        table.tableObj = table.render({
             elem: '#LAY-user-table'
-            ,url:'/admin/site/index'
-            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
-            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
-                title: '提示'
-                ,layEvent: 'LAYTABLE_TIPS'
-                ,icon: 'layui-icon-tips'
-            }]
-            ,height: 'full-200'
-            ,cols: [[
+            , url: '/admin/site/index'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            , defaultToolbar: ['filter', 'exports', 'print']
+            , height: 'full-200'
+            , cols: [[
                 { type: 'radio' },
                 { field: "site_id", title: "站点ID", align: 'right', width: 80 },
                 { field: "name", title: "站点名称", width: 100 },
@@ -117,124 +125,134 @@
                 { field: "page_count", title: "页面数量", align: 'right', width: 100 },
                 { field: "shoulu", title: "收录量", align: 'right', width: 100 },
                 { field: "guanjianci", title: "关键词情况", width: 100 },
+                { field: "creRes", title: "创建状态", width: 100 },
                 //{ field: "hj_site_id", title: "PC汇聚通ID", align: 'right', width: 100 },
                 //{ field: "hj_m_site_id", title: "移动端汇聚通ID", align: 'right', width: 100 },
                 { field: "add_time", title: "新建时间", width: 120 },
                 { field: "status", title: "状态", sort: true, templet: '#statusTpl', width: 100 },
                 { title: "操作", align: "center", width: 550, fixed: "right", toolbar: "#table-seller-admin" }
             ]]
-            ,page: true
+            , page: true
         });
-
-        table.on('toolbar(LAY-user-table)', function(obj){
+        table.on('toolbar(LAY-user-table)', function (obj){
             var checkStatus = table.checkStatus(obj.config.id);
             var data = checkStatus.data;
-            switch(obj.event){
-                case 'updateIndex':
-                    $.ajax({
-                        url:'/admin/site/updateWeb',
-                        type:'post',
-                        data:{type:'updateIndex',data:data[0]},
-                        beforeSend:function () {
-                            layer.load(3, {
-                                shade: [0.3, 'gray'],
-                                content: '<span class="loadtip">生成中...</span>',
-                                success: function (layero) {
-                                    layero.find('.layui-layer-content').css({
-                                        'padding-top': '39px',
-                                        'width': '60px'
-                                    });
-                                }
-                            });
-
-                        },
-                        success:function(d){
-                            if(d.status == 200) {
-                                layer.closeAll('loading'); //关闭loading
-                                layer.msg('首页生成成功');
-                            }else{
-                                layer.closeAll('loading'); //关闭loading
-                                layer.msg(d.msg);
-                            }
-                        },
-                        error: function(){
-                            layer.closeAll('loading'); //关闭loading
-                            layer.msg('生成失败');
+            if ( data.length > 0 && data[0].create_status === 1 && -1 != $.inArray(obj.event, ['editcommon', 'updateIndex', 'updateColumn', 'updateArticle']) ) {
+                layer.msg('创建中...');
+            } else {
+                switch ( obj.event ) {
+                    case 'editcommon':
+                        if ( data.length == 0 ) {
+                            layer.msg('请选择操作的行！');
+                        } else {
+                            layTool.open("{:url('/admin/common/index/site_id/" + data[0].site_id + "')}", "修改公共内容", '100%', '100%');
                         }
-                    },'json')
-                    break;
-                case 'updateColumn':
-                    $.ajax({
-                        url:'/admin/site/updateWeb',
-                        type:'post',
-                        data:{type:'updateColumn',data:data[0]},
-                        beforeSend:function () {
-                            layer.load(3, {
-                                shade: [0.3, 'gray'],
-                                content: '<span class="loadtip">生成中...</span>',
-                                success: function (layero) {
-                                    layero.find('.layui-layer-content').css({
-                                        'padding-top': '39px',
-                                        'width': '60px'
-                                    });
+                        break;
+                    case 'batchCreate':
+                        layTool.open("{:url('/admin/site/batchCreate')}", "批量建站", '80%', '80%');
+                        break;
+                    case 'create':
+                        layTool.open("{:url('site/create')}", "添加站点", '100%', '100%');
+                        break;
+                    case 'updateIndex':
+                        $.ajax({
+                            url: '/admin/site/updateWeb',
+                            type: 'post',
+                            data: { type: 'updateIndex', data: data[0] },
+                            beforeSend: function (){
+                                layer.load(3, {
+                                    shade: [0.3, 'gray'],
+                                    content: '<span class="loadtip">生成中...</span>',
+                                    success: function (layero){
+                                        layero.find('.layui-layer-content').css({
+                                            'padding-top': '39px',
+                                            'width': '60px'
+                                        });
+                                    }
+                                });
+                            },
+                            success: function (d){
+                                if ( d.status == 200 ) {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg('首页生成成功');
+                                } else {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg(d.msg);
                                 }
-                            });
-                        },
-                        success:function(d){
-                            if(d.status == 200) {
+                            },
+                            error: function (){
                                 layer.closeAll('loading'); //关闭loading
-                                layer.msg('栏目生成成功');
-                            }else{
-                                layer.closeAll('loading'); //关闭loading
-                                layer.msg(d.msg);
+                                layer.msg('生成失败');
                             }
-                        },
-                        error: function(){
-                            layer.closeAll('loading'); //关闭loading
-                            layer.msg('生成失败');
-                        }
-                    },'json')
-                    break;
-                case 'updateArticle':
-                    $.ajax({
-                        url:'/admin/site/updateWeb',
-                        type:'post',
-                        data:{type:'updateArticle',data:data[0]},
-                        beforeSend:function () {
-                            layer.load(3, {
-                                shade: [0.3, 'gray'],
-                                content: '<span class="loadtip">生成中...</span>',
-                                success: function (layero) {
-                                    layero.find('.layui-layer-content').css({
-                                        'padding-top': '39px',
-                                        'width': '60px'
-                                    });
+                        }, 'json')
+                        break;
+                    case 'updateColumn':
+                        $.ajax({
+                            url: '/admin/site/updateWeb',
+                            type: 'post',
+                            data: { type: 'updateColumn', data: data[0] },
+                            beforeSend: function (){
+                                layer.load(3, {
+                                    shade: [0.3, 'gray'],
+                                    content: '<span class="loadtip">生成中...</span>',
+                                    success: function (layero){
+                                        layero.find('.layui-layer-content').css({
+                                            'padding-top': '39px',
+                                            'width': '60px'
+                                        });
+                                    }
+                                });
+                            },
+                            success: function (d){
+                                if ( d.status == 200 ) {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg('栏目生成成功');
+                                } else {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg(d.msg);
                                 }
-                            });
-                        },
-                        success:function(d){
-                            if(d.status == 200) {
+                            },
+                            error: function (){
                                 layer.closeAll('loading'); //关闭loading
-                                layer.msg('内容生成成功');
-                            }else{
-                                layer.closeAll('loading'); //关闭loading
-                                layer.msg(d.msg);
+                                layer.msg('生成失败');
                             }
-                        },
-                        error: function(){
-                            layer.closeAll('loading'); //关闭loading
-                            layer.msg('生成失败');
-                        }
-                    },'json')
-                    break;
-
-                //自定义头工具栏右侧图标 - 提示
-                case 'LAYTABLE_TIPS':
-                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                    break;
-            };
+                        }, 'json')
+                        break;
+                    case 'updateArticle':
+                        $.ajax({
+                            url: '/admin/site/updateWeb',
+                            type: 'post',
+                            data: { type: 'updateArticle', data: data[0] },
+                            beforeSend: function (){
+                                layer.load(3, {
+                                    shade: [0.3, 'gray'],
+                                    content: '<span class="loadtip">生成中...</span>',
+                                    success: function (layero){
+                                        layero.find('.layui-layer-content').css({
+                                            'padding-top': '39px',
+                                            'width': '60px'
+                                        });
+                                    }
+                                });
+                            },
+                            success: function (d){
+                                if ( d.status == 200 ) {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg('内容生成成功');
+                                } else {
+                                    layer.closeAll('loading'); //关闭loading
+                                    layer.msg(d.msg);
+                                }
+                            },
+                            error: function (){
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg('生成失败');
+                            }
+                        }, 'json')
+                        break;
+                }
+            }
         });
-
         table.on("tool(LAY-user-table)", function (e){
             switch ( e.event ) {
                 case 'del':
@@ -248,7 +266,7 @@
                                 if ( 0 == res.code ) {
                                     layer.msg(res.msg);
                                     setTimeout(function (){
-                                        renderTable();
+                                        table.tableObj.reload();
                                     }, 300);
                                 } else {
                                     layer.alert(res.msg);
@@ -275,18 +293,6 @@
                     break;
             }
         });
-
-        let active = {
-            add: function (){
-                layTool.open("{:url('site/create')}", "添加站点", '100%', '100%');
-            }
-        };
-        $('.layui-btn.layuiadmin-btn-admin').on('click', function (){
-            let type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
-
         // 监听搜索
         form.on('submit(LAY-user-back-search)', function (data){
             let field = data.field;
@@ -296,78 +302,6 @@
             });
         });
     });
-
-    // renderTable();
-
-    // 渲染表格
-    function renderTable(){
-        layTool.table("#LAY-user-table", "/admin/site/index", [[
-            { type: 'radio' },
-            { field: "site_id", title: "站点ID", align: 'right', width: 80 },
-            { field: "name", title: "站点名称", width: 100 },
-            { field: "web_domain", title: "站点域名", width: 150 },
-            { field: "m_domain", title: "移动端站点域名", width: 150 },
-            { field: "temp_name", title: "模版名称", width: 100 },
-            //{ field: "rewrite", title: "伪静态", align: 'center', width: 100 },
-            //{ field: "rewrite_rule", title: "伪静态规则", width: 100 },
-            //{ field: "xiangmu", title: "项目名", width: 100 },
-            //{ field: "laiyuan", title: "来源", width: 100 },
-            //{ field: "dianhua", title: "留言电话", width: 100 },
-            { field: "page_views", title: "站点PV数", align: 'right', width: 100 },
-            { field: "page_count", title: "页面数量", align: 'right', width: 100 },
-            { field: "shoulu", title: "收录量", align: 'right', width: 100 },
-            { field: "guanjianci", title: "关键词情况", width: 100 },
-            //{ field: "hj_site_id", title: "PC汇聚通ID", align: 'right', width: 100 },
-            //{ field: "hj_m_site_id", title: "移动端汇聚通ID", align: 'right', width: 100 },
-            { field: "add_time", title: "新建时间", width: 120 },
-            { field: "status", title: "状态", sort: true, templet: '#statusTpl', width: 100 },
-            { title: "操作", align: "center", width: 550, fixed: "right", toolbar: "#table-seller-admin" }
-        ]]);
-        layui.use(['table', 'layer'], function (){
-            let layer = layui.layer;
-            let table = layui.table;
-            table.on("tool(LAY-user-table)", function (e){
-                switch ( e.event ) {
-                    case 'del':
-                        layer.ready(function (){
-                            let index = layer.confirm('您确定要删除该站点吗？', {
-                                title: '友情提示',
-                                icon: 3,
-                                btn: ['确定', '取消']
-                            }, function (){
-                                $.getJSON('{:url("site/delete")}', { id: e.data.site_id }, function (res){
-                                    if ( 0 == res.code ) {
-                                        layer.msg(res.msg);
-                                        setTimeout(function (){
-                                            renderTable();
-                                        }, 300);
-                                    } else {
-                                        layer.alert(res.msg);
-                                    }
-                                });
-                            }, function (){
-                            });
-                        });
-                        break;
-                    case 'edit':
-                        layTool.open("/admin/site/edit/site_id/" + e.data.site_id, "编辑站点", '100%', '100%');
-                        break;
-                    case 'read':
-                        layTool.open("/admin/site/read/site_id/" + e.data.site_id, "查看站点", '100%', '100%');
-                        break;
-                    case 'column':
-                        layTool.open('/admin/column/index/site_id/' + e.data.site_id, '查看栏目', '100%', '100%');
-                        break;
-                    case 'archives':
-                        layTool.open('/admin/archives/index/site_id/' + e.data.site_id, '查看文章', '100%', '100%');
-                        break;
-                    case 'flink':
-                        layTool.open('/admin/flink/index/site_id/' + e.data.site_id, '友情链接', '100%', '100%');
-                        break;
-                }
-            });
-        });
-    }
 </script>
 </body>
 </html>

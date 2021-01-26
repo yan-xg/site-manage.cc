@@ -92,6 +92,10 @@ class Site extends Model
         try {
             $data['edit_time'] = date('Y-m-d H:i:s');
             $this->save($data, ['site_id', $data['site_id']]);
+            $site = $this->where('site_id', $data['site_id'])->find();
+            if ( $site->create_status == 3 || $site->create_status == 0 ) {
+                \app\api\facade\Site::site($site->site_id)->create();
+            }
             Log::write(sprintf('编辑站点：%s(%s)', $data['name'], $data['site_id']));
         } catch ( \Exception $e ) {
 

@@ -77,6 +77,7 @@ class Site extends APIBase
      * 创建站点
      *
      * @return array
+     * @throws \app\api\HttpError
      */
     public function create()
     {
@@ -101,6 +102,9 @@ class Site extends APIBase
             $param['adaptive_domain'] = $site->m_domain;
             $param['m_template_url']  = $host . '/' . $theme->m_temp_src;
         }
+        if ( $this->siteModelObj->domain_exist_check ) {
+            $param['domain_exist_check'] = 1;
+        }
         $param += $argument;
 
         $res = Http::curl($url, $param);
@@ -111,9 +115,10 @@ class Site extends APIBase
             return modelReMsg(0, [], '创建中...');
         }
         $site->create_status = 3;
+        $site->create_error  = $res['msg'];
         $site->save();
 
-        return modelReMsg(-1, [], '创建失败');
+        return modelReMsg(-1, [], $res['msg']);
     }
 
     /**
