@@ -78,7 +78,11 @@ class APIBase
     public function site( int $siteId )
     {
         $this->siteModelObj = $this->siteModel->where('site_id', $siteId)->find();
-        $this->host         = $this->siteModelObj->web_domain;
+        $url                = parse_url($this->siteModelObj->web_domain);
+        $host               = explode('.', $url['host']);
+        if ( count($host) < 3 ) array_unshift($host, 'www');
+
+        $this->host = sprintf('%s://%s', $url['scheme'], implode('.', $host));
 
         return $this;
     }
