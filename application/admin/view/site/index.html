@@ -98,12 +98,12 @@
 <script src="/static/common/js/jquery.min.js"></script>
 
 <script>
-    var table = { tableObj: null };
+    var layuiTable = { tableObj: null };
     layui.config({
         base: '/static/admin/'
     }).use(['table'], function (){
         let $ = layui.$, form = layui.form, table = layui.table;
-        table.tableObj = table.render({
+        layuiTable.tableObj = table.render({
             elem: '#LAY-user-table'
             , url: '/admin/site/index'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
@@ -266,7 +266,7 @@
                                 if ( 0 == res.code ) {
                                     layer.msg(res.msg);
                                     setTimeout(function (){
-                                        table.tableObj.reload();
+                                        layuiTable.tableObj.reload();
                                     }, 300);
                                 } else {
                                     layer.alert(res.msg);
