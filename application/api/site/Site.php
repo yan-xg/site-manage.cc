@@ -68,6 +68,7 @@ class Site extends APIBase
         if ( empty($siteModelObj) ) return modelReMsg(-1, '', '站点ID不正确');
         $siteModelObj->create_status = $status;
         $siteModelObj->create_result = $res;
+        $siteModelObj->create_error  = '';
         $siteModelObj->save();
 
         return modelReMsg(0, '', '接收成功');
