@@ -328,7 +328,7 @@
                     setTimeout(function (){
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                        window.parent.table.tableObj.reload();
+                        window.parent.layuiTable.tableObj.reload();
                     }, 200);
                 } else {
                     layer.alert(res.msg, {

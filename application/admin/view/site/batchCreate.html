@@ -68,6 +68,11 @@
                                 switch ( m.code ) {
                                     case 0:
                                         layer.alert('执行成功。');
+                                        setTimeout(function (){
+                                            let index = parent.layer.getFrameIndex(window.name);
+                                            parent.layer.close(index);
+                                            window.parent.layuiTable.tableObj.reload();
+                                        }, 200);
                                         break;
                                     default:
                                         layer.alert('上传失败，请重新尝试');
