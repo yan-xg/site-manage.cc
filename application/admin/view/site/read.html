@@ -100,6 +100,16 @@
                         <td>{$hj_m_site_id}</td>
                     </tr>
                     <tr>
+                        <td>创建状态</td>
+                        <td><?php echo $creRes ?></td>
+                    </tr>
+                    <?php if ( $create_status == 3): ?>
+                    <tr>
+                        <td>创建失败原因</td>
+                        <td><?php echo $create_error ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
                         <td>状态</td>
                         <td><?php echo $status ?></td>
                     </tr>

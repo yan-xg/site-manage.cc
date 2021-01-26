@@ -171,6 +171,8 @@ class Site extends Base
         $data['rewrite']   = $this->isRewrite[$data['is_rewrite']];
         $data['theme']     = $this->themeModel->getKeyName($data['temp_id']);
         $data['status']    = $this->status[$data['status']];
+        $create_status     = config('dictionary.site.create_status');
+        $data['creRes']    = $create_status[$data['create_status']];
         $this->assign($data);
 
         return view('read');
