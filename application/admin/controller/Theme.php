@@ -66,11 +66,13 @@ class Theme extends Base{
                 return json(['code' => -1, 'msg' => $validate->getError()]);
             }
 
+            /*
             if(!empty($param['temp_src']) && !file_exists($param['temp_src']))
                 return json(['code' => -1, 'msg' => 'PC端主题地址不存在']);
 
             if(!empty($param['m_temp_src']) && !file_exists($param['m_temp_src']))
                 return json(['code' => -1, 'msg' => '移动主题地址不存在']);
+            */
 
             $param['yulantu'] = $this->formatYulantu($param['yulantu']);
             $param['color'] = !empty($param['color']) ? implode(',',$param['color']) : 0;
@@ -110,11 +112,13 @@ class Theme extends Base{
             if(!empty($param['yulantu']))
                 $param['yulantu'] = $this->formatYulantu($param['yulantu']);
 
+            /*
             if(!empty($param['temp_src']) && !file_exists($param['temp_src']))
                   return json(['code' => -1, 'msg' => 'PC端主题地址不存在']);
 
             if(!empty($param['m_temp_src']) && !file_exists($param['m_temp_src']))
                 return json(['code' => -1, 'msg' => '移动主题地址不存在']);
+            */
 
             $param['color'] = !empty($param['color']) ? implode(',',$param['color']) : 0;
             $param['edit_time'] = date('Y-m-d H:i:s',time());
