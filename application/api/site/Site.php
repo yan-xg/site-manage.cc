@@ -74,6 +74,27 @@ class Site extends APIBase
     }
 
     /**
+     * 获取文件路径域名地址
+     *
+     * @param $path
+     * @return string
+     */
+    private function conversionPath( $path )
+    {
+        if ( $path[0] == '/' ) {
+            $root = $_SERVER['DOCUMENT_ROOT'];
+            $host = trim(Request::domain(), '/');
+
+            return sprintf('%s/%s', $host, trim(str_replace($root, '', $path), '/'));
+        }
+        $url  = parse_url($path);
+        $url2 = parse_url(Request::domain());
+        $url  += $url2;
+
+        return sprintf('%s://%s/%s', $url['scheme'], $url['host'], $url['path']);
+    }
+
+    /**
      * 创建站点
      *
      * @return array
@@ -85,22 +106,22 @@ class Site extends APIBase
         if ( empty($site) ) return modelReMsg(-1, [], '站点未找到');
         $theme = Theme::where('theme_id', $site->temp_id)->find();
         if ( empty($theme) ) return modelReMsg(-1, [], '模版未找到');
-        $this->host              = config('dictionary.site.host');
-        $this->port              = config('dictionary.site.port');
-        $this->path              = 'websiteManage';
-        $url                     = $this->getUrl('build_v1/creat/');
-        $argument                = config('dictionary.site.create');
-        $param                   = [];
-        $host                    = Request::domain();
+        $this->host = config('dictionary.site.host');
+        $this->port = config('dictionary.site.port');
+        $this->path = 'websiteManage';
+        $url        = $this->getUrl('build_v1/creat/');
+        $argument   = config('dictionary.site.create');
+        $param      = [];
+
         $param['user']           = session('admin_user_name');
         $param['tocken']         = Cypher::encrypt($site->web_domain . '|' . time());
         $param['domain']         = $site->web_domain;
         $param['ip_detail']      = $site->ip;
-        $param['w_template_url'] = $host . '/' . $theme->temp_src;
+        $param['w_template_url'] = $this->conversionPath($theme->temp_src);
         $param['siteId']         = $site->site_id;
         if ( $theme->is_h5 == 0 ) {
             $param['adaptive_domain'] = $site->m_domain;
-            $param['m_template_url']  = $host . '/' . $theme->m_temp_src;
+            $param['m_template_url']  = $this->conversionPath($theme->m_temp_src);
         }
         if ( $this->siteModelObj->domain_exist_check ) {
             $param['domain_exist_check'] = 1;
