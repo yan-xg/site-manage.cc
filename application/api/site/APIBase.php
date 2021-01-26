@@ -31,7 +31,7 @@ class APIBase
      */
     public function header(): array
     {
-        if ( config('dictionary.web.header', false) === false ) {
+        if ( config('dictionary.web.header') === false ) {
             return [];
         }
         $url = $this->getUrl('getSignature');
