@@ -149,11 +149,7 @@
                         }
                         break;
                     case 'batchCreate':
-                        if ( data.length == 0 ) {
-                            layer.msg('请选择操作的行！');
-                        } else {
-                            layTool.open("{:url('/admin/site/batchCreate')}", "批量建站", '80%', '80%');
-                        }
+                        layTool.open("{:url('/admin/site/batchCreate')}", "批量建站", '80%', '80%');
                         break;
                     case 'create':
                         layTool.open("{:url('site/create')}", "添加站点", '100%', '100%');
