@@ -37,5 +37,12 @@ return [
                         ]
                 ],
                 'header'   => false, // 开启接口验证
+        ],
+//    七牛云配置
+        'qiniu'     => [
+            'accesskey' => 'pSvxO2Scjy5aBdgR1zToqiWTKWr0Y_xXqnAf2mCv',
+            'secretkey' => 'qaZtGEr373Hk8oidB5eez0sk_3Yg6qpPj6nxVgXy',
+            'bucket' => 'file-vsokgo-com',
+            'DOMAIN'=>'file.vsokgo.com'
         ]
 ];

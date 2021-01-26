@@ -120,13 +120,19 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">PC端路径:</label>
                             <div class="layui-input-block">
-                                <input type="text" name="temp_src" value="{$info.temp_src}" required lay-verify="required" placeholder="请输入PC主题存放路径" autocomplete="off" class="layui-input">
+                                <button type="button" class="layui-btn" id="temp_src" style="float: left; margin-right: 20px;">
+                                    <i class="layui-icon">&#xe67c;</i>上传文件
+                                </button>
+                                <input type="text" name="temp_src" value="{$info.temp_src}" style="width: 300px;" class="layui-input layui-btn-disabled" disabled>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">移动端路径:</label>
                             <div class="layui-input-block">
-                                <input type="text" name="m_temp_src" value="{$info.m_temp_src}" placeholder="请输入移动主题存放路径" autocomplete="off" class="layui-input">
+                                <button type="button" class="layui-btn" id="m_temp_src" style="float: left; margin-right: 20px;">
+                                    <i class="layui-icon">&#xe67c;</i>上传文件
+                                </button>
+                                <input type="text" name="m_temp_src" value="{$info.m_temp_src}" style="width: 300px;" class="layui-input layui-btn-disabled" disabled>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -239,6 +245,41 @@
             $(obj).parents("tr").remove();
             layer.msg('已删除!',{icon:1,time:1000});
         }
+
+
+        /**
+         * 上传压缩文件
+        */
+        function uploadZip(elem,dataUrl) {
+            var uploadZip = upload.render({
+                auto: true
+                ,elem: elem
+                ,url: '/admin/Theme/uploadZip'
+                ,exts: 'zip|rar|7z'
+                ,before:function (obj) {
+                    layer.load(); //上传loading
+                }
+                ,done: function(res){ //上传后的回调
+                    layer.closeAll('loading'); //关闭loading
+                    if(res.err==0){
+                        dataUrl.val(res.data);
+                        layer.msg(res.msg);
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+                ,error: function(){
+                    //请求异常回调
+                    layer.closeAll('loading'); //关闭loading
+
+                    layer.msg('上传错误！');
+                }
+            });
+        }
+
+        uploadZip("#temp_src",$("input[name='temp_src"));
+        uploadZip("#m_temp_src",$("input[name='m_temp_src"));
+
 
         function uploadImgRender(e,showImg,uploadimd){
             var uploadImg = upload.render({

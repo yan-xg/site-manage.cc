@@ -14,8 +14,11 @@ use think\Validate;
 use tool\Log;
 use app\admin\model\Operate;
 
+
 class Theme extends Base{
-    // 主题列表
+    /**
+     * 主题列表
+    **/
     public function index(){
         if(request()->isAjax()){
 
@@ -198,13 +201,6 @@ class Theme extends Base{
         return $this->fetch();
     }
 
-    // 图片上传
-    public function uploadImg(Request $request){
-
-        $path = 'images/';
-        return (new Upload())->uploadOnePic($path);
-    }
-
     public function formatYulantu($yulantu){
         // 去除空预览图
         foreach ($yulantu as $key=>$val){
@@ -214,6 +210,23 @@ class Theme extends Base{
         }
         $yulantu = !empty($yulantu) ? json_encode(array_values($yulantu) ,JSON_UNESCAPED_UNICODE) : '';//重新定义下标并转为json
         return $yulantu;
+    }
+
+    /**
+     * 图片上传
+    **/
+    public function uploadImg(Request $request){
+
+        $path = 'images/';
+        return (new Upload())->uploadOnePic($path);
+    }
+
+    /**
+     * 主题压缩包上传
+    **/
+    public function uploadZip(Request $request){
+
+        return (new Upload())->uploadZip();
     }
 
 }
