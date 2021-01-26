@@ -113,6 +113,13 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">是否覆盖原内容</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="domain_exist_check" title="是"
+                                    <?php  echo $data['domain_exist_check'] == 1 ? 'checked' : '' ?>>
+                                </div>
+                            </div>
                             <!--
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">是否伪静态：</label>

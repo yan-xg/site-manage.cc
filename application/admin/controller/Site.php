@@ -203,6 +203,8 @@ class Site extends Base
             if ( !$this->siteValidate->check($param, $rule) ) {
                 return ['code' => -1, 'data' => '', 'msg' => $this->siteValidate->getError()];
             }
+            $off_on                      = ['off' => 0, 'on' => 1];
+            $param['domain_exist_check'] = $off_on[( $param['domain_exist_check'] ?? 'off' )];
 
             $res = $this->siteModel->edit($param);
 

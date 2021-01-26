@@ -41,9 +41,11 @@
                     {if (buttonAuth('common/index'))}
                     <button class="layui-btn layui-btn-sm" lay-event="editcommon">修改公共内容</button>
                     {/if}
+                    {if (buttonAuth('site/updateWeb'))}
                     <button class="layui-btn layui-btn-sm" lay-event="updateIndex">更新首页</button>
                     <button class="layui-btn layui-btn-sm" lay-event="updateColumn">更新栏目</button>
                     <button class="layui-btn layui-btn-sm" lay-event="updateArticle">更新内容</button>
+                    {/if}
                 </div>
             </script>
 
@@ -72,10 +74,12 @@
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="read">
                     <i class="layui-icon layui-icon-read"></i>站点信息</a>
                 {/if}
+                {{#  if(d.create_status == 3){ }}
                 {if (buttonAuth('site/edit'))}
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
                     <i class="layui-icon layui-icon-edit"></i>编辑</a>
                 {/if}
+                {{#  } }}
                 {if (buttonAuth('site/delete'))}
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
                     <i class="layui-icon layui-icon-delete"></i>删除</a>
