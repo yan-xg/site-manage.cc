@@ -18,12 +18,12 @@ return [
                 'host'              => '192.168.8.141', // 正式 8.211
                 'port'              => '80',
                 'create'            => [
-                        'web_directory'      => '', // 网站目录，为空情况下会自动创建新目录
-                        'mysql_switch'       => 1, // 1 开启 0 为关闭
-                        'mysql_detail'       => config('database.charset'),
-                        'php_switch'         => 1, // PHP是否开启，默认开启。
-                        'php_type'           => 'php56',
-                        'code_url'           => 'http://file.vsokgo.com/webmanager/control.zip',
+                        'web_directory' => '', // 网站目录，为空情况下会自动创建新目录
+                        'mysql_switch'  => 1, // 1 开启 0 为关闭
+                        'mysql_detail'  => config('database.charset'),
+                        'php_switch'    => 1, // PHP是否开启，默认开启。
+                        'php_type'      => 'php56',
+                        'code_url'      => 'http://file.vsokgo.com/control.zip',
 //                        'domain_exist_check' => 1,// 如果有该参数，会将已经存在的网站给覆盖。
                 ],
                 'batch_upload_path' => '../uploads/site/',
