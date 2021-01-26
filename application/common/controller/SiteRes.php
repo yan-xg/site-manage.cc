@@ -25,7 +25,7 @@ class SiteRes extends Controller
             return json(['code' => -1, 'msg' => '验证失败']);
         $result = json_decode($res, true);
         $status = 2;
-        if ( $result['data']['local_build_code'] = 0 || $result['data']['online_build_code'] = 0 ) {
+        if ( $result['data']['local_build_code'] == 0 || $result['data']['online_build_code'] == 0 ) {
             $status = 3;
         }
         $result = Site::createRes($id, $status, $res);
