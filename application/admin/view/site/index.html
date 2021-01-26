@@ -39,7 +39,7 @@
                     <button class="layui-btn layui-btn-sm" lay-event="batchCreate">批量建站</button>
                     {/if}
                     {if (buttonAuth('common/index'))}
-                    <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="editcommon" disabled>修改公共内容</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="editCommon" disabled>修改公共内容</button>
                     {/if}
                     {if (buttonAuth('site/updateWeb'))}
                     <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="updateIndex" disabled>更新首页</button>
@@ -122,167 +122,164 @@
         });
         table.on('row(LAY-user-table)', function (obj){
             row = obj.data;
-            if ( row.create_status != 1 ) {
+            obj.tr.find("input[name='layTableRadio_1']").prop('checked', true);
+            form.render('radio');
+            if ( row.create_status !== 1 ) {
                 $('.layui-btn-container').find('button').removeClass('layui-btn-disabled').removeAttr('disabled');
                 $('.edit').addClass('layui-btn-disabled').attr('disabled', 1);
-                if ( row.create_status != 3 || row.create_status == 0 ) {
+                if ( row.create_status === 3 || row.create_status === 0 ) {
                     $('.edit').removeClass('layui-btn-disabled').removeAttr('disabled');
                 }
             }
         });
         table.on('toolbar(LAY-user-table)', function (obj){
-            let checkStatus = table.checkStatus(obj.config.id);
-            let data = checkStatus.data;
-            if ( data.length > 0 && data[0].create_status === 1 && -1 != $.inArray(obj.event, ['editcommon', 'updateIndex', 'updateColumn', 'updateArticle']) ) {
-                layer.msg('创建中...');
-            } else {
-                switch ( obj.event ) {
-                    case 'editcommon':
-                        if ( data.length == 0 ) {
-                            layer.msg('请选择操作的行！');
-                        } else {
-                            layTool.open("{:url('/admin/common/index/site_id/" + data[0].site_id + "')}", "修改公共内容", '100%', '100%');
-                        }
-                        break;
-                    case 'batchCreate':
-                        layTool.open("{:url('/admin/site/batchCreate')}", "批量建站", '80%', '80%');
-                        break;
-                    case 'create':
-                        layTool.open("{:url('site/create')}", "添加站点", '100%', '100%');
-                        break;
-                    case 'flink':
-                        layTool.open('/admin/flink/index/site_id/' + data[0].site_id, '友情链接', '100%', '100%');
-                        break;
-                    case 'del':
-                        layer.ready(function (){
-                            let index = layer.confirm('您确定要删除该站点吗？', {
-                                title: '友情提示',
-                                icon: 3,
-                                btn: ['确定', '取消']
-                            }, function (){
-                                $.getJSON('{:url("site/delete")}', { id: data[0].site_id }, function (res){
-                                    if ( 0 == res.code ) {
-                                        layer.msg(res.msg);
-                                        setTimeout(function (){
-                                            layuiTable.tableObj.reload();
-                                        }, 300);
-                                    } else {
-                                        layer.alert(res.msg);
-                                    }
-                                });
-                            }, function (){
+            let data = row;
+            switch ( obj.event ) {
+                case 'editCommon':
+                    if ( data.length == 0 ) {
+                        layer.msg('请选择操作的行！');
+                    } else {
+                        layTool.open("{:url('/admin/common/index/site_id/" + data.site_id + "')}", "修改公共内容", '100%', '100%');
+                    }
+                    break;
+                case 'batchCreate':
+                    layTool.open("{:url('/admin/site/batchCreate')}", "批量建站", '80%', '80%');
+                    break;
+                case 'create':
+                    layTool.open("{:url('site/create')}", "添加站点", '100%', '100%');
+                    break;
+                case 'flink':
+                    layTool.open('/admin/flink/index/site_id/' + data.site_id, '友情链接', '100%', '100%');
+                    break;
+                case 'del':
+                    layer.ready(function (){
+                        let index = layer.confirm('您确定要删除该站点吗？', {
+                            title: '友情提示',
+                            icon: 3,
+                            btn: ['确定', '取消']
+                        }, function (){
+                            $.getJSON('{:url("site/delete")}', { id: data.site_id }, function (res){
+                                if ( 0 == res.code ) {
+                                    layer.msg(res.msg);
+                                    setTimeout(function (){
+                                        layuiTable.tableObj.reload();
+                                    }, 300);
+                                } else {
+                                    layer.alert(res.msg);
+                                }
                             });
+                        }, function (){
                         });
-                        break;
-                    case 'edit':
-                        layTool.open("/admin/site/edit/site_id/" + data[0].site_id, "编辑站点", '100%', '100%');
-                        break;
-                    case 'read':
-                        layTool.open("/admin/site/read/site_id/" + data[0].site_id, "查看站点", '100%', '100%');
-                        break;
-                    case 'column':
-                        layTool.open('/admin/column/index/site_id/' + data[0].site_id, '查看栏目', '100%', '100%');
-                        break;
-                    case 'archives':
-                        layTool.open('/admin/archives/index/site_id/' + data[0].site_id, '查看文章', '100%', '100%');
-                        break;
-                    case 'updateIndex':
-                        $.ajax({
-                            url: '/admin/site/updateWeb',
-                            type: 'post',
-                            data: { type: 'updateIndex', data: data[0] },
-                            beforeSend: function (){
-                                layer.load(3, {
-                                    shade: [0.3, 'gray'],
-                                    content: '<span class="loadtip">生成中...</span>',
-                                    success: function (layero){
-                                        layero.find('.layui-layer-content').css({
-                                            'padding-top': '39px',
-                                            'width': '60px'
-                                        });
-                                    }
-                                });
-                            },
-                            success: function (d){
-                                if ( d.status == 200 ) {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg('首页生成成功');
-                                } else {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg(d.msg);
+                    });
+                    break;
+                case 'edit':
+                    layTool.open("/admin/site/edit/site_id/" + data.site_id, "编辑站点", '100%', '100%');
+                    break;
+                case 'read':
+                    layTool.open("/admin/site/read/site_id/" + data.site_id, "查看站点", '100%', '100%');
+                    break;
+                case 'column':
+                    layTool.open('/admin/column/index/site_id/' + data.site_id, '查看栏目', '100%', '100%');
+                    break;
+                case 'archives':
+                    layTool.open('/admin/archives/index/site_id/' + data.site_id, '查看文章', '100%', '100%');
+                    break;
+                case 'updateIndex':
+                    $.ajax({
+                        url: '/admin/site/updateWeb',
+                        type: 'post',
+                        data: { type: 'updateIndex', data: data },
+                        beforeSend: function (){
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero){
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
                                 }
-                            },
-                            error: function (){
+                            });
+                        },
+                        success: function (d){
+                            if ( d.status == 200 ) {
                                 layer.closeAll('loading'); //关闭loading
-                                layer.msg('生成失败');
+                                layer.msg('首页生成成功');
+                            } else {
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
-                        }, 'json')
-                        break;
-                    case 'updateColumn':
-                        $.ajax({
-                            url: '/admin/site/updateWeb',
-                            type: 'post',
-                            data: { type: 'updateColumn', data: data[0] },
-                            beforeSend: function (){
-                                layer.load(3, {
-                                    shade: [0.3, 'gray'],
-                                    content: '<span class="loadtip">生成中...</span>',
-                                    success: function (layero){
-                                        layero.find('.layui-layer-content').css({
-                                            'padding-top': '39px',
-                                            'width': '60px'
-                                        });
-                                    }
-                                });
-                            },
-                            success: function (d){
-                                if ( d.status == 200 ) {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg('栏目生成成功');
-                                } else {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg(d.msg);
+                        },
+                        error: function (){
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
+                        }
+                    }, 'json')
+                    break;
+                case 'updateColumn':
+                    $.ajax({
+                        url: '/admin/site/updateWeb',
+                        type: 'post',
+                        data: { type: 'updateColumn', data: data },
+                        beforeSend: function (){
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero){
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
                                 }
-                            },
-                            error: function (){
+                            });
+                        },
+                        success: function (d){
+                            if ( d.status == 200 ) {
                                 layer.closeAll('loading'); //关闭loading
-                                layer.msg('生成失败');
+                                layer.msg('栏目生成成功');
+                            } else {
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
-                        }, 'json')
-                        break;
-                    case 'updateArticle':
-                        $.ajax({
-                            url: '/admin/site/updateWeb',
-                            type: 'post',
-                            data: { type: 'updateArticle', data: data[0] },
-                            beforeSend: function (){
-                                layer.load(3, {
-                                    shade: [0.3, 'gray'],
-                                    content: '<span class="loadtip">生成中...</span>',
-                                    success: function (layero){
-                                        layero.find('.layui-layer-content').css({
-                                            'padding-top': '39px',
-                                            'width': '60px'
-                                        });
-                                    }
-                                });
-                            },
-                            success: function (d){
-                                if ( d.status == 200 ) {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg('内容生成成功');
-                                } else {
-                                    layer.closeAll('loading'); //关闭loading
-                                    layer.msg(d.msg);
+                        },
+                        error: function (){
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
+                        }
+                    }, 'json')
+                    break;
+                case 'updateArticle':
+                    $.ajax({
+                        url: '/admin/site/updateWeb',
+                        type: 'post',
+                        data: { type: 'updateArticle', data: data },
+                        beforeSend: function (){
+                            layer.load(3, {
+                                shade: [0.3, 'gray'],
+                                content: '<span class="loadtip">生成中...</span>',
+                                success: function (layero){
+                                    layero.find('.layui-layer-content').css({
+                                        'padding-top': '39px',
+                                        'width': '60px'
+                                    });
                                 }
-                            },
-                            error: function (){
+                            });
+                        },
+                        success: function (d){
+                            if ( d.status == 200 ) {
                                 layer.closeAll('loading'); //关闭loading
-                                layer.msg('生成失败');
+                                layer.msg('内容生成成功');
+                            } else {
+                                layer.closeAll('loading'); //关闭loading
+                                layer.msg(d.msg);
                             }
-                        }, 'json')
-                        break;
-                }
+                        },
+                        error: function (){
+                            layer.closeAll('loading'); //关闭loading
+                            layer.msg('生成失败');
+                        }
+                    }, 'json')
+                    break;
             }
         });
         // 监听搜索
