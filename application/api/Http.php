@@ -38,8 +38,8 @@ class Http
                     break;
             }
         }
-        Log::info('请求地址:' . $url);
-        Log::info('请求参数:' . json_encode($options));
+        config('dictionary.web.debug') && Log::info('请求地址:' . $url);
+        config('dictionary.web.debug') && Log::info('请求参数:' . json_encode($options));
 
         curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
@@ -56,8 +56,8 @@ class Http
         $result = curl_exec($curl); // 执行
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl); // 关闭CURL会话
-        Log::info('请求状态码:' . $status);
-        Log::info('请求结果:' . $result);
+        config('dictionary.web.debug') && Log::info('请求状态码:' . $status);
+        config('dictionary.web.debug') && Log::info('请求结果:' . $result);
         if ( $status !== 200 ) {
             $return_array = json_decode($result, true);
             if ( $return_array ) {
@@ -69,7 +69,7 @@ class Http
             } else {
                 $error_message = '请求错误!';
             }
-            Log::info('请求异常:' . $return_array);
+            config('dictionary.web.debug') && Log::info('请求异常:' . $return_array);
 
             throw new HttpError($error_message, $status);
         }
