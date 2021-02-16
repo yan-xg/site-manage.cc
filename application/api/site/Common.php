@@ -56,7 +56,7 @@ class Common extends APIBase
      **/
     public function updateIndex( $data )
     {
-        $url     = $data['web_domain'] . '/register.php/updateIndex';
+        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateIndex';
         $headers = $this->header();
 
         $ch = curl_init();
@@ -77,7 +77,7 @@ class Common extends APIBase
      **/
     public function updateColumn( $data )
     {
-        $url     = $data['web_domain'] . '/register.php/updateColumn';
+        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateColumn';
         $headers = $this->header();
 
         $ch = curl_init();
@@ -99,7 +99,7 @@ class Common extends APIBase
      **/
     public function updateArticle( $data )
     {
-        $url     = $data['web_domain'] . '/register.php/updateArchives';
+        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateArchives';
         $headers = $this->header();
 
         $ch = curl_init();
