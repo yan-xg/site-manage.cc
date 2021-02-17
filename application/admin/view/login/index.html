@@ -9,16 +9,18 @@
     <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/login.css" media="all">
-    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+    <script>if ( window.top !== window.self ) {
+        window.top.location = window.location;
+    }</script>
 </head>
 <body>
 
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 
-    <div class="layadmin-user-login-main" style="border: 1px solid #dddddd;background: #fff;padding: 20px;">
+    <div class="layadmin-user-login-main" style="border: 1px solid #DDDDDD;background: #FFF;padding: 20px;">
         <div class="layadmin-user-login-box layadmin-user-login-header">
-            <h2>snake</h2>
-            <p>snake管理后台</p>
+            <h2>网站管理系统</h2>
+            <p>欢迎使用网站管理系统</p>
         </div>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
             <div class="layui-form-item">
@@ -37,7 +39,7 @@
                     </div>
                     <div class="layui-col-xs5">
                         <div style="margin-left: 10px;">
-                            <img src="{:captcha_src()}" alt="captcha" onclick="changeCaptcha(this)" id="captcha" width="100%"/>
+                            <img src="{:captcha_src()}" alt="captcha" onclick="changeCaptcha(this)" id="captcha" width="100%" />
                         </div>
                     </div>
                 </div>
@@ -50,55 +52,49 @@
 
     <div class="layui-trans layadmin-user-login-footer">
 
-        <p>© {:date('Y')} <a href="http://whisper.baiyf.com/" target="_blank">snake</a></p>
+        <p>© {:date('Y')} <a href="#" target="_blank">北京快道网络有限公司</a></p>
 
     </div>
 </div>
 <script src="/static/common/js/jquery.min.js"></script>
 <script src="/static/layui/layui.js"></script>
 <script>
-    document.onkeydown=function(event){
+    document.onkeydown = function (event){
         var e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==13){ // enter 键
+        if ( e && e.keyCode == 13 ) { // enter 键
             $('.layui-btn').click();
         }
     };
-
     layui.config({
         base: '/static/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['form'], function(){
+    }).use(['form'], function (){
         var $ = layui.$
-            ,form = layui.form
-            ,router = layui.router()
-            ,search = router.search;
-
+            , form = layui.form
+            , router = layui.router()
+            , search = router.search;
         form.render();
-
-        form.on('submit(LAY-user-login-submit)', function(obj){
-
-            $.post('{:url("login/doLogin")}', obj.field, function (res) {
-                if(0 == res.code) {
-
+        form.on('submit(LAY-user-login-submit)', function (obj){
+            $.post('{:url("login/doLogin")}', obj.field, function (res){
+                if ( 0 == res.code ) {
                     // 登入成功的提示与跳转
                     layer.msg('登入成功', {
                         offset: '15px'
-                        ,icon: 1
-                        ,time: 1000
-                    }, function(){
+                        , icon: 1
+                        , time: 1000
+                    }, function (){
                         location.href = '/admin'; //后台主页
                     });
                 } else {
-
-                    layer.msg(res.msg, {anim: 6});
+                    layer.msg(res.msg, { anim: 6 });
                     $("#captcha").click();
                 }
             }, 'json');
         });
     });
 
-    function changeCaptcha(obj) {
+    function changeCaptcha(obj){
         $(obj).attr('src', $(obj).attr('src') + '?t=' + Math.random());
     }
 </script>

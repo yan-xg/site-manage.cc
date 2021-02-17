@@ -38,7 +38,9 @@
                     {if (buttonAuth('site/batchcreate'))}
                     <button class="layui-btn layui-btn-sm" lay-event="batchCreate">批量建站</button>
                     {/if}
+                    {if(buttonAuth('site/uploadControl'))}
                     <button class="layui-btn layui-btn-sm" id="uploadControl">上传站点文件</button>
+                    {/if}
                     {if (buttonAuth('common/index'))}
                     <button class="layui-btn layui-btn-sm layui-btn-disabled" lay-event="editCommon" disabled>修改公共内容</button>
                     {/if}
