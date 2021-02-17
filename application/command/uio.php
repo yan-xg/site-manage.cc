@@ -47,7 +47,8 @@ class uio extends Command
 
     protected function execute( Input $input, Output $output )
     {
-
+        echo dirname(__FILE__);
+        exit;
         echo Column::getSignature();
         exit;
 

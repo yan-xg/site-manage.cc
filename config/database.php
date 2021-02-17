@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'localhost',
+    'hostname'        => '10.0.2.2',
     // 数据库名
-    'database'        => 'web_manage',
+    'database'        => 'snake',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'homestead',
     // 密码
-    'password'        => 'KDtPCaKPJZxMXP5Z',
+    'password'        => 'secret',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
