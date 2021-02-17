@@ -63,7 +63,7 @@ class Archives extends Base
         $typeid = input('param.typeid');
         $siteId = input('param.site_id');
         $img    = '<img src="%s" style="height:50px;" />';
-        $res    = $this->archivesAPI->site($siteId)->getArchivesList(['typeId' => $typeid], $page, $limit);
+        $res    = $this->archivesAPI->site($siteId)->getArchivesList(['typeId' => $typeid], $page, $limit, ['id' => 'desc']);
         $host   = $this->archivesAPI->site($siteId)->getHost();
         foreach ( $res['rows'] as &$v ) {
             $v['pubdate']  = date("Y-m-d H:i", $v['pubdate']);

@@ -63,7 +63,7 @@ class Column extends Base
         $typeId = input('param.typeid');
         $siteId = input('param.site_id');
 
-        $res = $this->columnAPI->site($siteId)->getColumnList(['typeId' => $typeId], $page, $limit);
+        $res = $this->columnAPI->site($siteId)->getColumnList(['typeId' => $typeId], $page, $limit, ['id' => 'desc']);
 
         return json(['code' => 0, 'msg' => 'ok', 'count' => $res['total'], 'data' => $res['rows']]);
     }

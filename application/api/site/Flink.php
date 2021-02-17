@@ -32,7 +32,7 @@ class Flink extends APIBase
                 'count' => $limit
         ];
         if ( !empty($order) ) {
-            $data['isSort'] = false;
+            $data['isSort'] = true;
             $data['field']  = key($order);
             $data['order']  = current($order);
         }

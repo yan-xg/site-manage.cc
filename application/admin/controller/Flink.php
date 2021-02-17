@@ -63,7 +63,7 @@ class Flink extends Base
         $typeId = input('param.typeid');
         $siteId = input('param.site_id');
 
-        $res = $this->FlinkAPI->site($siteId)->getFlinkList(['typeId' => $typeId], $page, $limit);
+        $res = $this->FlinkAPI->site($siteId)->getFlinkList(['typeId' => $typeId], $page, $limit, ['id' => 'desc']);
 
         return json(['code' => 0, 'msg' => 'ok', 'count' => $res['total'], 'data' => $res['rows']]);
     }
