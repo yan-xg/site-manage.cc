@@ -10,6 +10,7 @@ use app\api\facade\Site as SiteAPI;
 use app\api\site\Common;
 use think\Db;
 use think\Request;
+use app\common\lib\Upload;
 
 class Site extends Base
 {
@@ -439,5 +440,13 @@ class Site extends Base
 
 
         return ['code' => 0, 'message' => '验证成功', 'data' => $data];
+    }
+
+    /**
+     * 上传站点文件
+    */
+    public function uploadControl(Request $request){
+
+        return (new Upload())->uploadZip(null,'file',true);
     }
 }

@@ -50,7 +50,7 @@ class Upload extends Controller{
      * @param null $form_name 表单中的名称
      * @return \think\response\Json
     **/
-    public function uploadZip($file_path = null,$form_name = 'file'){
+    public function uploadZip($file_path = null,$form_name = 'file',$name=false){
         if (request()->isPost()){
             $rules = [
                 'ext'   => 'zip,rar,7z',
@@ -62,7 +62,11 @@ class Upload extends Controller{
             $filePath  = $file->getRealPath();
             $ext = pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
             // 上传到七牛后保存的文件名
-            $filename =substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
+            if($name==TRUE){
+                $filename = $file->getInfo('name');
+            }else{
+                $filename =substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
+            }
 
             if (!$file_info){
                 return json(['code'=>0,'msg'=>'格式仅支持zip,rar,7z,最大文件为100Mb']);
