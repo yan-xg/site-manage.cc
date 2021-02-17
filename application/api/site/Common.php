@@ -56,7 +56,10 @@ class Common extends APIBase
      **/
     public function updateIndex( $data )
     {
-        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateIndex';
+        $host = explode('.', $data['web_domain']);
+        if ( count($host) < 3 ) array_unshift($host, 'www');
+        $host    = implode('.', $host);
+        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateIndex';
         $headers = $this->header();
 
         $ch = curl_init();
@@ -77,7 +80,10 @@ class Common extends APIBase
      **/
     public function updateColumn( $data )
     {
-        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateColumn';
+        $host = explode('.', $data['web_domain']);
+        if ( count($host) < 3 ) array_unshift($host, 'www');
+        $host    = implode('.', $host);
+        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateColumn';
         $headers = $this->header();
 
         $ch = curl_init();
@@ -99,7 +105,10 @@ class Common extends APIBase
      **/
     public function updateArticle( $data )
     {
-        $url     = $data['web_domain'] . DIRECTORY_SEPARATOR . $this->path . '/updateArchives';
+        $host = explode('.', $data['web_domain']);
+        if ( count($host) < 3 ) array_unshift($host, 'www');
+        $host    = implode('.', $host);
+        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateArchives';
         $headers = $this->header();
 
         $ch = curl_init();
