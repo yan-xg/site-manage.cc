@@ -52,48 +52,30 @@ class Common extends APIBase
      * 更新首页
      *
      * @param $data
-     * @return json
-     **/
+     * @return false|string
+     * @throws \app\api\HttpError
+     */
     public function updateIndex( $data )
     {
-        $host = explode('.', $data['web_domain']);
-        if ( count($host) < 3 ) array_unshift($host, 'www');
-        $host    = implode('.', $host);
-        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateIndex';
-        $headers = $this->header();
+        $url = $this->site($data['site_id'])->getUrl('updateIndex');
+        $res = Http::curl($url, '', $this->header(), 'GET');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $content = curl_exec($ch);          //执行并存储结果
-        curl_close($ch);
-
-        return $content;
+        return json_encode($res);
     }
 
     /**
      * 更新栏目
      *
      * @param $data
-     * @return json
-     **/
+     * @return false|string
+     * @throws \app\api\HttpError
+     */
     public function updateColumn( $data )
     {
-        $host = explode('.', $data['web_domain']);
-        if ( count($host) < 3 ) array_unshift($host, 'www');
-        $host    = implode('.', $host);
-        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateColumn';
-        $headers = $this->header();
+        $url = $this->site($data['site_id'])->getUrl('updateColumn');
+        $res = Http::curl($url, '', $this->header(), 'GET');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $content = curl_exec($ch);          //执行并存储结果
-        curl_close($ch);
-
-        return $content;
+        return json_encode($res);
     }
 
 
@@ -101,23 +83,14 @@ class Common extends APIBase
      * 更新内容
      *
      * @param $data
-     * @return json
-     **/
+     * @return false|string
+     * @throws \app\api\HttpError
+     */
     public function updateArticle( $data )
     {
-        $host = explode('.', $data['web_domain']);
-        if ( count($host) < 3 ) array_unshift($host, 'www');
-        $host    = implode('.', $host);
-        $url     = $host . DIRECTORY_SEPARATOR . $this->path . '/updateArchives';
-        $headers = $this->header();
+        $url = $this->site($data['site_id'])->getUrl('updateArchives');
+        $res = Http::curl($url, '', $this->header(), 'GET');
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $content = curl_exec($ch);          //执行并存储结果
-        curl_close($ch);
-
-        return $content;
+        return json_encode($res);
     }
 }
