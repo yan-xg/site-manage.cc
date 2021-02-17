@@ -96,7 +96,7 @@
                     setTimeout(function (){
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                        window.parent.renderTable();
+                        window.parent.tables.tableObj.reload();
                     }, 200);
                 } else {
                     layer.alert(res.msg, {
