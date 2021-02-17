@@ -37,6 +37,7 @@ return [
                         ]
                 ],
                 'header'   => true, // 开启接口验证
+                'debug'    => true, // 开启接口日志
         ],
 //    七牛云配置
         'qiniu'     => [
