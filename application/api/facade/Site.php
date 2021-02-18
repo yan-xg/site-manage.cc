@@ -4,7 +4,7 @@ namespace app\api\facade;
 
 use think\Facade;
 
-class Sites extends Facade
+class Site extends Facade
 {
     protected static function getFacadeClass()
     {
