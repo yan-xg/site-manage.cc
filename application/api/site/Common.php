@@ -2,6 +2,7 @@
 
 namespace app\api\site;
 
+use app\admin\model\Theme;
 use app\api\Http;
 use tool\Log;
 
@@ -14,6 +15,20 @@ class Common extends APIBase
 {
     protected $path = 'api/register.php';
 
+
+    public function getIsH5( $id, $url, $param )
+    {
+        $theme = Theme::where('theme_id', $id)->find();
+        if ( empty($theme) ) return false;
+        if ( $theme->is_h5 == 0 ) {
+            $url = str_replace($this->host, $this->siteModelObj->m_domain, $url);
+
+            return Http::curl($url, $param, $this->header(), 'POST', true);
+        }
+
+        return ['status' => 200];
+    }
+
     /**
      * 公共js接口
      *
@@ -22,13 +37,13 @@ class Common extends APIBase
      */
     public function commonJsModify( $param )
     {
-        $url = $this->getUrl('commonJsModify');
-        $res = Http::curl($url, $param, $this->header(), 'POST', true);
-        if ( $res['status'] == 200 ) {
-            return modelReMsg(0, '', '成功');
-        }
+        $url  = $this->getUrl('commonJsModify');
+        $res  = Http::curl($url, $param, $this->header(), 'POST', true);
+        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, $param);
+        if ( $res['status'] != 200 ) return modelReMsg(-1, '', '更新失败');
+        if ( $res2['status'] != 200 ) return modelReMsg(-1, '', '移动端更新失败');
 
-        return modelReMsg(-1, '', '提交失败');
+        return modelReMsg(0, '', '成功');
     }
 
     /**
@@ -57,8 +72,9 @@ class Common extends APIBase
      */
     public function updateIndex( $data )
     {
-        $url = $this->site($data['site_id'])->getUrl('updateIndex');
-        $res = Http::curl($url, '', $this->header(), 'GET');
+        $url  = $this->site($data['site_id'])->getUrl('updateIndex');
+        $res  = Http::curl($url, '', $this->header(), 'GET');
+        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, '');
 
         return json_encode($res);
     }
@@ -72,8 +88,9 @@ class Common extends APIBase
      */
     public function updateColumn( $data )
     {
-        $url = $this->site($data['site_id'])->getUrl('updateColumn');
-        $res = Http::curl($url, '', $this->header(), 'GET');
+        $url  = $this->site($data['site_id'])->getUrl('updateColumn');
+        $res  = Http::curl($url, '', $this->header(), 'GET');
+        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, '');
 
         return json_encode($res);
     }
@@ -88,8 +105,9 @@ class Common extends APIBase
      */
     public function updateArticle( $data )
     {
-        $url = $this->site($data['site_id'])->getUrl('updateArchives');
-        $res = Http::curl($url, '', $this->header(), 'GET');
+        $url  = $this->site($data['site_id'])->getUrl('updateArchives');
+        $res  = Http::curl($url, '', $this->header(), 'GET');
+        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, '');
 
         return json_encode($res);
     }
