@@ -172,6 +172,7 @@ class Archives extends Base
         $data['litpicfull'] = $host . '/' . $data['litpic'];
         $data['flag']       = explode(',', $data['flag']);
         $data['body']       = $this->hostPicture($data['body'], $host);
+        $data['body']       = str_replace(["\r\n", "\r", "\n"], "", $data['body']);
         $this->assign(['data' => $data]);
 
         return view('edit');
