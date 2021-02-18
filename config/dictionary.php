@@ -23,7 +23,7 @@ return [
                         'mysql_detail'  => config('database.charset'),
                         'php_switch'    => 1, // PHP是否开启，默认开启。
                         'php_type'      => 'php56',
-                        'code_url'      => 'http://file.vsokgo.com/control.zip?time='.time(),
+                        'code_url'      => 'http://file.vsokgo.com/control.zip?time=' . time(),
 //                        'domain_exist_check' => 1,// 如果有该参数，会将已经存在的网站给覆盖。
                 ],
                 'batch_upload_path' => '../uploads/site/',
@@ -40,10 +40,10 @@ return [
                 'debug'    => true, // 开启接口日志
         ],
 //    七牛云配置
-        'qiniu'     => [
-            'accesskey' => 'pSvxO2Scjy5aBdgR1zToqiWTKWr0Y_xXqnAf2mCv',
-            'secretkey' => 'qaZtGEr373Hk8oidB5eez0sk_3Yg6qpPj6nxVgXy',
-            'bucket' => 'file-vsokgo-com',
-            'DOMAIN'=>'file.vsokgo.com'
+        'qiniu'       => [
+                'accesskey' => 'pSvxO2Scjy5aBdgR1zToqiWTKWr0Y_xXqnAf2mCv',
+                'secretkey' => 'qaZtGEr373Hk8oidB5eez0sk_3Yg6qpPj6nxVgXy',
+                'bucket'    => 'file-vsokgo-com',
+                'DOMAIN'    => 'file.vsokgo.com'
         ]
 ];

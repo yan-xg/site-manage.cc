@@ -12,7 +12,7 @@ class SiteRes extends Controller
     protected $siteModel;
 
     /**
-     * 显示资源列表
+     * 创建结果回调
      *
      * @return \think\Response
      */
