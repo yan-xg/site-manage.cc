@@ -20,7 +20,7 @@ class ColumnValidate extends Validate
                     'seotitle'    => 'require',
                     'keywords'    => 'require',
                     'description' => 'require',
-                    'typename'    => 'require',
+//                    'typename'    => 'require',
             ];
 
     /**
@@ -38,6 +38,6 @@ class ColumnValidate extends Validate
                     'seotitle.requre'     => 'seo标题不能为空',
                     'keywords.require'    => '关键字不能为空',
                     'description.require' => '描述不能为空',
-                    'typename.require'    => '名称不能为空',
+//                    'typename.require'    => '名称不能为空',
             ];
 }

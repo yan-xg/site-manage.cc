@@ -79,7 +79,7 @@ class Column extends APIBase
 
         if ( $res['status'] === 200 ) {
             $lastId = $res['data']['lastId'];
-            Log::write(sprintf('增加栏目：%s(%s)', $param['typename'], $lastId));
+            Log::write(sprintf('增加栏目：%s(%s)', $param['seotitle'], $lastId));
 
             return modelReMsg(0, ['id' => $lastId], '创建成功');
         }
@@ -97,9 +97,10 @@ class Column extends APIBase
     public function columnModify( array $param ): array
     {
         $url = $this->getUrl('columnModify');
+        $param['typename'] = $param['seotitle'];
         $res = Http::curl($url, $param, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
-            Log::write(sprintf('编辑栏目：%s(%s)', $param['typename'], $param['id']));
+            Log::write(sprintf('编辑栏目：%s(%s)', $param['seotitle'], $param['id']));
 
             return modelReMsg(0, '', '修改成功');
         }
@@ -120,7 +121,7 @@ class Column extends APIBase
         $option = ['ids' => $id];
         $res    = Http::curl($url, $option, $this->header(), 'POST', true);
         if ( $res['status'] === 200 ) {
-            Log::write(sprintf('编辑栏目：%s', $id));
+            Log::write(sprintf('删除栏目：%s', $id));
 
             return modelReMsg(0, '', '删除成功');
         }
