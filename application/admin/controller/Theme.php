@@ -230,7 +230,7 @@ class Theme extends Base{
 
     /**
      * 图片上传
-     * @param array $request
+     * @param Request $request
     **/
     public function uploadImg(Request $request){
 
@@ -240,7 +240,7 @@ class Theme extends Base{
 
     /**
      * 主题压缩包上传
-     * @param array $request
+     * @param Request $request
     **/
     public function uploadZip(Request $request){
 
