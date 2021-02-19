@@ -17,7 +17,7 @@ use app\admin\model\Operate;
 
 class Theme extends Base{
     /**
-     * 主题列表
+     * 显示主题列表
     **/
     public function index(){
         if(request()->isAjax()){
@@ -54,6 +54,9 @@ class Theme extends Base{
         return $this->fetch();
     }
 
+    /**
+     * 显示添加主题页并添加
+    */
     public function add(){
         if (request()->isAjax()) {
 
@@ -97,6 +100,9 @@ class Theme extends Base{
         return $this->fetch();
     }
 
+    /**
+     * 显示更新主题页并修改
+    */
     public function edit(){
         if (request()->isAjax()) {
 
@@ -153,6 +159,9 @@ class Theme extends Base{
         return $this->fetch();
     }
 
+    /**
+     * 删除指定主题
+    */
     public function del(){
         if (request()->isAjax()) {
 
@@ -169,6 +178,9 @@ class Theme extends Base{
         }
     }
 
+    /**
+     * 显示用户操作主题日志
+    */
     public function log(){
         if (request()->isAjax()) {
 
@@ -201,8 +213,12 @@ class Theme extends Base{
         return $this->fetch();
     }
 
+
+    /**
+     * 去除空预览图
+     * @param array $yulantu
+    */
     public function formatYulantu($yulantu){
-        // 去除空预览图
         foreach ($yulantu as $key=>$val){
             if($val['thumb']=='' && $key>0){
                 unset($yulantu[$key]);
@@ -214,6 +230,7 @@ class Theme extends Base{
 
     /**
      * 图片上传
+     * @param Request $request
     **/
     public function uploadImg(Request $request){
 
@@ -223,6 +240,7 @@ class Theme extends Base{
 
     /**
      * 主题压缩包上传
+     * @param Request $request
     **/
     public function uploadZip(Request $request){
 

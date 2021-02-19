@@ -7,6 +7,12 @@ class Theme extends Model
 {
     protected $table = 'bsa_theme';
 
+    /**
+     * 获取主题列表
+     * @param $limit
+     * @param $where
+     * @return array
+    */
     public function getThemesList( $limit, $where )
     {
         try {
@@ -27,6 +33,11 @@ class Theme extends Model
         return modelReMsg(0, $res, 'ok');
     }
 
+    /**
+     * 获取一条主题信息
+     * @param $id
+     * @return array
+     */
     public function getThemeOne( $id )
     {
         try {
@@ -45,6 +56,11 @@ class Theme extends Model
         return modelReMsg(0, $info, 'ok');
     }
 
+    /**
+     * 添加主题数据
+     * @param array $param
+     * @return array
+     */
     public function addTheme( $param )
     {
         try {
@@ -64,7 +80,11 @@ class Theme extends Model
         return modelReMsg(0, '', '添加主题成功');
     }
 
-
+    /**
+     * 修改主题数据
+     * @param array $param
+     * @return array
+     */
     public function editTheme( $param )
     {
         try {
@@ -87,6 +107,11 @@ class Theme extends Model
         return modelReMsg(0, '', '编辑主题成功');
     }
 
+    /**
+     * 删除主题
+     * @param $id
+     * @return array
+     */
     public function delTheme( $id )
     {
         try {
