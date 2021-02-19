@@ -71,7 +71,7 @@ class Http
             }
             config('dictionary.web.debug') && Log::info('请求异常:' . $return_array);
 
-            throw new HttpError($error_message, $status);
+//            throw new HttpError($error_message, $status);
         }
 
         // 在下载文件的时候 不是json
