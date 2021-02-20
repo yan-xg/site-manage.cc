@@ -444,6 +444,7 @@ class Site extends Base
 
     /**
      * 上传站点文件
+     * @param Request $request
     */
     public function uploadControl(Request $request){
 

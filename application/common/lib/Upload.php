@@ -48,6 +48,7 @@ class Upload extends Controller{
      * 上传文件
      * @param null $file_path 保存的目录
      * @param null $form_name 表单中的名称
+     * @param null $name 用于区分模板还是站点文件
      * @return \think\response\Json
     **/
     public function uploadZip($file_path = null,$form_name = 'file',$name=false){
@@ -65,7 +66,7 @@ class Upload extends Controller{
             if($name==TRUE){
                 $filename = $file->getInfo('name');
             }else{
-                $filename =substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
+                $filename = 'templets-'.substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
             }
 
             if (!$file_info){
