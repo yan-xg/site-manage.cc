@@ -23,7 +23,7 @@ class Common extends APIBase
         if ( $theme->is_h5 == 0 ) {
             $url = str_replace($this->host, $this->siteModelObj->m_domain, $url);
 
-            return Http::curl($url, $param, $this->header(), 'POST', true);
+            return Http::curl($url, $param, $this->header($this->siteModelObj->m_domain), 'POST', true);
         }
 
         return ['status' => 200];

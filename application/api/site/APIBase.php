@@ -29,12 +29,13 @@ class APIBase
      *
      * @return array
      */
-    public function header(): array
+    public function header($host = ''): array
     {
         if ( config('dictionary.web.header') === false ) {
             return [];
         }
         $url = $this->getUrl('getSignature');
+        empty($host) || $url = str_replace($this->host, $host, $url);
         $ch  = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //返回数据不直接输出
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['vision:1.0.0', 'token:XKyhVA3RsaWIRnAz']);
