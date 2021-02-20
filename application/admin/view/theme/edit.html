@@ -26,7 +26,7 @@
                 <div class="layui-card-body">
                     <form class="layui-form" action="">
                         <input type="hidden" name="fzid" value="0">
-                        <input type="hidden" value="{$info.theme_id}" name="theme_id"/>
+                        <input type="hidden" value="{$info.theme_id}" name="theme_id" id="theme_id"/>
                         <div class="layui-form-item">
                             <label class="layui-form-label">主题名称:</label>
                             <div class="layui-input-block">
@@ -255,6 +255,7 @@
                 auto: true
                 ,elem: elem
                 ,url: '/admin/Theme/uploadZip'
+                ,data: { flag:elem , theme_id:$("#theme_id").val() }
                 ,exts: 'zip|rar|7z'
                 ,before:function (obj) {
                     layer.load(); //上传loading

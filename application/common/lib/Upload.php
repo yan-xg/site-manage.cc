@@ -63,10 +63,10 @@ class Upload extends Controller{
             $filePath  = $file->getRealPath();
             $ext = pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
             // 上传到七牛后保存的文件名
-            if($name==TRUE){
+            if($name==true){
                 $filename = $file->getInfo('name');
             }else{
-                $filename = 'templets-'.substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
+                $filename = $file_path.substr(md5($file->getRealPath()) , 0, 5). date('YmdHis') . rand(0, 9999) . '.' . $ext;
             }
 
             if (!$file_info){

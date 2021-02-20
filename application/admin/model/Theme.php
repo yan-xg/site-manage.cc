@@ -156,4 +156,18 @@ class Theme extends Model
 
         return $data;
     }
+
+    /**
+     * 获取最大的主题ID
+    */
+    public function getMaxThemeId(){
+        try {
+            $info = $this->max('theme_id');
+        } catch ( \Exception $e ) {
+
+            return modelReMsg(-1, '', $e->getMessage());
+        }
+
+        return modelReMsg(0, $info, 'ok');
+    }
 }

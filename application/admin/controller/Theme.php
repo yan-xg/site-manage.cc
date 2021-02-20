@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 use app\common\lib\Upload;
 use app\admin\model\Theme as ThemeModel;
+use think\Model;
 use think\Request;
 use think\Validate;
 use tool\Log;
@@ -233,9 +234,10 @@ class Theme extends Base{
      * @param Request $request
     **/
     public function uploadImg(Request $request){
-
-        $path = 'images/';
-        return (new Upload())->uploadOnePic($path);
+        if( $request ) {
+            $path = 'images/';
+            return (new Upload())->uploadOnePic($path);
+        }
     }
 
     /**
@@ -243,8 +245,24 @@ class Theme extends Base{
      * @param Request $request
     **/
     public function uploadZip(Request $request){
+        if ( $request ){
+            $path = 'templets/';
+            $flag = input('param.flag');
+            $theme_id = input('param.theme_id');
+            $path .= ($flag == '#m_temp_src') ? 'm/' : 'pc/';
 
-        return (new Upload())->uploadZip();
+            if( is_numeric($theme_id) && $theme_id != '' ) {
+                $path .= $theme_id.'/';
+            }else{
+                $themeModel = new ThemeModel();
+                $res = $themeModel->getMaxThemeId();
+                if( $res['code'] == 0) {
+                    $path .= ($res['data']+1).'/';
+                }
+            }
+
+            return (new Upload())->uploadZip($path);
+        }
     }
 
 }

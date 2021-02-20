@@ -226,6 +226,7 @@
                 auto: true
                 ,elem: elem
                 ,url: '/admin/Theme/uploadZip'
+                ,data: { flag:elem }
                 ,exts: 'zip|rar|7z'
                 ,before:function (obj) {
                     layer.load(); //上传loading
