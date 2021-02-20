@@ -40,22 +40,27 @@ class Common extends Base
             unset($param['site_id']);
             $site = $this->siteModel->find($siteId);
             if ( empty($site) ) exit('不合法ID');
-            $data['cfg_bdtjjs']   = $param['tongji'];
-            $data['cfg_bottomjs'] = $param['head_code'];
-            $data['cfg_topjs']    = $param['footer_code'];
-            $data['cfg_dianhua']  = $param['dianhua'];
-            $data['cfg_laiyuan']  = $param['laiyuan'];
-            $data['cfg_msiteid']  = $param['hj_m_site_id'];
-            $data['cfg_siteid']   = $param['hj_site_id'];
-            $data['cfg_xiangmu']  = $param['xiangmu'];
-            $site->tongji         = $param['tongji'];
-            $site->head_code      = $param['head_code'];
-            $site->footer_code    = $param['footer_code'];
-            $site->dianhua        = $param['dianhua'];
-            $site->laiyuan        = $param['laiyuan'];
-            $site->hj_m_site_id   = $param['hj_m_site_id'];
-            $site->hj_site_id     = $param['hj_site_id'];
-            $site->xiangmu        = $param['xiangmu'];
+            $data['cfg_bdtjjs']      = $param['tongji'];
+            $data['cfg_bottomjs']    = $param['head_code'];
+            $data['cfg_topjs']       = $param['footer_code'];
+            $data['cfg_dianhua']     = $param['dianhua'];
+            $data['cfg_laiyuan']     = $param['laiyuan'];
+            $data['cfg_msiteid']     = $param['hj_m_site_id'];
+            $data['cfg_siteid']      = $param['hj_site_id'];
+            $data['cfg_xiangmu']     = $param['xiangmu'];
+            $data['cfg_webname']     = $site->name;
+            $data['cfg_keywords']    = $param['keywords'];
+            $data['cfg_description'] = $param['description'];
+            $site->tongji            = $param['tongji'];
+            $site->head_code         = $param['head_code'];
+            $site->footer_code       = $param['footer_code'];
+            $site->dianhua           = $param['dianhua'];
+            $site->laiyuan           = $param['laiyuan'];
+            $site->hj_m_site_id      = $param['hj_m_site_id'];
+            $site->hj_site_id        = $param['hj_site_id'];
+            $site->xiangmu           = $param['xiangmu'];
+            $site->keywords          = $param['keywords'];
+            $site->description       = $param['description'];
             $site->save();
             $res = $this->commonAPI->site($siteId)->commonJsModify($data);
 
@@ -73,6 +78,8 @@ class Common extends Base
                 'hj_m_site_id' => $res['cfg_msiteid'],
                 'hj_site_id'   => $res['cfg_siteid'],
                 'xiangmu'      => $res['cfg_xiangmu'],
+                'keywords'     => $res['cfg_keywords'],
+                'description'  => $res['cfg_description'],
         ];
         $this->assign(['data' => $data, 'siteId' => $id]);
 

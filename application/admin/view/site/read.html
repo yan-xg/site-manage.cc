@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
     <style>
-        .layui-table > tbody > tr {
-
+        .layui-table > tbody > tr > td:first-child {
+            /*text-align: right;*/
+            /*width:10em;*/
         }
     </style>
 </head>
@@ -28,6 +29,14 @@
                     <tr>
                         <td>站点名称</td>
                         <td>{$name}</td>
+                    </tr>
+                    <tr>
+                        <td>站内默认关键字</td>
+                        <td>{$keywords}</td>
+                    </tr>
+                    <tr>
+                        <td>站点描述</td>
+                        <td>{$description}</td>
                     </tr>
                     <tr>
                         <td>域名</td>

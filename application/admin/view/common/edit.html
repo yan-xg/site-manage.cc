@@ -28,6 +28,18 @@
                         <input type="hidden" name="site_id" value="{$siteId}" />
                         <div class="layui-row layui-col-space10 layui-form-item">
                             <div class="layui-col-lg6">
+                                <label class="layui-form-label">站内默认关键字：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="keywords" placeholder="" value="{$data['keywords'] ?? ''}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">站点描述：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="description" autocomplete="off" class="layui-textarea">{$data['description'] ?? ''}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
                                 <label class="layui-form-label">留言用的项目名：</label>
                                 <div class="layui-input-block">
 
