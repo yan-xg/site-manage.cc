@@ -4,7 +4,7 @@ namespace app\api\site;
 
 use app\admin\model\Theme;
 use app\api\Http;
-use tool\Log;
+use think\facade\Log;
 
 /**
  * 公共接口
@@ -16,14 +16,15 @@ class Common extends APIBase
     protected $path = 'api/register.php';
 
 
-    public function getIsH5( $id, $url, $param )
+    public function getIsH5( $id, $url, $param, $type = 'GET' )
     {
         $theme = Theme::where('theme_id', $id)->find();
         if ( empty($theme) ) return false;
         if ( $theme->is_h5 == 0 ) {
-            $url = str_replace($this->host, $this->siteModelObj->m_domain, $url);
+            $url    = str_replace($this->host, $this->siteModelObj->m_domain, $url);
+            $header = $this->header($this->siteModelObj->m_domain);
 
-            return Http::curl($url, $param, $this->header($this->siteModelObj->m_domain), 'POST', true);
+            return Http::curl($url, $param, $header, $type, true);
         }
 
         return ['status' => 200];
@@ -39,7 +40,7 @@ class Common extends APIBase
     {
         $url  = $this->getUrl('commonJsModify');
         $res  = Http::curl($url, $param, $this->header(), 'POST', true);
-        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, $param);
+        $res2 = $this->getIsH5($this->siteModelObj->temp_id, $url, $param, 'POST');
         if ( $res['status'] != 200 ) return modelReMsg(-1, '', '更新失败');
         if ( $res2['status'] != 200 ) return modelReMsg(-1, '', '移动端更新失败');
 
