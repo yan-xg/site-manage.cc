@@ -28,6 +28,7 @@ class APIBase
     /**
      * 获取接口验证签名
      *
+     * @param string $host 需要替换的移动端域名
      * @return array
      */
     public function header( $host = '' ): array

@@ -15,7 +15,6 @@ class Common extends APIBase
 {
     protected $path = 'api/register.php';
 
-
     public function getIsH5( $id, $url, $param, $type = 'GET' )
     {
         $theme = Theme::where('theme_id', $id)->find();
