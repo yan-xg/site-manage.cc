@@ -133,7 +133,7 @@
                             lis.push('<li>' + html + '</li>');
                         });
                         lis.push('<li class="clear" style="clear:both"></li>');
-                        next(lis.join(''), page < res.count);
+                        next(lis.join(''), page < Math.ceil(res.count / limit));
                         layer.photos({
                             photos: '.c-container',
                         });
