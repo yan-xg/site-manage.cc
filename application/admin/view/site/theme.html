@@ -11,12 +11,21 @@
     <link rel="stylesheet" href="/static/admin/style/admin.css" media="all">
     <style>
         .c-container {
-            padding-left: 15px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding: 15px;
+            margin-left: 10px;
+            box-shadow: 1px 1px 5px #000;
+            border-radius: 5px;
         }
         .c-list {
             height: 2em;
             line-height: 2em;
+        }
+        .c-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
         }
         .c-img img {
             max-width: 100%;
@@ -24,6 +33,7 @@
         }
         .c-operate button {
             width: 100%;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -74,7 +84,6 @@
         <div class="layui-card-body">
             <ul id="demo">
             </ul>
-            <div style="clear:both;"></div>
         </div>
     </div>
 </div>
@@ -98,9 +107,10 @@
                 done: function (page, next){
                     let lis = [];
                     $.get('/admin/site/theme?page=' + page + '&limit=' + limit + search, function (res){
+                        $('.clear', this.elem).remove();
                         layui.each(res.data, function (index, item){
                             let html = '';
-                            html += '<div class="layui-col-xs6 layui-col-sm6 layui-col-md4 c-container">' +
+                            html += '<div class="layui-col-xs6 layui-col-sm6 layui-col-md4"><div class="c-container">' +
                                 '<div class="c-img"><img src="' + item.thumb + '" alt=""></div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list temp-name">主题名称：' + item.temp_name + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list category">类型：' + item.category + '</div>' +
@@ -119,9 +129,10 @@
                                 'data-is_h5="' + item.is_h5 + '" ' +
                                 'data-cat_id="' + item.cat_id + '"' +
                                 '>选择</button></div>'
-                            '</div>'
+                            '</div></div>'
                             lis.push('<li>' + html + '</li>');
                         });
+                        lis.push('<li class="clear" style="clear:both"></li>');
                         next(lis.join(''), page < res.count);
                         layer.photos({
                             photos: '.c-container',
