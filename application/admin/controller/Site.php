@@ -277,7 +277,7 @@ class Site extends Base
                     $v['color']     = changeString($v['color'], $themeColor);
                     $v['is_h5']     = $isH5[$v['is_h5']];
                     $v['temp_id']   = $v['theme_id'];
-                    $v['edit_time'] = date('Y-m-d', strtotime($v['edit_time']));
+                    $v['edit_time'] = empty($v['edit_time']) ? '' : date('Y-m-d', strtotime($v['edit_time']));
                 }
                 unset($v);
 
