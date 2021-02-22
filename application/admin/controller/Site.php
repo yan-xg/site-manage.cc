@@ -372,7 +372,6 @@ class Site extends Base
         return json(['code' => -1, 'data' => $error, 'message' => '执行失败']);
     }
 
-
     /**
      * 下载批量生成模版文件
      *
