@@ -124,7 +124,7 @@
 
         form.on('submit(column-add-form)', function (data){
             data.field.site_id = '{$siteId}';
-            data.field.reid = $('input[name=reid]').data('typeid');
+            data.field.reid = ($('input[name=reid]').data('typeid')) ? $('input[name=reid]').data('typeid') : 0;
             $.post("{:url('column/edit')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);
