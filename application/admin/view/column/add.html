@@ -32,6 +32,12 @@
 <!--                                </div>-->
 <!--                            </div>-->
                             <div class="layui-col-lg6">
+                                <label class="layui-form-label">上级栏目：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="reid" placeholder="请点击选择" autocomplete="off" class="layui-input" readonly>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
                                 <label class="layui-form-label">栏目名称：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="seotitle" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
@@ -81,7 +87,8 @@
         </div>
     </div>
 </div>
-
+<input type='hidden' name="tem_typeid">
+<input type='hidden' name="tem_type_name">
 <script src="/static/layui/layui.js"></script>
 <script src="/static/common/js/jquery.min.js"></script>
 <script>
@@ -89,8 +96,35 @@
         base: '/static/admin/' //静态资源所在路径
     }).use(['form', 'jquery'], function (){
         let $ = layui.jquery, form = layui.form;
+
+        let column;
+        $('input[name=reid]').on('click', function (){
+            column = $(this);
+            $('input[name=tem_typeid]').val(column.data('typeid'));
+            $('input[name=tem_type_name]').val(column.val());
+            layer.open({
+                type: 2,
+                title: '栏目选择',
+                area: ['50%', '80%'],
+                content: "/admin/archives/columnTree/site_id/{$siteId}",
+                btn: ['确定', '取消'],
+                yes: function (index, layero){
+                    column.data('typeid', $('input[name=tem_typeid]').val());
+                    column.val($('input[name=tem_type_name]').val());
+                    layer.close(index);
+                },
+                btn2: function (index, layero){
+                    layer.close(index);
+                },
+                success: function (layero, index){
+                    let iframe = layero.find("iframe")[0].contentWindow;
+                }
+            })
+        });
+
         form.on('submit(column-add-form)', function (data){
             data.field.site_id = '{$siteId}';
+            data.field.reid = $('input[name=reid]').data('typeid');
             $.post("{:url('column/create')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);
