@@ -383,7 +383,7 @@ class Site extends Base
         header('Expires: 0');
         header('Content-Encoding: utf-8');
         header('Content-type: text/csv; charset=utf-8');
-        header('location:' . \think\facade\Request::domain() . '/site.csv');
+        header('location:' . \think\facade\Request::domain() . '/site.xlsx');
 //        $path     = config('dictionary.site.batch_upload_path');
 //        $download = new \think\response\Download($path . '/site.csv');
 
