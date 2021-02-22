@@ -89,6 +89,7 @@
 </div>
 <input type='hidden' name="tem_typeid">
 <input type='hidden' name="tem_type_name">
+<input type='hidden' name="typeid" id="typeid" value="{$data['id']}">
 <script src="/static/layui/layui.js"></script>
 <script src="/static/common/js/jquery.min.js"></script>
 <script>
@@ -123,8 +124,13 @@
         });
 
         form.on('submit(column-add-form)', function (data){
+            var typeid = $("#typeid").val();
             data.field.site_id = '{$siteId}';
             data.field.reid = ($('input[name=reid]').data('typeid')) ? $('input[name=reid]').data('typeid') : 0;
+            if(typeid == data.field.reid){
+                layer.msg('上级栏目不可为当前栏目！');
+                return false;
+            }
             $.post("{:url('column/edit')}", data.field, function (res){
                 if ( 0 == res.code ) {
                     layer.msg(res.msg);
