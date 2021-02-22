@@ -273,10 +273,11 @@ class Site extends Base
                 $themeColor = array_column($themeColor, 'value', 'id');
                 $isH5       = $this->isH5;
                 foreach ( $rows as &$v ) {
-                    $v['category'] = $category[$v['cat_id']];
-                    $v['color']    = changeString($v['color'], $themeColor);
-                    $v['is_h5']    = $isH5[$v['is_h5']];
-                    $v['temp_id']  = $v['theme_id'];
+                    $v['category']  = $category[$v['cat_id']];
+                    $v['color']     = changeString($v['color'], $themeColor);
+                    $v['is_h5']     = $isH5[$v['is_h5']];
+                    $v['temp_id']   = $v['theme_id'];
+                    $v['edit_time'] = empty($v['edit_time']) ? '' : date('Y-m-d', strtotime($v['edit_time']));
                 }
                 unset($v);
 
@@ -372,7 +373,6 @@ class Site extends Base
         return json(['code' => -1, 'data' => $error, 'message' => '执行失败']);
     }
 
-
     /**
      * 下载批量生成模版文件
      *
@@ -383,7 +383,7 @@ class Site extends Base
         header('Expires: 0');
         header('Content-Encoding: utf-8');
         header('Content-type: text/csv; charset=utf-8');
-        header('location:' . \think\facade\Request::domain() . '/site.csv');
+        header('location:' . \think\facade\Request::domain() . '/site.xlsx');
 //        $path     = config('dictionary.site.batch_upload_path');
 //        $download = new \think\response\Download($path . '/site.csv');
 
@@ -447,10 +447,12 @@ class Site extends Base
 
     /**
      * 上传站点文件
+     *
      * @param Request $request
-    */
-    public function uploadControl(Request $request){
+     */
+    public function uploadControl( Request $request )
+    {
 
-        return (new Upload())->uploadZip(null,'file',true);
+        return ( new Upload() )->uploadZip(null, 'file', true);
     }
 }

@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">站点IP：</label>
+                                <label class="layui-form-label">服务器IP：</label>
                                 <div class="layui-input-block">
                                     <select name="ip" lay-verify="required" autocomplete="off" class="layui-input"></select>
                                 </div>
@@ -175,7 +175,7 @@
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     <button class="layui-btn" lay-submit lay-filter="component-form-element">立即提交</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                    <!--                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
                                 </div>
                             </div>
                         </div>
@@ -185,10 +185,6 @@
         </div>
     </div>
 </div>
-<input type='hidden' name="tem_temp_id">
-<input type='hidden' name="tem_temp_name">
-<input type="hidden" name="tem_temp_ish5">
-<input type="hidden" name="tem_cat_id">
 <script src="/static/layui/layui.js"></script>
 <script src="/static/common/js/layTool.js"></script>
 <script src="/static/common/js/jquery.min.js"></script>
@@ -218,26 +214,8 @@
             layer.open({
                 type: 2,
                 title: '选择模版',
-                area: ['80%', '80%'],
+                area: ['100%', '100%'],
                 content: "/admin/site/theme",
-                btn: ['确定', '取消'],
-                yes: function (index, layero){
-                    $('input[name=temp_id]').val($('input[name=tem_temp_id]').val());
-                    $('input[name=temp_name]').val($('input[name=tem_temp_name]').val());
-                    let domain = $('input[name=m_domain]').parent().parent();
-                    domain.hide();
-                    if ( $('input[name=tem_temp_ish5]').val() === '否' ) {
-                        domain.show();
-                    }
-                    layer.close(index);
-                },
-                btn2: function (index, layero){
-                    layer.close(index);
-                },
-                success: function (layero, index){
-                    console.log(index);
-                    let iframe = layero.find("iframe")[0].contentWindow;
-                }
             })
         });
         $('select[name=web_domain]').select2({
