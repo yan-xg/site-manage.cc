@@ -16,6 +16,25 @@
             margin-left: 10px;
             box-shadow: 1px 1px 5px #000;
             border-radius: 5px;
+            position: relative;
+        }
+        .c-right {
+            width: 4em;
+            height: 2.5em;
+            position: absolute;
+            right: 15px;
+            background: #2E3030;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #FFF;
+        }
+        .c-right1 {
+            top: 25px;
+        }
+        .c-right2 {
+            top: calc(25px + 3.5em);
         }
         .c-list {
             height: 2em;
@@ -31,9 +50,20 @@
             max-width: 100%;
             max-height: 100%;
         }
-        .c-operate button {
-            width: 100%;
+        .c-operate {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .c-operate button, .c-operate a {
+            width: calc(50% - 7.5px);
             margin-top: 15px;
+        }
+        .c-operate a.disabled {
+            pointer-events: none;
+            filter: alpha(opacity=50);
+            -moz-opacity: 0.5;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -110,25 +140,23 @@
                         $('.clear', this.elem).remove();
                         layui.each(res.data, function (index, item){
                             let html = '';
-                            html += '<div class="layui-col-xs6 layui-col-sm6 layui-col-md4"><div class="c-container">' +
+                            html += '<div class="layui-col-xs6 layui-col-sm6 layui-col-md3"><div class="c-container">' +
                                 '<div class="c-img"><img src="' + item.thumb + '" alt=""></div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list temp-name">主题名称：' + item.temp_name + '</div>' +
-                                '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list category">类型：' + item.category + '</div>' +
-                                '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list color">颜色：' + item.color + '</div>' +
-                                '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list is-h5">响应式：' + item.is_h5 + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list count">使用量：' + item.count + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list shoulu">收录情况：' + item.shoulu + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list paiming">排名情况：' + item.paiming + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list zhuanhua">转化情况：' + item.zhuanhua + '</div>' +
-                                '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list temp-url">预览地址：' + item.temp_url + '</div>' +
                                 '<div class="layui-col-xs12 layui-col-sm12 layui-col-md6 c-list edit-time">修改时间：' + item.edit_time + '</div>' +
                                 '<div style="clear:both"></div>' +
+                                '<div class="c-right c-right1">' + item.category + '</div>' +
+                                (item.is_h5 == '否' ? '' : '<div class="c-right c-right2">自适应</div>') +
                                 '<div class="c-operate"><button class="layui-btn" ' +
                                 'data-temp_id="' + item.temp_id + '" ' +
                                 'data-temp_name="' + item.temp_name + '" ' +
                                 'data-is_h5="' + item.is_h5 + '" ' +
                                 'data-cat_id="' + item.cat_id + '"' +
-                                '>选择</button></div>'
+                                '>选择</button> <a class="layui-btn ' + (item.temp_url.length > 0 ? '' : 'disabled') + '" target="_blank" onclick="window.top.location=\'' + item.temp_url + '\'">预览</a></div>'
                             '</div></div>'
                             lis.push('<li>' + html + '</li>');
                         });
