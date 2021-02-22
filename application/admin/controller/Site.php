@@ -273,10 +273,11 @@ class Site extends Base
                 $themeColor = array_column($themeColor, 'value', 'id');
                 $isH5       = $this->isH5;
                 foreach ( $rows as &$v ) {
-                    $v['category'] = $category[$v['cat_id']];
-                    $v['color']    = changeString($v['color'], $themeColor);
-                    $v['is_h5']    = $isH5[$v['is_h5']];
-                    $v['temp_id']  = $v['theme_id'];
+                    $v['category']  = $category[$v['cat_id']];
+                    $v['color']     = changeString($v['color'], $themeColor);
+                    $v['is_h5']     = $isH5[$v['is_h5']];
+                    $v['temp_id']   = $v['theme_id'];
+                    $v['edit_time'] = date('Y-m-d', strtotime($v['edit_time']));
                 }
                 unset($v);
 
@@ -446,10 +447,12 @@ class Site extends Base
 
     /**
      * 上传站点文件
+     *
      * @param Request $request
-    */
-    public function uploadControl(Request $request){
+     */
+    public function uploadControl( Request $request )
+    {
 
-        return (new Upload())->uploadZip(null,'file',true);
+        return ( new Upload() )->uploadZip(null, 'file', true);
     }
 }
