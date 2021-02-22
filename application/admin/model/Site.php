@@ -43,7 +43,7 @@ class Site extends Model
             $data['add_time'] = date('Y-m-d H:i:s');
             $this->insert($data);
             $lastId = $this->getLastInsID();
-            \app\api\facade\Site::site($lastId)->create();
+//            \app\api\facade\Site::site($lastId)->create();
             Log::write(sprintf("添加站点：%s(%s)", $data['name'], $lastId));
         } catch ( \Exception $e ) {
 
