@@ -15,6 +15,13 @@
         .layui-table td, .layui-table th{
             padding: 5px 0 5px 15px;
         }
+        .eyulantu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            max-height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -24,6 +31,18 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <!--<div class="layui-carousel" id="edit_yulantu">-->
+                        <!--<div carousel-item="">-->
+                            <!--{if condition="$info.thumb"}-->
+                            <!--<div><img class="eyulantu" src="{$info.thumb}"></div>-->
+                            <!--{/if}-->
+                            <!--{volist name='$info.yulantu' id='val'}-->
+                                <!--{if condition="$val.thumb"}-->
+                                    <!--<div><img class="eyulantu" src="{$val.thumb}"></div>-->
+                                <!--{/if}-->
+                            <!--{/volist}-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <form class="layui-form" action="">
                         <input type="hidden" name="fzid" value="0">
                         <input type="hidden" value="{$info.theme_id}" name="theme_id" id="theme_id"/>
@@ -206,6 +225,19 @@
             return false;
         });
     });
+
+    // layui.use(['carousel', 'form'], function() {
+    //     var carousel = layui.carousel
+    //         , form = layui.form;
+    //     console.log(carousel);
+    //
+    //     //图片轮播
+    //     carousel.render({
+    //         elem: '#edit_yulantu'
+    //         , width: '100%'
+    //         , interval: 5000
+    //     });
+    // });
 
     // 图片上传
     layui.use('upload', function(){

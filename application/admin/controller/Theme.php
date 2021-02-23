@@ -44,6 +44,7 @@ class Theme extends Base{
                 $themeColor = array_column($themeColor, 'value', 'id');
                 foreach ( $data as &$v ) {
                     $v['color'] = changeString($v['color'], $themeColor);
+                    $v['yulantu'] = json_decode($v['yulantu'] ,JSON_UNESCAPED_UNICODE);
                 }
 
                 return json(['code' => 0, 'msg' => 'ok', 'count' => $list['data']->total(), 'data' => $data]);
