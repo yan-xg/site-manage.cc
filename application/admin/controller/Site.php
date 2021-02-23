@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\admin\validate\SiteValidate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use think\App;
 use app\admin\model\Site as SiteModel;
 use app\admin\model\Theme as ThemeModel;
@@ -383,7 +384,7 @@ class Site extends Base
         header('Expires: 0');
         header('Content-Encoding: utf-8');
         header('Content-type: text/csv; charset=utf-8');
-        header('location:' . \think\facade\Request::domain() . '/site.csv');
+        header('location:' . \think\facade\Request::domain() . '/site.xlsx');
 //        $path     = config('dictionary.site.batch_upload_path');
 //        $download = new \think\response\Download($path . '/site.csv');
 
@@ -395,13 +396,17 @@ class Site extends Base
      */
     private function batchValidate( $filePath )
     {
-        $handle = fopen($filePath, "rb");
-        $data   = [];
-        $row    = fgetcsv($handle); // 去除标题
-        while ( $row = fgetcsv($handle) ) {
-            $data[] = $row;
+        $spreadsheet = IOFactory::load($filePath);
+        $sheet       = $spreadsheet->getActiveSheet();
+        $data        = [];
+        foreach ( $sheet->getRowIterator(2) as $row ) {
+            $tmp = [];
+            foreach ( $row->getCellIterator() as $cell ) {
+                $tmp[] = $cell->getFormattedValue();
+            }
+            if ( !empty(array_filter($tmp)) )
+                $data[$row->getRowIndex()] = $tmp;
         }
-        fclose($handle);
         // 验证数据本身是否有重复
         // 验证域名是否重复
 
