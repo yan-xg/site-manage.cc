@@ -156,7 +156,7 @@
                                 'data-temp_name="' + item.temp_name + '" ' +
                                 'data-is_h5="' + item.is_h5 + '" ' +
                                 'data-cat_id="' + item.cat_id + '"' +
-                                '>选择</button> <a class="layui-btn ' + (item.temp_url.length > 0 ? '' : 'disabled') + '" target="_blank" onclick="window.top.location=\'' + item.temp_url + '\'">预览</a></div>'
+                                '>选择</button> <a class="layui-btn ' + (item.temp_url.length > 0 ? '' : 'disabled') + '" target="view_window" href="' + item.temp_url + '">预览</a></div>'
                             '</div></div>'
                             lis.push('<li>' + html + '</li>');
                         });
