@@ -15,8 +15,13 @@
         .layui-table td, .layui-table th{
             padding: 5px 0 5px 15px;
         }
+        #edit_yulantu{
+            text-align: center;
+            vertical-align: middle;
+            margin-bottom: 10px;
+        }
         .eyulantu {
-            display: flex;
+            display: inline;
             justify-content: center;
             align-items: center;
             max-width: 100%;
@@ -226,18 +231,20 @@
         });
     });
 
-    // layui.use(['carousel', 'form'], function() {
-    //     var carousel = layui.carousel
-    //         , form = layui.form;
-    //     console.log(carousel);
-    //
-    //     //图片轮播
-    //     carousel.render({
-    //         elem: '#edit_yulantu'
-    //         , width: '100%'
-    //         , interval: 5000
-    //     });
-    // });
+    /*
+    layui.use(['carousel', 'form'], function() {
+        var carousel = layui.carousel
+            , form = layui.form;
+        console.log(carousel);
+
+        //图片轮播
+        carousel.render({
+            elem: '#edit_yulantu'
+            , width: '100%'
+            , interval: 5000
+        });
+    });
+    */
 
     // 图片上传
     layui.use('upload', function(){
