@@ -112,6 +112,10 @@ class Column extends Base
         $id   = input('column_id');
         $data = $this->columnAPI->site($siteId)->getColumnOne($id);
 
+        if ($data['reid'] != 0) {
+            $column = $this->columnAPI->site($siteId)->getColumnOne($data['reid']);
+            $data['typeName']   = $column['typename'];
+        }
         $this->assign(['data' => $data]);
 
         return view('edit');
