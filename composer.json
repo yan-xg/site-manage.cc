@@ -24,8 +24,7 @@
         "ext-mysqli": "*",
         "ext-json": "*",
         "ext-curl": "*",
-        "ext-openssl": "*",
-        "phpoffice/phpspreadsheet": "^1.16"
+        "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": {
