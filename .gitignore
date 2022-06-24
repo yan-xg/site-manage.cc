@@ -3,8 +3,6 @@
 *.log
 .env
 .DS_Store
-/vendor
-/thinkphp
 /screenshoot
 /runtime/cache
 /uploads
